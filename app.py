@@ -1,9 +1,7 @@
 from html import escape
 from pathlib import Path
 from urllib.parse import parse_qs, quote, urlencode
-from uuid import uuid4
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-import sqlite3
 import re
 import zipfile
 import xml.etree.ElementTree as ET
@@ -20,17 +18,17 @@ except ImportError:
     winreg = None
 from datetime import datetime, timedelta
 
+from db import DEFAULT_TEMPLATE_SETTINGS, current_actor, db, ensure_template_defaults
 from services.billing import (
     amount_to_french,
     amount_words_placeholder,
     parse_invoice_lines,
     totals_from_lines,
 )
+from services.uploads import save_upload as save_upload_file
 
 
 ROOT_DIR = Path(__file__).resolve().parent
-DB_PATH = ROOT_DIR / "data" / "pos_ai.sqlite3"
-SCHEMA_PATH = ROOT_DIR / "database" / "schema.sql"
 UPLOAD_DIR = ROOT_DIR / "uploads"
 EXPORT_DIR = ROOT_DIR / "exports"
 DOWNLOAD_DIR = Path.home() / "Downloads"
@@ -44,71 +42,6 @@ PDF_VIEWER_CANDIDATES = [
     Path(r"C:\Program Files\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe"),
     Path(r"C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe"),
 ]
-
-
-def db() -> sqlite3.Connection:
-    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-    connection = sqlite3.connect(DB_PATH)
-    connection.row_factory = sqlite3.Row
-    connection.execute("PRAGMA foreign_keys = ON;")
-    if not connection.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='company_settings'").fetchone():
-        connection.executescript(SCHEMA_PATH.read_text(encoding="utf-8"))
-    ensure_schema(connection)
-    return connection
-
-
-def ensure_schema(connection: sqlite3.Connection) -> None:
-    connection.execute("""
-        CREATE TABLE IF NOT EXISTS template_settings (
-            key TEXT PRIMARY KEY,
-            value TEXT NOT NULL,
-            updated_by TEXT NOT NULL DEFAULT '',
-            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-        )
-    """)
-    connection.execute("""
-        CREATE TABLE IF NOT EXISTS mobilis_client_settings (
-            id INTEGER PRIMARY KEY CHECK (id = 1),
-            doit TEXT NOT NULL DEFAULT '',
-            nif TEXT NOT NULL DEFAULT '',
-            nis TEXT NOT NULL DEFAULT '',
-            is_configured INTEGER NOT NULL DEFAULT 0 CHECK (is_configured IN (0, 1)),
-            created_by TEXT NOT NULL DEFAULT '',
-            updated_by TEXT NOT NULL DEFAULT '',
-            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-        )
-    """)
-    add_audit_columns(connection)
-    columns = {row[1] for row in connection.execute("PRAGMA table_info(purchase_orders)")}
-    additions = {
-        "objet": "ALTER TABLE purchase_orders ADD COLUMN objet TEXT NOT NULL DEFAULT ''",
-        "montant_ttc": "ALTER TABLE purchase_orders ADD COLUMN montant_ttc NUMERIC NOT NULL DEFAULT 0 CHECK (montant_ttc >= 0)",
-        "attachment_path": "ALTER TABLE purchase_orders ADD COLUMN attachment_path TEXT",
-    }
-    for column, statement in additions.items():
-        if column not in columns:
-            connection.execute(statement)
-    site_columns = {row[1] for row in connection.execute("PRAGMA table_info(sites)")}
-    if "bet" not in site_columns:
-        connection.execute("ALTER TABLE sites ADD COLUMN bet TEXT NOT NULL DEFAULT ''")
-    invoice_columns = {row[1] for row in connection.execute("PRAGMA table_info(invoices)")}
-    invoice_additions = {
-        "remarque": "ALTER TABLE invoices ADD COLUMN remarque TEXT NOT NULL DEFAULT ''",
-        "depos": "ALTER TABLE invoices ADD COLUMN depos INTEGER NOT NULL DEFAULT 0 CHECK (depos IN (0, 1))",
-    }
-    for column, statement in invoice_additions.items():
-        if column not in invoice_columns:
-            connection.execute(statement)
-    connection.execute("DROP INDEX IF EXISTS idx_invoices_site_type_regular")
-    connection.execute("""
-        CREATE UNIQUE INDEX IF NOT EXISTS idx_invoices_site_type_regular
-        ON invoices (site_id, invoice_type)
-        WHERE invoice_type IN ('ACQUISITION', 'CONSTRUCTION', 'CONST_ACQUIS')
-        AND deleted_at IS NULL
-    """)
-    ensure_template_defaults(connection)
-    connection.commit()
 
 
 def mobilis_client_settings(connection=None):
@@ -125,39 +58,6 @@ def mobilis_client_settings(connection=None):
     if close_connection:
         con.close()
     return row
-
-
-DEFAULT_TEMPLATE_SETTINGS = {
-    "logo_width_px": "340",
-    "logo_height_px": "170",
-    "company_logo_anchor": "E1",
-    "company_logo_offset_px": "118",
-    "client_logo_anchor": "",
-    "client_logo_offset_px": "0",
-    "line_height_normal": "30",
-    "line_height_wrapped": "50",
-    "designation_wrap_chars": "52",
-    "amount_words_font_size": "24",
-    "col_a_width": "9",
-    "col_b_width": "103",
-    "col_c_width": "13.5",
-    "col_d_width": "19",
-    "col_e_width": "31",
-    "col_f_width": "33",
-    "hide_empty_sections": "1",
-    "visual_blocks_json": "",
-    "visual_blocks_facture_json": "",
-    "visual_blocks_devis_quantitatif_json": "",
-    "visual_blocks_devis_estimatif_json": "",
-}
-
-
-def ensure_template_defaults(connection):
-    for key, value in DEFAULT_TEMPLATE_SETTINGS.items():
-        connection.execute(
-            "INSERT OR IGNORE INTO template_settings(key, value, updated_by) VALUES (?, ?, ?)",
-            (key, value, current_actor()),
-        )
 
 
 def template_settings(connection=None):
@@ -203,25 +103,6 @@ def default_visual_blocks(document_type="facture"):
         {"id": "amount_words", "title": "Montant en lettres", "x": 28, "y": 765, "w": 680, "h": 65, "font": 24, "content": "{{Montant_En_Lettres}}"},
         {"id": "signature", "title": "Signature", "x": 610, "y": 875, "w": 160, "h": 40, "font": 11, "content": "L'ENTREPRISE/{{Entreprise.Nom}}"},
     ]
-
-def add_audit_columns(connection):
-    audit_tables = ["mobilis_directions", "purchase_orders", "sites", "invoices"]
-    audit_columns = {
-        "created_by": "TEXT NOT NULL DEFAULT ''",
-        "updated_by": "TEXT NOT NULL DEFAULT ''",
-        "deleted_at": "TEXT",
-        "deleted_by": "TEXT",
-    }
-    for table in audit_tables:
-        existing = {row[1] for row in connection.execute(f"PRAGMA table_info({table})")}
-        for column, definition in audit_columns.items():
-            if column not in existing:
-                connection.execute(f"ALTER TABLE {table} ADD COLUMN {column} {definition}")
-
-
-def current_actor():
-    return os.environ.get("USERNAME") or os.environ.get("USER") or "User"
-
 
 def open_pdf_with_system_viewer(pdf_path):
     adobe = next((path for path in PDF_VIEWER_CANDIDATES if path.exists()), None)
@@ -513,16 +394,7 @@ def option_html(value, label, selected):
 
 
 def save_upload(upload, folder, allowed_suffixes):
-    if not upload or not upload.get("filename"):
-        return ""
-    suffix = Path(upload["filename"]).suffix.lower()
-    if suffix not in allowed_suffixes:
-        raise ValueError(f"Extension non autorisee: {suffix}")
-    target_dir = UPLOAD_DIR / folder
-    target_dir.mkdir(parents=True, exist_ok=True)
-    target = target_dir / f"{uuid4().hex}{suffix}"
-    target.write_bytes(upload["content"])
-    return str(target.relative_to(ROOT_DIR)).replace("\\", "/")
+    return save_upload_file(upload, folder, allowed_suffixes, ROOT_DIR, UPLOAD_DIR)
 
 
 def parse_code_sites(raw):

@@ -18,6 +18,18 @@ Cette base contient le schema SQLite approuve pour:
 
 ## Initialiser la base
 
+Installer d'abord les dependances Python:
+
+```powershell
+python -m pip install -r requirements.txt
+```
+
+Installer les dependances Node utilisees pour les PDF et les controles visuels:
+
+```powershell
+npm install
+```
+
 ```powershell
 python scripts/init_db.py
 ```
@@ -93,4 +105,3 @@ Fichiers principaux:
 - `static/table-facturation-new.js`
 
 La page comprend les filtres SQLite, la pagination, la modification instantanée des remarques et de l’état de dépôt, les actions facture et l’export Excel filtré. L’ancienne route `/table-facturation` reste disponible comme sauvegarde.
-

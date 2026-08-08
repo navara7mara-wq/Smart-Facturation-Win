@@ -1,0 +1,88 @@
+{
+  "base_url": "http://127.0.0.1:8000",
+  "pixel_threshold": 18,
+  "minimum_similarity": 99.5,
+  "pages": [
+    {
+      "id": "dashboard",
+      "label": "Tableau de bord",
+      "route": "/",
+      "reference": "tests/visual/baselines/dashboard.png",
+      "fixture": "dashboard",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "table-facturation",
+      "label": "Table Facturation",
+      "route": "/table-facturation",
+      "reference": "tests/visual/baselines/table-facturation.png",
+      "fixture": "table-facturation",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "table-facturation-new",
+      "label": "Table Facturation — nouvelle interface",
+      "route": "/table-facturation-new",
+      "reference": "tests/visual/baselines/table-facturation-new.png",
+      "fixture": "table-facturation",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "factures",
+      "label": "Factures",
+      "route": "/invoices",
+      "reference": "tests/visual/baselines/factures.png",
+      "fixture": "factures",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "bons-de-commande",
+      "label": "Bons de commande",
+      "route": "/purchase-orders",
+      "reference": "tests/visual/baselines/bons-de-commande.png",
+      "fixture": "bons-de-commande",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mobilis",
+      "label": "Mobilis",
+      "route": "/mobilis?edit_id=1001",
+      "reference": "tests/visual/baselines/mobilis.png",
+      "fixture": "mobilis",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "bpu",
+      "label": "BPU",
+      "route": "/bpu",
+      "reference": "tests/visual/baselines/bpu.png",
+      "fixture": "bpu",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "entreprise",
+      "label": "Entreprise",
+      "route": "/company",
+      "reference": "tests/visual/baselines/entreprise.png",
+      "fixture": "entreprise",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "templates",
+      "label": "Templates",
+      "route": "/templates?doc=devis_quantitatif",
+      "reference": "tests/visual/baselines/templates.png",
+      "fixture": "templates",
+      "width": 1672,
+      "height": 941
+    }
+  ]
+}

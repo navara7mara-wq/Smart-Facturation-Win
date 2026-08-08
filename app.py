@@ -1,6 +1,7 @@
 from html import escape
 from pathlib import Path
 from urllib.parse import parse_qs, quote, urlencode
+from uuid import uuid4
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import re
 import subprocess
@@ -9,10 +10,6 @@ import tempfile
 import json
 import os
 import threading
-try:
-    import winreg
-except ImportError:
-    winreg = None
 from datetime import datetime, timedelta
 
 from db import DEFAULT_TEMPLATE_SETTINGS, current_actor, db, ensure_template_defaults
@@ -24,6 +21,7 @@ from services.billing import (
 )
 from services.bpu import import_bpu
 from services.invoice_exports import invoice_export_data, invoice_xlsx
+from services.pdf_files import archive_metadata, cleanup_old_exports, open_pdf_with_system_viewer
 from services.uploads import save_upload as save_upload_file
 from services.xlsx import make_xlsx, styled
 
@@ -36,14 +34,6 @@ BUNDLED_PYTHON = Path(r"C:\Users\Administrateur\.cache\codex-runtimes\codex-prim
 BUNDLED_NODE = Path(r"C:\Users\Administrateur\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe")
 NODE_MODULES = Path(r"C:\Users\Administrateur\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules")
 MOBILIS_DOIT = "Algérie Télécom Mobile / Mobilis"
-PDF_VIEWER_CANDIDATES = [
-    Path(r"C:\Program Files\Adobe\Acrobat DC\Acrobat\Acrobat.exe"),
-    Path(r"C:\Program Files (x86)\Adobe\Acrobat DC\Acrobat\Acrobat.exe"),
-    Path(r"C:\Program Files\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe"),
-    Path(r"C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe"),
-]
-
-
 def mobilis_client_settings(connection=None):
     close_connection = connection is None
     con = connection or db()
@@ -103,39 +93,6 @@ def default_visual_blocks(document_type="facture"):
         {"id": "amount_words", "title": "Montant en lettres", "x": 28, "y": 765, "w": 680, "h": 65, "font": 24, "content": "{{Montant_En_Lettres}}"},
         {"id": "signature", "title": "Signature", "x": 610, "y": 875, "w": 160, "h": 40, "font": 11, "content": "L'ENTREPRISE/{{Entreprise.Nom}}"},
     ]
-
-def open_pdf_with_system_viewer(pdf_path):
-    adobe = next((path for path in PDF_VIEWER_CANDIDATES if path.exists()), None)
-    if not adobe and winreg is not None:
-        for key_path in (
-            r"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\Acrobat.exe",
-            r"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\AcroRd32.exe",
-            r"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\App Paths\Acrobat.exe",
-            r"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\App Paths\AcroRd32.exe",
-        ):
-            try:
-                with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, key_path) as key:
-                    candidate = Path(winreg.QueryValue(key, ""))
-                    if candidate.exists():
-                        adobe = candidate
-                        break
-            except OSError:
-                pass
-    if adobe:
-        subprocess.Popen(
-            [str(adobe), str(pdf_path)],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS,
-        )
-        return
-    subprocess.Popen(
-        ["cmd", "/c", "start", "", str(pdf_path)],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-        creationflags=subprocess.CREATE_NO_WINDOW,
-    )
-
 
 def h(value) -> str:
     return escape("" if value is None else str(value), quote=True)
@@ -200,19 +157,6 @@ def pdf_source_timestamp(document, invoice_id):
     if template_path.exists():
         times.append(template_path.stat().st_mtime)
     return max(times or [0.0])
-
-
-def cleanup_old_exports(stem, suffix, keep=3):
-    files = sorted(
-        EXPORT_DIR.glob(f"{stem}_*{suffix}"),
-        key=lambda path: path.stat().st_mtime,
-        reverse=True,
-    )
-    for path in files[keep:]:
-        try:
-            path.unlink()
-        except OSError:
-            pass
 
 
 def parse_amount(value):
@@ -613,22 +557,6 @@ class App(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(content)
 
-    def archive_metadata(self, path):
-        name = path.name
-        document_type = "PDF"
-        invoice_number = ""
-        for prefix, label in (
-            ("Devis_Quantitatif_", "DQ"),
-            ("Devis_Estimatif_", "DE"),
-            ("Facture_", "FACT"),
-        ):
-            if name.startswith(prefix):
-                document_type = label
-                rest = name[len(prefix):].removesuffix(".pdf")
-                invoice_number = rest.rsplit("_", 1)[0] if "_" in rest else rest
-                break
-        return document_type, invoice_number
-
     def archives(self):
         query = parse_qs(self.path.split("?", 1)[1]) if "?" in self.path else {}
         message = query.get("message", [""])[0]
@@ -637,7 +565,7 @@ class App(BaseHTTPRequestHandler):
         grouped = {}
         for path in files:
             stat = path.stat()
-            document_type, invoice_number = self.archive_metadata(path)
+            document_type, invoice_number = archive_metadata(path)
             if not invoice_number:
                 continue
             entry = grouped.setdefault(invoice_number, {"files": {}, "latest": 0.0, "size": 0})
@@ -3153,7 +3081,7 @@ class App(BaseHTTPRequestHandler):
                     EXPORT_DIR.mkdir(parents=True, exist_ok=True)
                     output_path = (EXPORT_DIR / f"{stem}_{uuid4().hex[:8]}{suffix}").resolve()
                     self.render_preview_pdf_file(document, invoice_id, output_path, server_port=server_port)
-                    cleanup_old_exports(stem, suffix)
+                    cleanup_old_exports(EXPORT_DIR, stem, suffix)
                 except Exception as error:
                     print(f"PDF regeneration failed for invoice {invoice_id} ({document}): {error}", file=sys.stderr)
 
@@ -3199,7 +3127,7 @@ class App(BaseHTTPRequestHandler):
         def open_later():
             open_pdf_with_system_viewer(output_path)
         threading.Timer(0.1, open_later).start()
-        cleanup_old_exports(stem, suffix)
+        cleanup_old_exports(EXPORT_DIR, stem, suffix)
         return self.redirect(f"/invoices?message=PDF ouvert: {quote(str(output_path))}")
 
     def export_preview_pdf(self, document, invoice_id=None):

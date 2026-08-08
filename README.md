@@ -102,9 +102,10 @@ de remplacer une image dans `tests/visual/baselines`.
 - Un site ne peut entrer que dans une seule facture `NDC`.
 - Une facture `NDC` accepte uniquement l'article `6`.
 - Les informations BPU sont sauvegardees dans `invoice_lines` en snapshot.
+
 ## Nouvelle interface Table Facturation
 
-Une nouvelle interface indépendante a été ajoutée sans supprimer l’ancienne page:
+Une nouvelle interface independante a ete ajoutee sans supprimer l'ancienne page:
 
 ```text
 http://127.0.0.1:8000/table-facturation-new
@@ -116,4 +117,4 @@ Fichiers principaux:
 - `static/sapta-new.css`
 - `static/table-facturation-new.js`
 
-La page comprend les filtres SQLite, la pagination, la modification instantanée des remarques et de l’état de dépôt, les actions facture et l’export Excel filtré. L’ancienne route `/table-facturation` reste disponible comme sauvegarde.
+La page comprend les filtres SQLite, la pagination, la modification instantanee des remarques et de l'etat de depot, les actions facture et l'export Excel filtre. L'ancienne route `/table-facturation` reste disponible comme sauvegarde.

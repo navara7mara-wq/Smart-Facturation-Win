@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from app import parse_invoice_lines, totals_from_lines
+from services.billing import amount_to_french, parse_invoice_lines, totals_from_lines
 
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
@@ -72,6 +72,10 @@ def test_totals_from_lines_apply_retenue_and_tva():
     lines = [{"montant_ht": 1000.0}, {"montant_ht": 250.0}]
 
     assert totals_from_lines(lines) == (1250.0, 62.5, 1187.5, 225.62, 1413.12)
+
+
+def test_amount_to_french_handles_zero_without_mojibake():
+    assert amount_to_french(0) == "zero dinars"
 
 
 def test_ndc_invoice_requires_no_direct_site():

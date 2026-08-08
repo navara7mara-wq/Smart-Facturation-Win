@@ -6,6 +6,7 @@
   "scripts": {
     "start": "python app.py",
     "init-db": "python scripts/init_db.py",
+    "test": "python -m pytest",
     "visual:test": "powershell -ExecutionPolicy Bypass -File scripts/run_visual_tests.ps1",
     "visual:test:strict": "powershell -ExecutionPolicy Bypass -File scripts/run_visual_tests.ps1 -Strict"
   },

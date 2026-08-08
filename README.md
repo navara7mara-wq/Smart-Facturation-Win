@@ -54,6 +54,18 @@ http://127.0.0.1:8000
 
 ## Controle de conformite visuelle
 
+## Tests automatiques
+
+```powershell
+python -m pytest
+```
+
+ou:
+
+```powershell
+npm test
+```
+
 Les huit interfaces principales disposent d'une image de reference fixe. Le test ouvre
 chaque page dans Chrome avec la resolution de sa reference, prend une capture et produit
 un rapport avec les differences signalees en rouge.

@@ -28,7 +28,9 @@ from services.auth import (
     complete_first_run_setup,
     create_session,
     create_user,
+    delete_test_users,
     delete_session,
+    delete_user,
     ensure_default_admin,
     first_run_required,
     get_session_user,
@@ -596,7 +598,7 @@ class App(BaseHTTPRequestHandler):
             return self.setup_post()
         if path == "/login":
             return self.login_post()
-        if path in {"/backup/create", "/backup/restore", "/users/create", "/users/password", "/users/role", "/users/active"}:
+        if path in {"/backup/create", "/backup/restore", "/users/create", "/users/password", "/users/role", "/users/active", "/users/delete", "/users/cleanup-tests"}:
             if not self.require_admin_access():
                 return self.respond("Forbidden", status=403, content_type="text/plain")
         elif not self.require_write_access():
@@ -608,6 +610,8 @@ class App(BaseHTTPRequestHandler):
             "/users/password": self.change_user_password_post,
             "/users/role": self.change_user_role_post,
             "/users/active": self.change_user_active_post,
+            "/users/delete": self.delete_user_post,
+            "/users/cleanup-tests": self.cleanup_test_users_post,
             "/table-facturation": self.save_table_facturation,
             "/table-facturation-new/update": self.update_table_facturation_new,
             "/company": self.save_company,
@@ -909,11 +913,13 @@ class App(BaseHTTPRequestHandler):
         rows = []
         for user in list_users():
             is_active = bool(row_value(user, "is_active", 1))
+            user_id = row_value(user, "id")
+            username = row_value(user, "username")
             rows.append([
-                h(row_value(user, "username")),
+                h(username),
                 f"""
                 <form method="post" action="/users/role" class="inline-form">
-                  <input type="hidden" name="id" value="{row_value(user, 'id')}">
+                  <input type="hidden" name="id" value="{user_id}">
                   {select_field('role', 'Role', [('admin', 'admin'), ('editor', 'editor'), ('viewer', 'viewer')], row_value(user, 'role', 'viewer'))}
                   <button type="submit">Role</button>
                 </form>
@@ -922,16 +928,22 @@ class App(BaseHTTPRequestHandler):
                 h(row_value(user, "locked_until") or ""),
                 f"""
                 <form method="post" action="/users/active" class="inline-form">
-                  <input type="hidden" name="id" value="{row_value(user, 'id')}">
+                  <input type="hidden" name="id" value="{user_id}">
                   <input type="hidden" name="active" value="{'0' if is_active else '1'}">
                   <button type="submit">{'Desactiver' if is_active else 'Activer'}</button>
                 </form>
                 """,
                 f"""
                 <form method="post" action="/users/password" class="inline-form">
-                  <input type="hidden" name="id" value="{row_value(user, 'id')}">
+                  <input type="hidden" name="id" value="{user_id}">
                   <input name="password" type="password" placeholder="Nouveau mot de passe" required>
                   <button type="submit">Modifier</button>
+                </form>
+                """,
+                f"""
+                <form method="post" action="/users/delete" class="inline-form">
+                  <input type="hidden" name="id" value="{user_id}">
+                  <button type="submit" class="danger-link" onclick="return confirm('Supprimer {h(username)} ?')">Supprimer</button>
                 </form>
                 """,
             ])
@@ -946,8 +958,11 @@ class App(BaseHTTPRequestHandler):
             {select_field('role', 'Role', [('admin', 'admin'), ('editor', 'editor'), ('viewer', 'viewer')], 'viewer')}
             <button type="submit">Ajouter</button>
           </form>
+          <form method="post" action="/users/cleanup-tests" class="inline-form">
+            <button type="submit" class="outline-button">Nettoyer les utilisateurs de test</button>
+          </form>
         </section>
-        <section class="panel"><h2>Utilisateurs</h2>{table(['Utilisateur', 'Role', 'Dernier login', 'Verrouillage', 'Etat', 'Mot de passe'], rows)}</section>
+        <section class="panel"><h2>Utilisateurs</h2>{table(['Utilisateur', 'Role', 'Dernier login', 'Verrouillage', 'Etat', 'Mot de passe', 'Suppression'], rows)}</section>
         """
         self.respond(layout("Utilisateurs", content))
 
@@ -979,9 +994,28 @@ class App(BaseHTTPRequestHandler):
         values = self.form()
         try:
             set_user_active(int(values.get("id", "0")), values.get("active") == "1")
+            audit("user_active_change", "user", values.get("id", ""))
             self.redirect("/users?message=Etat modifie")
         except Exception as exc:
             self.redirect(f"/users?message={quote('Erreur etat: ' + str(exc))}")
+
+    def delete_user_post(self):
+        values = self.form()
+        try:
+            user_id = int(values.get("id", "0"))
+            delete_user(user_id)
+            audit("user_delete", "user", user_id)
+            self.redirect("/users?message=Utilisateur supprime")
+        except Exception as exc:
+            self.redirect(f"/users?message={quote('Erreur suppression: ' + str(exc))}")
+
+    def cleanup_test_users_post(self):
+        try:
+            delete_test_users()
+            audit("user_cleanup_tests", "user")
+            self.redirect("/users?message=Utilisateurs de test nettoyes")
+        except Exception as exc:
+            self.redirect(f"/users?message={quote('Erreur nettoyage: ' + str(exc))}")
 
     def backup(self):
         if not self.require_admin_access():

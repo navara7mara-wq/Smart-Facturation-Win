@@ -190,16 +190,53 @@ def update_user_password(user_id, password):
         )
 
 
+def active_admin_count(connection):
+    return connection.execute(
+        "SELECT COUNT(*) FROM users WHERE role='admin' AND is_active=1"
+    ).fetchone()[0]
+
+
+def user_by_id(connection, user_id):
+    return connection.execute("SELECT * FROM users WHERE id=?", (user_id,)).fetchone()
+
+
 def set_user_role(user_id, role):
     if role not in {"admin", "editor", "viewer"}:
         raise ValueError("Role invalide.")
     with db() as con:
+        user = user_by_id(con, user_id)
+        if not user:
+            raise ValueError("Utilisateur introuvable.")
+        if user["role"] == "admin" and role != "admin" and user["is_active"] and active_admin_count(con) <= 1:
+            raise ValueError("Impossible de retirer le dernier administrateur actif.")
         con.execute("UPDATE users SET role=?, updated_at=CURRENT_TIMESTAMP WHERE id=?", (role, user_id))
 
 
 def set_user_active(user_id, is_active):
     with db() as con:
+        user = user_by_id(con, user_id)
+        if not user:
+            raise ValueError("Utilisateur introuvable.")
+        if user["role"] == "admin" and user["is_active"] and not is_active and active_admin_count(con) <= 1:
+            raise ValueError("Impossible de desactiver le dernier administrateur actif.")
         con.execute("UPDATE users SET is_active=?, updated_at=CURRENT_TIMESTAMP WHERE id=?", (1 if is_active else 0, user_id))
+
+
+def delete_user(user_id):
+    with db() as con:
+        user = user_by_id(con, user_id)
+        if not user:
+            raise ValueError("Utilisateur introuvable.")
+        if user["role"] == "admin" and user["is_active"] and active_admin_count(con) <= 1:
+            raise ValueError("Impossible de supprimer le dernier administrateur actif.")
+        con.execute("DELETE FROM user_sessions WHERE user_id=?", (user_id,))
+        con.execute("DELETE FROM users WHERE id=?", (user_id,))
+
+
+def delete_test_users():
+    with db() as con:
+        con.execute("DELETE FROM user_sessions WHERE user_id IN (SELECT id FROM users WHERE username LIKE 'test%' OR username LIKE 'fix%' OR username LIKE 'viewer_e2e%')")
+        con.execute("DELETE FROM users WHERE username LIKE 'test%' OR username LIKE 'fix%' OR username LIKE 'viewer_e2e%'")
 
 
 def user_can_write(user):

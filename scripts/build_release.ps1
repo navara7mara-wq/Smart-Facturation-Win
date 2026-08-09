@@ -59,13 +59,9 @@ Compress-Archive -Path (Join-Path $Stage "*") -DestinationPath $ZipPath
 Write-Host "Release archive created: $ZipPath" -ForegroundColor Green
 
 if (-not $SkipInstaller) {
-    $isccCandidates = @(
-        "$env:ProgramFiles(x86)\Inno Setup 6\ISCC.exe",
-        "$env:ProgramFiles\Inno Setup 6\ISCC.exe"
-    ) | Where-Object { $_ -and (Test-Path $_) }
-    if ($isccCandidates) {
+    try {
         powershell -ExecutionPolicy Bypass -File (Join-Path $Root "scripts\build_installer.ps1") -Version $Version
-    } else {
-        Write-Warning "Installer EXE was not created: Inno Setup 6 is not installed."
+    } catch {
+        Write-Warning "Installer EXE was not created: $($_.Exception.Message)"
     }
 }

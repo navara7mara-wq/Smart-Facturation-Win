@@ -42,12 +42,12 @@ Source: "..\setup.cmd"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\run.cmd"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\controle-visuel.cmd"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\visual.config.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\database\*"; DestDir: "{app}\database"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\scripts\*"; DestDir: "{app}\scripts"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\services\*"; DestDir: "{app}\services"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\static\*"; DestDir: "{app}\static"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\templates\*"; DestDir: "{app}\templates"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\tests\*"; DestDir: "{app}\tests"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\database\*"; DestDir: "{app}\database"; Flags: ignoreversion recursesubdirs; Excludes: "__pycache__\*,*.pyc,*.pyo,*.log"
+Source: "..\scripts\*"; DestDir: "{app}\scripts"; Flags: ignoreversion recursesubdirs; Excludes: "__pycache__\*,*.pyc,*.pyo,*.log"
+Source: "..\services\*"; DestDir: "{app}\services"; Flags: ignoreversion recursesubdirs; Excludes: "__pycache__\*,*.pyc,*.pyo,*.log"
+Source: "..\static\*"; DestDir: "{app}\static"; Flags: ignoreversion recursesubdirs
+Source: "..\templates\*"; DestDir: "{app}\templates"; Flags: ignoreversion recursesubdirs
+Source: "..\tests\*"; DestDir: "{app}\tests"; Flags: ignoreversion recursesubdirs; Excludes: "__pycache__\*,*.pyc,*.pyo,*.log"
 
 [Dirs]
 Name: "{app}\data"
@@ -64,4 +64,3 @@ Name: "{autodesktop}\PhoEniX BPU"; Filename: "{app}\run.cmd"; WorkingDir: "{app}
 
 [Run]
 Filename: "{app}\setup.cmd"; WorkingDir: "{app}"; Description: "Installer les dependances et initialiser PhoEniX BPU"; Flags: postinstall skipifsilent
-

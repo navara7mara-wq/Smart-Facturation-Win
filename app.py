@@ -475,6 +475,17 @@ class App(BaseHTTPRequestHandler):
         values = self.multipart_form()[0] if "multipart/form-data" in content_type else self.form()
         return hmac_compare(values.get("csrf_token", ""), expected)
 
+    def csrf_rejected(self, path):
+        referer = self.headers.get("Referer", "")
+        expected = f"http://{self.headers.get('Host', '')}"
+        if referer.startswith(expected):
+            safe_path = "/" + referer.removeprefix(expected).lstrip("/")
+            safe_path = safe_path.split("#", 1)[0] or "/"
+        else:
+            safe_path = "/login" if path in {"/login", "/setup"} else "/"
+        separator = "&" if "?" in safe_path else "?"
+        return self.redirect(f"{safe_path}{separator}message={quote('Session expiree, veuillez reessayer.')}")
+
     def do_HEAD(self):
         path = self.path.split("?")[0]
         pdf_request = self.parse_pdf_request(path)
@@ -580,7 +591,7 @@ class App(BaseHTTPRequestHandler):
         path = self.path.split("?")[0]
         ensure_default_admin()
         if not self.valid_csrf_post(path):
-            return self.respond("CSRF rejected", status=403, content_type="text/plain")
+            return self.csrf_rejected(path)
         if path == "/setup":
             return self.setup_post()
         if path == "/login":

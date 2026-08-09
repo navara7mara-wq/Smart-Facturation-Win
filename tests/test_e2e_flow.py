@@ -81,7 +81,17 @@ def test_first_run_csrf_backup_restore_e2e(tmp_path, monkeypatch):
 
         users_page = _request(opener, base_url + "/users")
         assert users_page.status == 200
-        assert "Utilisateurs" in users_page.read().decode("utf-8")
+        users_html = users_page.read().decode("utf-8")
+        assert "Utilisateurs" in users_html
+        user_token = _csrf(users_html)
+        create_user = _request(opener, base_url + "/users/create", {
+            "csrf_token": user_token,
+            "username": "viewer_e2e",
+            "password": "Viewer123",
+            "role": "viewer",
+        })
+        assert create_user.status == 200
+        assert "viewer_e2e" in create_user.read().decode("utf-8")
 
         with db_module.db() as con:
             con.execute(
@@ -129,7 +139,8 @@ def test_first_run_csrf_backup_restore_e2e(tmp_path, monkeypatch):
         assert excel.read().startswith(b"PK")
 
         rejected = _request(opener, base_url + "/backup/create", {"csrf_token": "bad"})
-        assert rejected.status == 403
+        assert rejected.status == 200
+        assert "CSRF rejected" not in rejected.read().decode("utf-8")
 
         backup_html = _request(opener, base_url + "/backup").read().decode("utf-8")
         backup_token = _csrf(backup_html)

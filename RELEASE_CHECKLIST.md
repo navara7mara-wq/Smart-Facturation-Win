@@ -12,16 +12,18 @@
 - Un test de connexion/deconnexion est effectue.
 - Une sauvegarde et une restauration de test sont effectuees.
 - Le test E2E setup/session/CSRF/export Excel/backup/restore passe.
+- Le script Inno Setup est disponible pour generer un installateur Windows.
 - La page `/status` retourne Database OK.
 - Les exports PDF et Excel sont testes sur au moins une facture normale et une facture NDC.
 
 ## Installation client
 
-1. Installer Python 3.12+.
-2. Installer Node.js LTS si les PDF ou les tests visuels sont necessaires.
-3. Double-cliquer `setup.cmd`.
-4. Double-cliquer `run.cmd`.
-5. Ouvrir `http://127.0.0.1:8000`.
+1. Utiliser `dist\installer\PhoEniX_BPU_Setup_VERSION.exe` si Inno Setup a ete utilise.
+2. Sinon installer Python 3.12+.
+3. Installer Node.js LTS si les PDF ou les tests visuels sont necessaires.
+4. Double-cliquer `setup.cmd`.
+5. Double-cliquer `run.cmd`.
+6. Ouvrir `http://127.0.0.1:8000`.
 
 ## Points non negociables avant commercialisation large
 

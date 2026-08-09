@@ -1,3 +1,6 @@
+from db import app_settings
+
+
 def parse_invoice_lines(raw):
     lines = []
     for line in raw.replace(";", "\n").splitlines():
@@ -13,11 +16,20 @@ def parse_invoice_lines(raw):
     return lines
 
 
-def totals_from_lines(lines):
+def billing_rates():
+    settings = app_settings()
+    return float(settings["retention_rate"]), float(settings["tax_rate"])
+
+
+def totals_from_lines(lines, retention_rate=None, tax_rate=None):
+    if retention_rate is None or tax_rate is None:
+        default_retention_rate, default_tax_rate = billing_rates()
+        retention_rate = default_retention_rate if retention_rate is None else retention_rate
+        tax_rate = default_tax_rate if tax_rate is None else tax_rate
     total_ht = sum(line["montant_ht"] for line in lines)
-    retenue = round(total_ht * 0.05, 2)
+    retenue = round(total_ht * retention_rate, 2)
     ht_after_rg = round(total_ht - retenue, 2)
-    tva = round(ht_after_rg * 0.19, 2)
+    tva = round(ht_after_rg * tax_rate, 2)
     total_ttc = round(ht_after_rg + tva, 2)
     return total_ht, retenue, ht_after_rg, tva, total_ttc
 

@@ -3,7 +3,7 @@ import hashlib
 import hmac
 import os
 import secrets
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from db import db
 
@@ -14,6 +14,10 @@ DEFAULT_ADMIN_USERNAME = "admin"
 DEFAULT_ADMIN_PASSWORD = "admin123"
 MAX_FAILED_ATTEMPTS = 5
 LOCK_MINUTES = 15
+
+
+def utc_now():
+    return datetime.now(timezone.utc).replace(tzinfo=None)
 
 
 def hash_password(password, salt=None):
@@ -74,7 +78,7 @@ def complete_first_run_setup(current_password, new_password):
 
 def authenticate(username, password):
     ensure_default_admin()
-    now = datetime.utcnow()
+    now = utc_now()
     with db() as con:
         user = con.execute(
             "SELECT * FROM users WHERE username=? AND is_active=1",
@@ -110,7 +114,7 @@ def authenticate(username, password):
 def create_session(user_id):
     token = secrets.token_urlsafe(32)
     csrf_token = secrets.token_urlsafe(32)
-    expires_at = (datetime.utcnow() + timedelta(days=SESSION_DAYS)).isoformat(timespec="seconds")
+    expires_at = (utc_now() + timedelta(days=SESSION_DAYS)).isoformat(timespec="seconds")
     with db() as con:
         con.execute(
             "INSERT INTO user_sessions(token, user_id, expires_at, csrf_token) VALUES(?, ?, ?, ?)",
@@ -122,7 +126,7 @@ def create_session(user_id):
 def session_csrf_token(token):
     if not token:
         return ""
-    now = datetime.utcnow().isoformat(timespec="seconds")
+    now = utc_now().isoformat(timespec="seconds")
     with db() as con:
         row = con.execute(
             "SELECT csrf_token FROM user_sessions WHERE token=? AND expires_at>?",
@@ -134,7 +138,7 @@ def session_csrf_token(token):
 def get_session_user(token):
     if not token:
         return None
-    now = datetime.utcnow().isoformat(timespec="seconds")
+    now = utc_now().isoformat(timespec="seconds")
     with db() as con:
         user = con.execute(
             """

@@ -82,6 +82,17 @@ Pour utiliser un autre port:
 powershell -ExecutionPolicy Bypass -File scripts/run_app.ps1 -Port 8001
 ```
 
+## Installer Windows
+
+Le projet contient un script Inno Setup dans `installer/PhoEniX_BPU.iss`.
+Pour creer un installateur `.exe`, installer Inno Setup 6 puis lancer:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/build_installer.ps1 -Version 1.4.0
+```
+
+Le build release tente aussi de produire l'installateur si `ISCC.exe` est disponible.
+
 ## Controle de conformite visuelle
 
 ## Tests automatiques

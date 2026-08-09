@@ -32,6 +32,13 @@ DEFAULT_TEMPLATE_SETTINGS = {
     "visual_blocks_devis_estimatif_json": "",
 }
 
+DEFAULT_APP_SETTINGS = {
+    "currency_code": "DZD",
+    "currency_label": "DA",
+    "tax_rate": "0.19",
+    "retention_rate": "0.05",
+}
+
 
 def current_actor():
     return os.environ.get("PHOENIX_CURRENT_USER") or os.environ.get("USERNAME") or os.environ.get("USER") or "User"
@@ -107,6 +114,14 @@ def ensure_schema(connection: sqlite3.Connection) -> None:
         )
     """)
     connection.execute("""
+        CREATE TABLE IF NOT EXISTS app_settings (
+            key TEXT PRIMARY KEY,
+            value TEXT NOT NULL,
+            updated_by TEXT NOT NULL DEFAULT '',
+            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    connection.execute("""
         CREATE TABLE IF NOT EXISTS mobilis_client_settings (
             id INTEGER PRIMARY KEY CHECK (id = 1),
             doit TEXT NOT NULL DEFAULT '',
@@ -148,6 +163,7 @@ def ensure_schema(connection: sqlite3.Connection) -> None:
         AND deleted_at IS NULL
     """)
     ensure_template_defaults(connection)
+    ensure_app_settings_defaults(connection)
     connection.commit()
 
 
@@ -157,6 +173,27 @@ def ensure_template_defaults(connection):
             "INSERT OR IGNORE INTO template_settings(key, value, updated_by) VALUES (?, ?, ?)",
             (key, value, current_actor()),
         )
+
+
+def ensure_app_settings_defaults(connection):
+    for key, value in DEFAULT_APP_SETTINGS.items():
+        connection.execute(
+            "INSERT OR IGNORE INTO app_settings(key, value, updated_by) VALUES (?, ?, ?)",
+            (key, value, current_actor()),
+        )
+
+
+def app_settings(connection=None):
+    close_connection = connection is None
+    con = connection or db()
+    ensure_app_settings_defaults(con)
+    rows = con.execute("SELECT key, value FROM app_settings").fetchall()
+    settings = dict(DEFAULT_APP_SETTINGS)
+    settings.update({row["key"]: row["value"] for row in rows})
+    if close_connection:
+        con.commit()
+        con.close()
+    return settings
 
 
 def add_audit_columns(connection):

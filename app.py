@@ -13,7 +13,7 @@ import threading
 import hmac as hmac_lib
 from datetime import datetime, timedelta
 
-from db import DEFAULT_TEMPLATE_SETTINGS, audit, current_actor, db, ensure_template_defaults
+from db import DEFAULT_TEMPLATE_SETTINGS, app_settings, audit, current_actor, db, ensure_template_defaults
 from services.billing import (
     amount_to_french,
     amount_words_placeholder,
@@ -2075,6 +2075,7 @@ class App(BaseHTTPRequestHandler):
         with db() as con:
             row = con.execute("SELECT * FROM company_settings WHERE id=1").fetchone()
             contract = con.execute("SELECT * FROM contract_settings WHERE id=1").fetchone()
+            financial = app_settings(con)
 
         logo = (
             f'<img class="logo-preview" src="/{h(row["logo_path"])}" alt="Logo de l\'entreprise">'
@@ -2119,10 +2120,14 @@ class App(BaseHTTPRequestHandler):
             <p class="contract-help">Un seul contrat utilisé pour toutes les factures.</p>
 
             <h3>Paramètres de facturation</h3>
-            <div class="setting-row"><span>Retenue de garantie</span><label class="suffix-input"><input value="5,00" readonly><b>%</b></label></div>
-            <div class="setting-row"><span>TVA</span><label class="suffix-input"><input value="19,00" readonly><b>%</b></label></div>
+            <div class="setting-row"><span>Retenue de garantie</span><label class="suffix-input"><input name="retention_rate" value="{h(str(float(financial['retention_rate']) * 100).replace('.', ','))}"><b>%</b></label></div>
+            <div class="setting-row"><span>TVA</span><label class="suffix-input"><input name="tax_rate" value="{h(str(float(financial['tax_rate']) * 100).replace('.', ','))}"><b>%</b></label></div>
             <div class="setting-row"><span>Source pour le montant en lettres</span><select><option>Total TTC</option></select></div>
-            <div class="setting-row"><span>Devise</span><select><option>DA - Dinar</option></select></div>
+            <div class="setting-row"><span>Devise</span><select name="currency_code">
+              <option value="DZD"{' selected' if financial['currency_code'] == 'DZD' else ''}>DA - Dinar</option>
+              <option value="EUR"{' selected' if financial['currency_code'] == 'EUR' else ''}>EUR - Euro</option>
+              <option value="USD"{' selected' if financial['currency_code'] == 'USD' else ''}>USD - Dollar</option>
+            </select></div>
             <div class="setting-row"><span>Montants avec séparateurs de milliers</span><span class="toggle-switch on"></span></div>
             <div class="setting-row"><span>Deux décimales obligatoires</span><span class="toggle-switch on"></span></div>
           </section>
@@ -2147,6 +2152,24 @@ class App(BaseHTTPRequestHandler):
                 WHERE id=1
             """, (values.get("nom", ""), logo_path, values.get("rgc", ""), values.get("nif", ""), values.get("art", ""), values.get("adresse", ""), values.get("numero_compte", "")))
             con.execute("UPDATE contract_settings SET reference_contrat=? WHERE id=1", (values.get("reference_contrat", ""),))
+            retention_rate = parse_amount(values.get("retention_rate", "5")) / 100
+            tax_rate = parse_amount(values.get("tax_rate", "19")) / 100
+            currency_code = values.get("currency_code", "DZD")
+            currency_label = {"DZD": "DA", "EUR": "EUR", "USD": "USD"}.get(currency_code, currency_code)
+            for key, value in {
+                "retention_rate": str(retention_rate),
+                "tax_rate": str(tax_rate),
+                "currency_code": currency_code,
+                "currency_label": currency_label,
+            }.items():
+                con.execute(
+                    """
+                    INSERT INTO app_settings(key, value, updated_by)
+                    VALUES(?, ?, ?)
+                    ON CONFLICT(key) DO UPDATE SET value=excluded.value, updated_by=excluded.updated_by, updated_at=CURRENT_TIMESTAMP
+                    """,
+                    (key, value, current_actor()),
+                )
         self.redirect("/company")
 
     def mobilis(self):
@@ -3094,6 +3117,7 @@ class App(BaseHTTPRequestHandler):
                 ORDER BY po.numero_bc, s.code_site
             """).fetchall()
             ndc_used = {row[0] for row in con.execute("SELECT site_id FROM invoice_sites").fetchall()}
+            financial = app_settings(con)
             rows = con.execute("""
                 SELECT i.*, po.numero_bc, s.code_site
                 FROM invoices i
@@ -3116,6 +3140,8 @@ class App(BaseHTTPRequestHandler):
             disabled = " disabled" if site["id"] in ndc_used and site["id"] not in edit_ndc_sites else ""
             label = f'{site["numero_bc"]} / {site["code_site"]} - {site["nom_site"]}'
             ndc_checks.append(f'<label class="check-row" data-po="{site["purchase_order_id"]}"><input type="checkbox" name="ndc_site_ids" value="{site["id"]}"{checked}{disabled}><span>{h(label)}</span></label>')
+        retention_percent = float(financial["retention_rate"]) * 100
+        tax_percent = float(financial["tax_rate"]) * 100
         form_html = f"""
         <form method="post" class="panel invoice-form" id="invoice-form">
           <input type="hidden" name="id" value="{h(edit['id'] if edit else '')}">
@@ -3147,9 +3173,9 @@ class App(BaseHTTPRequestHandler):
                 <div class="compose-actions"><button type="button" id="add-line" hidden>＋ Ajouter ligne</button><button type="submit" class="create-invoice-button"><i data-lucide="file-plus-2"></i>{'Modifier la facture' if edit else 'Créer la facture'}</button><button type="button" class="outline-button" id="reset-lines" title="Réinitialiser"><i data-lucide="rotate-ccw"></i></button></div>
                 <dl class="live-totals">
                   <div><dt>Total HT</dt><dd id="live-total-ht">0,00</dd></div>
-                  <div><dt>RG 5%</dt><dd id="live-rg">0,00</dd></div>
+                  <div><dt>RG {money(retention_percent)}%</dt><dd id="live-rg">0,00</dd></div>
                   <div><dt>Montant HT après RG</dt><dd id="live-after-rg">0,00</dd></div>
-                  <div><dt>TVA 19%</dt><dd id="live-tva">0,00</dd></div>
+                  <div><dt>TVA {money(tax_percent)}%</dt><dd id="live-tva">0,00</dd></div>
                   <div class="grand-total"><dt>Total TTC</dt><dd id="live-ttc">0,00</dd></div>
                 </dl>
               </div>
@@ -3182,6 +3208,8 @@ class App(BaseHTTPRequestHandler):
           const linesInput = document.querySelector('#invoice-lines');
           const addLineButton = document.querySelector('#add-line');
           const invoiceForm = document.querySelector('#invoice-form');
+          const retentionRate = {json.dumps(float(financial["retention_rate"]))};
+          const taxRate = {json.dumps(float(financial["tax_rate"]))};
 
           function formatMoney(value) {{
             return Number(value || 0).toLocaleString('fr-FR', {{ minimumFractionDigits: 2, maximumFractionDigits: 2 }});
@@ -3279,9 +3307,9 @@ class App(BaseHTTPRequestHandler):
 
           function updateFormTotals() {{
             const totalHt = Array.from(linesBody.querySelectorAll('.montant-cell')).reduce((sum, cell) => sum + Number(cell.dataset.value || 0), 0);
-            const rg = totalHt * 0.05;
+            const rg = totalHt * retentionRate;
             const afterRg = totalHt - rg;
-            const tva = afterRg * 0.19;
+            const tva = afterRg * taxRate;
             const ttc = afterRg + tva;
             document.querySelector('#live-total-ht').textContent = formatMoney(totalHt);
             document.querySelector('#live-rg').textContent = formatMoney(rg);

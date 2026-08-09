@@ -74,6 +74,12 @@ def test_totals_from_lines_apply_retenue_and_tva():
     assert totals_from_lines(lines) == (1250.0, 62.5, 1187.5, 225.62, 1413.12)
 
 
+def test_totals_from_lines_accept_custom_financial_rates():
+    lines = [{"montant_ht": 1000.0}]
+
+    assert totals_from_lines(lines, retention_rate=0.1, tax_rate=0.2) == (1000.0, 100.0, 900.0, 180.0, 1080.0)
+
+
 def test_amount_to_french_handles_zero_without_mojibake():
     assert amount_to_french(0) == "zero dinars"
 

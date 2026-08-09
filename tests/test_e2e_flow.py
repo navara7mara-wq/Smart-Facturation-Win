@@ -93,6 +93,14 @@ def test_first_run_csrf_backup_restore_e2e(tmp_path, monkeypatch):
         assert create_user.status == 200
         assert "viewer_e2e" in create_user.read().decode("utf-8")
 
+        settings_page = _request(opener, base_url + "/settings")
+        assert settings_page.status == 200
+        settings_html = settings_page.read().decode("utf-8")
+        assert "Parametres" in settings_html
+        assert "/users" in settings_html
+        assert 'data-path="/users"' not in settings_html
+        assert 'data-path="/settings"' in settings_html
+
         about_page = _request(opener, base_url + "/about")
         assert about_page.status == 200
         assert "1.5.0" in about_page.read().decode("utf-8")

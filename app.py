@@ -257,12 +257,7 @@ def layout(title, content, subtitle=""):
         ("/purchase-orders", "Bons de commande", "i-clipboard"),
         ("/mobilis", "Mobilis", "i-radio"),
         ("/bpu", "BPU", "i-calculator"),
-        ("/company", "Entreprise", "i-building"),
-        ("/templates", "Templates", "i-template"),
-        ("/users", "Utilisateurs", "i-building"),
-        ("/backup", "Backup", "i-file"),
-        ("/license", "Licence", "i-file"),
-        ("/about", "A propos", "i-file"),
+        ("/settings", "Parametres", "i-template"),
     ]
     links = "".join(
         f'<a href="{url}" data-path="{url}"><svg aria-hidden="true"><use href="#{icon}"/></svg><span>{label}</span></a>'
@@ -336,7 +331,8 @@ def layout(title, content, subtitle=""):
     const currentPath = window.location.pathname;
     document.querySelectorAll('.sapta-nav a').forEach(link => {{
       const path = link.dataset.path;
-      if ((path === '/' && currentPath === '/') || (path !== '/' && currentPath.startsWith(path))) link.classList.add('active');
+      const settingsPaths = ['/settings','/company','/templates','/users','/backup','/license','/about','/status'];
+      if ((path === '/' && currentPath === '/') || (path !== '/' && currentPath.startsWith(path)) || (path === '/settings' && settingsPaths.includes(currentPath))) link.classList.add('active');
     }});
     document.addEventListener('click', async (event) => {{
       const link = event.target.closest('a.pdf-download');
@@ -583,6 +579,7 @@ class App(BaseHTTPRequestHandler):
             "/bpu": self.bpu,
             "/purchase-orders": self.purchase_orders,
             "/invoices": self.invoices,
+            "/settings": self.settings,
             "/templates": self.templates,
             "/users": self.users,
             "/backup": self.backup,
@@ -600,6 +597,27 @@ class App(BaseHTTPRequestHandler):
         if handler:
             return handler()
         self.respond("Not found", status=404, content_type="text/plain")
+
+    def settings(self):
+        cards = [
+            ("/company", "Entreprise", "Coordonnees, contrat, TVA, retenue et devise."),
+            ("/templates", "Templates", "Modeles et mise en page des documents."),
+            ("/users", "Utilisateurs", "Comptes, roles, activation et mots de passe."),
+            ("/backup", "Backup", "Sauvegarde, telechargement et restauration."),
+            ("/license", "Licence", "Mode demo, activation et limites commerciales."),
+            ("/about", "A propos / Support", "Version, guide utilisateur et diagnostic."),
+            ("/status", "Status", "Etat technique rapide de l'application."),
+        ]
+        content = '<section class="settings-grid">' + "".join(
+            f"""
+            <a class="settings-card" href="{url}">
+              <strong>{h(title)}</strong>
+              <span>{h(description)}</span>
+            </a>
+            """
+            for url, title, description in cards
+        ) + "</section>"
+        self.respond(layout("Parametres", content, subtitle="Administration et configuration du produit"))
 
     def do_POST(self):
         path = self.path.split("?")[0]

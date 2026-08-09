@@ -125,6 +125,13 @@ def hmac_compare(left, right) -> bool:
     return hmac_lib.compare_digest(str(left or ""), str(right or ""))
 
 
+def row_value(row, key, default=""):
+    try:
+        return row[key]
+    except (KeyError, IndexError):
+        return default
+
+
 def money(value) -> str:
     formatted = f"{float(value or 0):,.2f}"
     return formatted.replace(",", "\u00a0").replace(".", ",").replace("\u00a0", " ")
@@ -890,27 +897,28 @@ class App(BaseHTTPRequestHandler):
         message = query.get("message", [""])[0]
         rows = []
         for user in list_users():
+            is_active = bool(row_value(user, "is_active", 1))
             rows.append([
-                h(user["username"]),
+                h(row_value(user, "username")),
                 f"""
                 <form method="post" action="/users/role" class="inline-form">
-                  <input type="hidden" name="id" value="{user['id']}">
-                  {select_field('role', 'Role', [('admin', 'admin'), ('editor', 'editor'), ('viewer', 'viewer')], user['role'])}
+                  <input type="hidden" name="id" value="{row_value(user, 'id')}">
+                  {select_field('role', 'Role', [('admin', 'admin'), ('editor', 'editor'), ('viewer', 'viewer')], row_value(user, 'role', 'viewer'))}
                   <button type="submit">Role</button>
                 </form>
                 """,
-                h(user["last_login_at"] or "Jamais"),
-                h(user["locked_until"] or ""),
+                h(row_value(user, "last_login_at") or "Jamais"),
+                h(row_value(user, "locked_until") or ""),
                 f"""
                 <form method="post" action="/users/active" class="inline-form">
-                  <input type="hidden" name="id" value="{user['id']}">
-                  <input type="hidden" name="active" value="{'0' if user['is_active'] else '1'}">
-                  <button type="submit">{'Desactiver' if user['is_active'] else 'Activer'}</button>
+                  <input type="hidden" name="id" value="{row_value(user, 'id')}">
+                  <input type="hidden" name="active" value="{'0' if is_active else '1'}">
+                  <button type="submit">{'Desactiver' if is_active else 'Activer'}</button>
                 </form>
                 """,
                 f"""
                 <form method="post" action="/users/password" class="inline-form">
-                  <input type="hidden" name="id" value="{user['id']}">
+                  <input type="hidden" name="id" value="{row_value(user, 'id')}">
                   <input name="password" type="password" placeholder="Nouveau mot de passe" required>
                   <button type="submit">Modifier</button>
                 </form>

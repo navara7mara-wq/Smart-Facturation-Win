@@ -79,6 +79,10 @@ def test_first_run_csrf_backup_restore_e2e(tmp_path, monkeypatch):
         assert response.status == 200
         assert "Tableau" in response.read().decode("utf-8")
 
+        users_page = _request(opener, base_url + "/users")
+        assert users_page.status == 200
+        assert "Utilisateurs" in users_page.read().decode("utf-8")
+
         with db_module.db() as con:
             con.execute(
                 "UPDATE company_settings SET nom='SAPTA', rgc='RGC', nif='NIF', art='ART', adresse='Adresse', numero_compte='RIB' WHERE id=1"

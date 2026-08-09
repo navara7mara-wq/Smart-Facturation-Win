@@ -19,6 +19,22 @@ from services.billing import (
     parse_invoice_lines,
     totals_from_lines,
 )
+from services.auth import (
+    DEFAULT_ADMIN_PASSWORD,
+    DEFAULT_ADMIN_USERNAME,
+    SESSION_COOKIE,
+    authenticate,
+    create_session,
+    create_user,
+    delete_session,
+    ensure_default_admin,
+    get_session_user,
+    list_users,
+    update_user_password,
+    user_can_write,
+    user_is_admin,
+)
+from services.backups import create_backup, list_backups, restore_backup_content
 from services.bpu import import_bpu
 from services.invoice_exports import invoice_export_data, invoice_xlsx
 from services.pdf_files import archive_metadata, cleanup_old_exports, open_pdf_with_system_viewer
@@ -221,6 +237,8 @@ def layout(title, content, subtitle=""):
         ("/bpu", "BPU", "i-calculator"),
         ("/company", "Entreprise", "i-building"),
         ("/templates", "Templates", "i-template"),
+        ("/users", "Utilisateurs", "i-building"),
+        ("/backup", "Backup", "i-file"),
     ]
     links = "".join(
         f'<a href="{url}" data-path="{url}"><svg aria-hidden="true"><use href="#{icon}"/></svg><span>{label}</span></a>'
@@ -238,7 +256,7 @@ def layout(title, content, subtitle=""):
         f'<div class="sapta-title-copy"><h1>{h(display_title)}</h1>{subtitle_html}</div>'
         if subtitle else f'<h1>{h(display_title)}</h1>'
     )
-    user_name = current_actor()
+    user_name = os.environ.get("PHOENIX_CURRENT_USER", current_actor())
     user_initials = initials(user_name)
     return f"""<!doctype html>
 <html lang="fr">
@@ -272,7 +290,7 @@ def layout(title, content, subtitle=""):
     <nav class="sapta-nav" aria-label="Navigation principale">{links}</nav>
     <div class="sapta-user">
       <span class="sapta-avatar">{h(user_initials)}</span>
-      <span class="sapta-user-copy"><strong>{h(user_name)}</strong><small>Administrateur</small></span>
+      <span class="sapta-user-copy"><strong>{h(user_name)}</strong><small><a href="/logout">Deconnexion</a></small></span>
       <svg class="sapta-user-chevron"><use href="#i-chevron-down"/></svg>
     </div>
   </aside>
@@ -353,6 +371,45 @@ def parse_code_sites(raw):
 
 
 class App(BaseHTTPRequestHandler):
+    public_paths = {"/login", "/favicon.ico"}
+
+    def cookie_value(self, name):
+        cookie_header = self.headers.get("Cookie", "")
+        for part in cookie_header.split(";"):
+            if "=" not in part:
+                continue
+            key, value = part.strip().split("=", 1)
+            if key == name:
+                return value
+        return ""
+
+    def current_user(self):
+        return get_session_user(self.cookie_value(SESSION_COOKIE))
+
+    def require_login(self, path):
+        if path in self.public_paths or path.startswith("/static/"):
+            return None
+        user = self.current_user()
+        if user:
+            os.environ["PHOENIX_CURRENT_USER"] = user["username"]
+            return user
+        self.redirect("/login")
+        return None
+
+    def require_write_access(self):
+        user = self.current_user()
+        if user_can_write(user):
+            os.environ["PHOENIX_CURRENT_USER"] = user["username"]
+            return True
+        return False
+
+    def require_admin_access(self):
+        user = self.current_user()
+        if user_is_admin(user):
+            os.environ["PHOENIX_CURRENT_USER"] = user["username"]
+            return True
+        return False
+
     def do_HEAD(self):
         path = self.path.split("?")[0]
         pdf_request = self.parse_pdf_request(path)
@@ -363,16 +420,26 @@ class App(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path = self.path.split("?")[0]
+        ensure_default_admin()
         if path == "/favicon.ico":
             self.send_response(204)
             self.end_headers()
             return
+        if path == "/login":
+            return self.login()
+        if path == "/logout":
+            return self.logout()
+        if path.startswith("/static/"):
+            return self.static_file(path)
+        if not self.require_login(path):
+            return
+        if path.endswith("/delete") or path in {"/mobilis/delete", "/purchase-orders/delete", "/purchase-orders/document/delete", "/purchase-orders/site/delete", "/sites/delete", "/invoices/delete", "/archives/delete"}:
+            if not self.require_write_access():
+                return self.respond("Forbidden", status=403, content_type="text/plain")
         if path.startswith("/uploads/"):
             return self.uploaded_file(path)
         if path.startswith("/exports/"):
             return self.exported_file(path)
-        if path.startswith("/static/"):
-            return self.static_file(path)
         if path == "/table-facturation-new/export":
             return self.export_table_facturation_new()
         if path == "/invoices/export":
@@ -423,6 +490,8 @@ class App(BaseHTTPRequestHandler):
             "/purchase-orders": self.purchase_orders,
             "/invoices": self.invoices,
             "/templates": self.templates,
+            "/users": self.users,
+            "/backup": self.backup,
             "/static/style.css": self.style,
         }
         if path == "/contract":
@@ -438,7 +507,19 @@ class App(BaseHTTPRequestHandler):
 
     def do_POST(self):
         path = self.path.split("?")[0]
+        ensure_default_admin()
+        if path == "/login":
+            return self.login_post()
+        if path in {"/backup/create", "/backup/restore", "/users/create", "/users/password"}:
+            if not self.require_admin_access():
+                return self.respond("Forbidden", status=403, content_type="text/plain")
+        elif not self.require_write_access():
+            return self.respond("Forbidden", status=403, content_type="text/plain")
         routes = {
+            "/backup/create": self.create_backup_post,
+            "/backup/restore": self.restore_backup_post,
+            "/users/create": self.create_user_post,
+            "/users/password": self.change_user_password_post,
             "/table-facturation": self.save_table_facturation,
             "/table-facturation-new/update": self.update_table_facturation_new,
             "/company": self.save_company,
@@ -628,6 +709,134 @@ class App(BaseHTTPRequestHandler):
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
+
+    def login(self):
+        query = parse_qs(self.path.split("?", 1)[1]) if "?" in self.path else {}
+        message = query.get("message", [""])[0]
+        alert = f'<section class="alert">{h(message)}</section>' if message else ""
+        body = f"""<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Connexion - PhoEniX BPU</title><link rel="stylesheet" href="/static/style.css"></head>
+<body><main class="content" style="max-width:420px;margin:80px auto">
+<h1>Connexion</h1>{alert}
+<form method="post" action="/login">
+  {field('username', 'Utilisateur', DEFAULT_ADMIN_USERNAME, required=True)}
+  {field('password', 'Mot de passe', '', field_type='password', required=True)}
+  <button type="submit">Se connecter</button>
+</form>
+<p><small>Compte initial: {h(DEFAULT_ADMIN_USERNAME)} / {h(DEFAULT_ADMIN_PASSWORD)}. Changez-le avant toute livraison client.</small></p>
+</main></body></html>"""
+        self.respond(body)
+
+    def login_post(self):
+        values = self.form()
+        user = authenticate(values.get("username", ""), values.get("password", ""))
+        if not user:
+            return self.redirect("/login?message=Identifiants invalides")
+        token = create_session(user["id"])
+        self.send_response(303)
+        self.send_header("Location", "/")
+        self.send_header("Set-Cookie", f"{SESSION_COOKIE}={token}; HttpOnly; SameSite=Lax; Path=/")
+        self.end_headers()
+
+    def logout(self):
+        delete_session(self.cookie_value(SESSION_COOKIE))
+        self.send_response(303)
+        self.send_header("Location", "/login")
+        self.send_header("Set-Cookie", f"{SESSION_COOKIE}=; Max-Age=0; HttpOnly; SameSite=Lax; Path=/")
+        self.end_headers()
+
+    def users(self):
+        if not self.require_admin_access():
+            return self.respond("Forbidden", status=403, content_type="text/plain")
+        query = parse_qs(self.path.split("?", 1)[1]) if "?" in self.path else {}
+        message = query.get("message", [""])[0]
+        rows = []
+        for user in list_users():
+            rows.append([
+                h(user["username"]),
+                h(user["role"]),
+                "Actif" if user["is_active"] else "Inactif",
+                f"""
+                <form method="post" action="/users/password" class="inline-form">
+                  <input type="hidden" name="id" value="{user['id']}">
+                  <input name="password" type="password" placeholder="Nouveau mot de passe" required>
+                  <button type="submit">Modifier</button>
+                </form>
+                """,
+            ])
+        alert = f'<section class="alert">{h(message)}</section>' if message else ""
+        content = f"""
+        {alert}
+        <section class="panel">
+          <h2>Ajouter un utilisateur</h2>
+          <form method="post" action="/users/create">
+            {field('username', 'Utilisateur', required=True)}
+            {field('password', 'Mot de passe', field_type='password', required=True)}
+            {select_field('role', 'Role', [('admin', 'admin'), ('editor', 'editor'), ('viewer', 'viewer')], 'viewer')}
+            <button type="submit">Ajouter</button>
+          </form>
+        </section>
+        <section class="panel"><h2>Utilisateurs</h2>{table(['Utilisateur', 'Role', 'Etat', 'Mot de passe'], rows)}</section>
+        """
+        self.respond(layout("Utilisateurs", content))
+
+    def create_user_post(self):
+        values = self.form()
+        try:
+            create_user(values.get("username", ""), values.get("password", ""), values.get("role", "viewer"))
+            self.redirect("/users?message=Utilisateur cree")
+        except Exception as exc:
+            self.redirect(f"/users?message={quote('Erreur utilisateur: ' + str(exc))}")
+
+    def change_user_password_post(self):
+        values = self.form()
+        try:
+            update_user_password(int(values.get("id", "0")), values.get("password", ""))
+            self.redirect("/users?message=Mot de passe modifie")
+        except Exception as exc:
+            self.redirect(f"/users?message={quote('Erreur mot de passe: ' + str(exc))}")
+
+    def backup(self):
+        if not self.require_admin_access():
+            return self.respond("Forbidden", status=403, content_type="text/plain")
+        rows = []
+        for path in list_backups():
+            stat = path.stat()
+            rows.append([
+                h(path.name),
+                h(datetime.fromtimestamp(stat.st_mtime).strftime("%Y-%m-%d %H:%M:%S")),
+                f"{stat.st_size / 1024:.1f} Ko",
+            ])
+        content = f"""
+        <section class="panel">
+          <h2>Sauvegarde</h2>
+          <form method="post" action="/backup/create"><button type="submit">Creer une sauvegarde</button></form>
+        </section>
+        <section class="panel">
+          <h2>Restaurer</h2>
+          <form method="post" action="/backup/restore" enctype="multipart/form-data">
+            {file_field('backup_file', 'Fichier SQLite', '.sqlite3,.db')}
+            <button type="submit">Restaurer</button>
+          </form>
+        </section>
+        <section class="panel"><h2>Historique</h2>{table(['Fichier', 'Date', 'Taille'], rows)}</section>
+        """
+        self.respond(layout("Backup", content))
+
+    def create_backup_post(self):
+        path = create_backup()
+        self.redirect(f"/backup?message={quote('Sauvegarde creee: ' + path.name)}")
+
+    def restore_backup_post(self):
+        _, files = self.multipart_form()
+        if "backup_file" not in files:
+            return self.redirect("/backup?message=Fichier manquant")
+        try:
+            restore_backup_content(files["backup_file"]["content"])
+            self.redirect("/backup?message=Base restauree")
+        except Exception as exc:
+            self.redirect(f"/backup?message={quote('Erreur restauration: ' + str(exc))}")
 
     def bpu_item(self):
         query = parse_qs(self.path.split("?", 1)[1]) if "?" in self.path else {}

@@ -64,6 +64,15 @@ Puis ouvrir:
 http://127.0.0.1:8000
 ```
 
+Compte initial:
+
+```text
+Utilisateur: admin
+Mot de passe: admin123
+```
+
+Changez ce mot de passe avant toute livraison client.
+
 Pour utiliser un autre port:
 
 ```powershell
@@ -120,6 +129,8 @@ de remplacer une image dans `tests/visual/baselines`.
 - Un site ne peut entrer que dans une seule facture `NDC`.
 - Une facture `NDC` accepte uniquement l'article `6`.
 - Les informations BPU sont sauvegardees dans `invoice_lines` en snapshot.
+- L'application exige une connexion avec roles `admin`, `editor` ou `viewer`.
+- La sauvegarde/restauration est reservee au role `admin`.
 
 ## Nouvelle interface Table Facturation
 

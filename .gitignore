@@ -1,6 +1,7 @@
 data/*
 !data/.gitkeep
 uploads/
+backups/
 exports/
 output/
 dist/
@@ -9,6 +10,7 @@ server_stdout.log
 server_stderr.log
 server_*.log
 debug_*.log
+auth_*.log
 __pycache__/
 *.pyc
 *.pyo

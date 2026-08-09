@@ -33,7 +33,7 @@ DEFAULT_TEMPLATE_SETTINGS = {
 
 
 def current_actor():
-    return os.environ.get("USERNAME") or os.environ.get("USER") or "User"
+    return os.environ.get("PHOENIX_CURRENT_USER") or os.environ.get("USERNAME") or os.environ.get("USER") or "User"
 
 
 def db() -> sqlite3.Connection:
@@ -48,6 +48,28 @@ def db() -> sqlite3.Connection:
 
 
 def ensure_schema(connection: sqlite3.Connection) -> None:
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL UNIQUE,
+            password_hash TEXT NOT NULL,
+            role TEXT NOT NULL CHECK (role IN ('admin', 'editor', 'viewer')),
+            is_active INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0, 1)),
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS user_sessions (
+            token TEXT PRIMARY KEY,
+            user_id INTEGER NOT NULL,
+            expires_at TEXT NOT NULL,
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id)
+                ON UPDATE CASCADE
+                ON DELETE CASCADE
+        )
+    """)
     connection.execute("""
         CREATE TABLE IF NOT EXISTS template_settings (
             key TEXT PRIMARY KEY,

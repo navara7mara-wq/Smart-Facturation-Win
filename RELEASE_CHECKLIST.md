@@ -6,6 +6,9 @@
 - `python -m py_compile app.py db.py services/*.py scripts/*.py` passe sans erreur.
 - `powershell -ExecutionPolicy Bypass -File scripts/run_visual_tests.ps1 -Strict` passe avant livraison UI.
 - L'application demarre via `run.cmd`.
+- Le compte initial `admin/admin123` est remplace avant livraison.
+- Un test de connexion/deconnexion est effectue.
+- Une sauvegarde et une restauration de test sont effectuees.
 - Les exports PDF et Excel sont testes sur au moins une facture normale et une facture NDC.
 
 ## Installation client

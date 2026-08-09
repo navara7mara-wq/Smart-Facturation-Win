@@ -3,6 +3,7 @@ data/*
 uploads/
 exports/
 output/
+dist/
 server_stdout.log
 server_stderr.log
 __pycache__/

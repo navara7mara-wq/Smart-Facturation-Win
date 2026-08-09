@@ -18,6 +18,12 @@ Cette base contient le schema SQLite approuve pour:
 
 ## Initialiser la base
 
+Installation Windows recommandee:
+
+```powershell
+.\setup.cmd
+```
+
 Installer d'abord les dependances Python:
 
 ```powershell
@@ -42,6 +48,12 @@ data/pos_ai.sqlite3
 
 ## Lancer l'application locale
 
+Lancement Windows recommande:
+
+```powershell
+.\run.cmd
+```
+
 ```powershell
 python app.py
 ```
@@ -50,6 +62,12 @@ Puis ouvrir:
 
 ```text
 http://127.0.0.1:8000
+```
+
+Pour utiliser un autre port:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run_app.ps1 -Port 8001
 ```
 
 ## Controle de conformite visuelle

@@ -3590,8 +3590,8 @@ class App(BaseHTTPRequestHandler):
 
 
 def main():
-    host = "127.0.0.1"
-    port = 8000
+    host = os.environ.get("PHOENIX_HOST", "127.0.0.1")
+    port = int(os.environ.get("PHOENIX_PORT", "8000"))
     server = ThreadingHTTPServer((host, port), App)
     print(f"POS AI running on http://{host}:{port}")
     server.serve_forever()

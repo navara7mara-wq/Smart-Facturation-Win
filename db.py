@@ -70,6 +70,30 @@ def ensure_schema(connection: sqlite3.Connection) -> None:
                 ON DELETE CASCADE
         )
     """)
+    user_columns = {row[1] for row in connection.execute("PRAGMA table_info(users)")}
+    user_additions = {
+        "must_change_password": "ALTER TABLE users ADD COLUMN must_change_password INTEGER NOT NULL DEFAULT 0 CHECK (must_change_password IN (0, 1))",
+        "failed_attempts": "ALTER TABLE users ADD COLUMN failed_attempts INTEGER NOT NULL DEFAULT 0",
+        "locked_until": "ALTER TABLE users ADD COLUMN locked_until TEXT",
+        "last_login_at": "ALTER TABLE users ADD COLUMN last_login_at TEXT",
+    }
+    for column, statement in user_additions.items():
+        if column not in user_columns:
+            connection.execute(statement)
+    audit_columns = {row[1] for row in connection.execute("PRAGMA table_info(user_sessions)")}
+    if "last_seen_at" not in audit_columns:
+        connection.execute("ALTER TABLE user_sessions ADD COLUMN last_seen_at TEXT")
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS audit_log (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            actor TEXT NOT NULL DEFAULT '',
+            action TEXT NOT NULL,
+            entity_type TEXT NOT NULL DEFAULT '',
+            entity_id TEXT NOT NULL DEFAULT '',
+            details TEXT NOT NULL DEFAULT '',
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
     connection.execute("""
         CREATE TABLE IF NOT EXISTS template_settings (
             key TEXT PRIMARY KEY,
@@ -144,3 +168,11 @@ def add_audit_columns(connection):
         for column, definition in audit_columns.items():
             if column not in existing:
                 connection.execute(f"ALTER TABLE {table} ADD COLUMN {column} {definition}")
+
+
+def audit(action, entity_type="", entity_id="", details=""):
+    with db() as con:
+        con.execute(
+            "INSERT INTO audit_log(actor, action, entity_type, entity_id, details) VALUES(?, ?, ?, ?, ?)",
+            (current_actor(), action, entity_type, str(entity_id or ""), str(details or "")),
+        )

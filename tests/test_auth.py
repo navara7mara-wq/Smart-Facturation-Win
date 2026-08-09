@@ -33,20 +33,24 @@ def test_create_user_and_update_password(monkeypatch):
             password_hash TEXT NOT NULL,
             role TEXT NOT NULL,
             is_active INTEGER NOT NULL DEFAULT 1,
+            must_change_password INTEGER NOT NULL DEFAULT 0,
+            failed_attempts INTEGER NOT NULL DEFAULT 0,
+            locked_until TEXT,
+            last_login_at TEXT,
             created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
         )
     """)
     monkeypatch.setattr(auth, "db", lambda: _ConnectionContext(connection))
 
-    auth.create_user("editor", "secret", "editor")
+    auth.create_user("editor", "Secret123", "editor")
     user = connection.execute("SELECT * FROM users WHERE username='editor'").fetchone()
     assert user["role"] == "editor"
-    assert auth.verify_password("secret", user["password_hash"])
+    assert auth.verify_password("Secret123", user["password_hash"])
 
-    auth.update_user_password(user["id"], "new-secret")
+    auth.update_user_password(user["id"], "Newsecret123")
     updated = connection.execute("SELECT * FROM users WHERE id=?", (user["id"],)).fetchone()
-    assert auth.verify_password("new-secret", updated["password_hash"])
+    assert auth.verify_password("Newsecret123", updated["password_hash"])
 
 
 class _ConnectionContext:

@@ -131,6 +131,9 @@ de remplacer une image dans `tests/visual/baselines`.
 - Les informations BPU sont sauvegardees dans `invoice_lines` en snapshot.
 - L'application exige une connexion avec roles `admin`, `editor` ou `viewer`.
 - La sauvegarde/restauration est reservee au role `admin`.
+- Les mots de passe faibles sont refuses et le compte est verrouille apres echecs repetes.
+- Les factures deposees ne peuvent pas etre supprimees.
+- La page `/status` affiche l'etat technique de base.
 
 ## Nouvelle interface Table Facturation
 

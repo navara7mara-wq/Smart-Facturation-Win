@@ -12,7 +12,7 @@ import os
 import threading
 from datetime import datetime, timedelta
 
-from db import DEFAULT_TEMPLATE_SETTINGS, current_actor, db, ensure_template_defaults
+from db import DEFAULT_TEMPLATE_SETTINGS, audit, current_actor, db, ensure_template_defaults
 from services.billing import (
     amount_to_french,
     amount_words_placeholder,
@@ -30,6 +30,8 @@ from services.auth import (
     ensure_default_admin,
     get_session_user,
     list_users,
+    set_user_active,
+    set_user_role,
     update_user_password,
     user_can_write,
     user_is_admin,
@@ -392,6 +394,9 @@ class App(BaseHTTPRequestHandler):
         user = self.current_user()
         if user:
             os.environ["PHOENIX_CURRENT_USER"] = user["username"]
+            if user["must_change_password"] and path not in {"/users", "/logout"}:
+                self.redirect("/users?message=Changez le mot de passe initial")
+                return None
             return user
         self.redirect("/login")
         return None
@@ -409,6 +414,14 @@ class App(BaseHTTPRequestHandler):
             os.environ["PHOENIX_CURRENT_USER"] = user["username"]
             return True
         return False
+
+    def valid_same_origin_post(self):
+        expected = f"http://{self.headers.get('Host', '')}"
+        for header in ("Origin", "Referer"):
+            value = self.headers.get(header)
+            if value and not value.startswith(expected):
+                return False
+        return True
 
     def do_HEAD(self):
         path = self.path.split("?")[0]
@@ -429,6 +442,8 @@ class App(BaseHTTPRequestHandler):
             return self.login()
         if path == "/logout":
             return self.logout()
+        if path == "/status":
+            return self.status()
         if path.startswith("/static/"):
             return self.static_file(path)
         if not self.require_login(path):
@@ -440,6 +455,8 @@ class App(BaseHTTPRequestHandler):
             return self.uploaded_file(path)
         if path.startswith("/exports/"):
             return self.exported_file(path)
+        if path.startswith("/backups/"):
+            return self.backup_file(path)
         if path == "/table-facturation-new/export":
             return self.export_table_facturation_new()
         if path == "/invoices/export":
@@ -508,9 +525,11 @@ class App(BaseHTTPRequestHandler):
     def do_POST(self):
         path = self.path.split("?")[0]
         ensure_default_admin()
+        if not self.valid_same_origin_post():
+            return self.respond("CSRF rejected", status=403, content_type="text/plain")
         if path == "/login":
             return self.login_post()
-        if path in {"/backup/create", "/backup/restore", "/users/create", "/users/password"}:
+        if path in {"/backup/create", "/backup/restore", "/users/create", "/users/password", "/users/role", "/users/active"}:
             if not self.require_admin_access():
                 return self.respond("Forbidden", status=403, content_type="text/plain")
         elif not self.require_write_access():
@@ -520,6 +539,8 @@ class App(BaseHTTPRequestHandler):
             "/backup/restore": self.restore_backup_post,
             "/users/create": self.create_user_post,
             "/users/password": self.change_user_password_post,
+            "/users/role": self.change_user_role_post,
+            "/users/active": self.change_user_active_post,
             "/table-facturation": self.save_table_facturation,
             "/table-facturation-new/update": self.update_table_facturation_new,
             "/company": self.save_company,
@@ -588,10 +609,15 @@ class App(BaseHTTPRequestHandler):
         row_id = query.get("id", [""])[0]
         if row_id:
             with db() as con:
+                if table == "invoices":
+                    row = con.execute("SELECT depos FROM invoices WHERE id=? AND deleted_at IS NULL", (row_id,)).fetchone()
+                    if row and row["depos"]:
+                        return self.redirect(f"{redirect_to}?message=Facture deposee: suppression interdite")
                 con.execute(
                     f"UPDATE {table} SET deleted_at=CURRENT_TIMESTAMP, deleted_by=?, updated_by=? WHERE id=?",
                     (current_actor(), current_actor(), row_id),
                 )
+            audit("soft_delete", table, row_id)
         self.redirect(f"{redirect_to}?message=Element supprime")
 
     def respond(self, body, status=200, content_type="text/html; charset=utf-8"):
@@ -734,13 +760,17 @@ class App(BaseHTTPRequestHandler):
         if not user:
             return self.redirect("/login?message=Identifiants invalides")
         token = create_session(user["id"])
+        audit("login", "user", user["id"], user["username"])
         self.send_response(303)
         self.send_header("Location", "/")
         self.send_header("Set-Cookie", f"{SESSION_COOKIE}={token}; HttpOnly; SameSite=Lax; Path=/")
         self.end_headers()
 
     def logout(self):
+        user = self.current_user()
         delete_session(self.cookie_value(SESSION_COOKIE))
+        if user:
+            audit("logout", "user", user["id"], user["username"])
         self.send_response(303)
         self.send_header("Location", "/login")
         self.send_header("Set-Cookie", f"{SESSION_COOKIE}=; Max-Age=0; HttpOnly; SameSite=Lax; Path=/")
@@ -755,8 +785,22 @@ class App(BaseHTTPRequestHandler):
         for user in list_users():
             rows.append([
                 h(user["username"]),
-                h(user["role"]),
-                "Actif" if user["is_active"] else "Inactif",
+                f"""
+                <form method="post" action="/users/role" class="inline-form">
+                  <input type="hidden" name="id" value="{user['id']}">
+                  {select_field('role', 'Role', [('admin', 'admin'), ('editor', 'editor'), ('viewer', 'viewer')], user['role'])}
+                  <button type="submit">Role</button>
+                </form>
+                """,
+                h(user["last_login_at"] or "Jamais"),
+                h(user["locked_until"] or ""),
+                f"""
+                <form method="post" action="/users/active" class="inline-form">
+                  <input type="hidden" name="id" value="{user['id']}">
+                  <input type="hidden" name="active" value="{'0' if user['is_active'] else '1'}">
+                  <button type="submit">{'Desactiver' if user['is_active'] else 'Activer'}</button>
+                </form>
+                """,
                 f"""
                 <form method="post" action="/users/password" class="inline-form">
                   <input type="hidden" name="id" value="{user['id']}">
@@ -777,7 +821,7 @@ class App(BaseHTTPRequestHandler):
             <button type="submit">Ajouter</button>
           </form>
         </section>
-        <section class="panel"><h2>Utilisateurs</h2>{table(['Utilisateur', 'Role', 'Etat', 'Mot de passe'], rows)}</section>
+        <section class="panel"><h2>Utilisateurs</h2>{table(['Utilisateur', 'Role', 'Dernier login', 'Verrouillage', 'Etat', 'Mot de passe'], rows)}</section>
         """
         self.respond(layout("Utilisateurs", content))
 
@@ -797,6 +841,22 @@ class App(BaseHTTPRequestHandler):
         except Exception as exc:
             self.redirect(f"/users?message={quote('Erreur mot de passe: ' + str(exc))}")
 
+    def change_user_role_post(self):
+        values = self.form()
+        try:
+            set_user_role(int(values.get("id", "0")), values.get("role", "viewer"))
+            self.redirect("/users?message=Role modifie")
+        except Exception as exc:
+            self.redirect(f"/users?message={quote('Erreur role: ' + str(exc))}")
+
+    def change_user_active_post(self):
+        values = self.form()
+        try:
+            set_user_active(int(values.get("id", "0")), values.get("active") == "1")
+            self.redirect("/users?message=Etat modifie")
+        except Exception as exc:
+            self.redirect(f"/users?message={quote('Erreur etat: ' + str(exc))}")
+
     def backup(self):
         if not self.require_admin_access():
             return self.respond("Forbidden", status=403, content_type="text/plain")
@@ -804,7 +864,7 @@ class App(BaseHTTPRequestHandler):
         for path in list_backups():
             stat = path.stat()
             rows.append([
-                h(path.name),
+                f'<a href="/backups/{quote(path.name)}">{h(path.name)}</a>',
                 h(datetime.fromtimestamp(stat.st_mtime).strftime("%Y-%m-%d %H:%M:%S")),
                 f"{stat.st_size / 1024:.1f} Ko",
             ])
@@ -824,8 +884,39 @@ class App(BaseHTTPRequestHandler):
         """
         self.respond(layout("Backup", content))
 
+    def backup_file(self, path):
+        if not self.require_admin_access():
+            return self.respond("Forbidden", status=403, content_type="text/plain")
+        filename = Path(path.removeprefix("/backups/")).name
+        target = next((item for item in list_backups() if item.name == filename), None)
+        if not target or not target.exists():
+            return self.respond("Not found", status=404, content_type="text/plain")
+        content = target.read_bytes()
+        self.send_response(200)
+        self.send_header("Content-Type", "application/octet-stream")
+        self.send_header("Content-Disposition", f'attachment; filename="{target.name}"')
+        self.send_header("Content-Length", str(len(content)))
+        self.end_headers()
+        self.wfile.write(content)
+
+    def status(self):
+        checks = []
+        try:
+            with db() as con:
+                invoice_count = con.execute("SELECT COUNT(*) FROM invoices WHERE deleted_at IS NULL").fetchone()[0]
+            checks.append(["Database", "OK"])
+            checks.append(["Invoices", str(invoice_count)])
+        except Exception as exc:
+            checks.append(["Database", "ERROR: " + str(exc)])
+        backups = list_backups()
+        checks.append(["Last backup", backups[0].name if backups else "Aucune"])
+        checks.append(["Version", "1.2.0"])
+        checks.append(["Host", f"{os.environ.get('PHOENIX_HOST', '127.0.0.1')}:{os.environ.get('PHOENIX_PORT', '8000')}"])
+        self.respond(layout("Status", table(["Check", "Etat"], checks)))
+
     def create_backup_post(self):
         path = create_backup()
+        audit("backup_create", "backup", path.name)
         self.redirect(f"/backup?message={quote('Sauvegarde creee: ' + path.name)}")
 
     def restore_backup_post(self):
@@ -834,6 +925,7 @@ class App(BaseHTTPRequestHandler):
             return self.redirect("/backup?message=Fichier manquant")
         try:
             restore_backup_content(files["backup_file"]["content"])
+            audit("backup_restore", "backup", files["backup_file"]["filename"])
             self.redirect("/backup?message=Base restauree")
         except Exception as exc:
             self.redirect(f"/backup?message={quote('Erreur restauration: ' + str(exc))}")

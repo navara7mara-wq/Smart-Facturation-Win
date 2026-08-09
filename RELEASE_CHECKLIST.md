@@ -9,6 +9,7 @@
 - Le compte initial `admin/admin123` est remplace avant livraison.
 - Un test de connexion/deconnexion est effectue.
 - Une sauvegarde et une restauration de test sont effectuees.
+- La page `/status` retourne Database OK.
 - Les exports PDF et Excel sont testes sur au moins une facture normale et une facture NDC.
 
 ## Installation client
@@ -22,6 +23,14 @@
 ## Points non negociables avant commercialisation large
 
 - Ajouter authentification et roles si plusieurs utilisateurs accedent a l'application.
-- Ajouter sauvegarde/restauration guidee de `data/pos_ai.sqlite3`.
+- Garder la protection CSRF par origine active sur les postes clients.
+- Garder la sauvegarde/restauration guidee de `data/pos_ai.sqlite3`.
 - Valider la conformite legale des factures dans le pays cible.
 - Signer et versionner les livraisons client.
+
+## Hors perimetre de cette version locale
+
+- Installer MSI/EXE signe.
+- Migration Flask/FastAPI complete.
+- Multi-company complet.
+- Templates HTML exhaustifs pour toutes les vues.

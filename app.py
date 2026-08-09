@@ -45,6 +45,7 @@ from services.auth import (
 from services.backups import create_backup, list_backups, restore_backup_content
 from services.bpu import import_bpu
 from services.invoice_exports import invoice_export_data, invoice_xlsx
+from services.licensing import install_license, license_status, require_feature
 from services.pdf_files import archive_metadata, cleanup_old_exports, open_pdf_with_system_viewer
 from services.uploads import save_upload as save_upload_file
 from services.xlsx import make_xlsx, styled
@@ -54,7 +55,7 @@ ROOT_DIR = Path(__file__).resolve().parent
 UPLOAD_DIR = ROOT_DIR / "uploads"
 EXPORT_DIR = ROOT_DIR / "exports"
 PUBLIC_CSRF_COOKIE = "phoenix_public_csrf"
-APP_VERSION = "1.4.1"
+APP_VERSION = "1.5.0"
 DOWNLOAD_DIR = Path.home() / "Downloads"
 BUNDLED_PYTHON = Path(r"C:\Users\Administrateur\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe")
 BUNDLED_NODE = Path(r"C:\Users\Administrateur\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe")
@@ -260,6 +261,7 @@ def layout(title, content, subtitle=""):
         ("/templates", "Templates", "i-template"),
         ("/users", "Utilisateurs", "i-building"),
         ("/backup", "Backup", "i-file"),
+        ("/license", "Licence", "i-file"),
         ("/about", "A propos", "i-file"),
     ]
     links = "".join(
@@ -280,6 +282,8 @@ def layout(title, content, subtitle=""):
     )
     user_name = os.environ.get("PHOENIX_CURRENT_USER", current_actor())
     user_initials = initials(user_name)
+    license_info = license_status()
+    license_badge = f"{license_info['edition'].upper()}" + (f" - {license_info.get('days_left', 0)} jours" if license_info.get("is_demo") else "")
     return f"""<!doctype html>
 <html lang="fr">
 <head>
@@ -316,6 +320,7 @@ def layout(title, content, subtitle=""):
       <svg class="sapta-user-chevron"><use href="#i-chevron-down"/></svg>
     </div>
     <div class="sapta-version">Version {h(APP_VERSION)}</div>
+    <div class="sapta-version">{h(license_badge)}</div>
   </aside>
 
   <main class="sapta-main legacy-main">
@@ -581,6 +586,7 @@ class App(BaseHTTPRequestHandler):
             "/templates": self.templates,
             "/users": self.users,
             "/backup": self.backup,
+            "/license": self.license_page,
             "/about": self.about,
             "/static/style.css": self.style,
         }
@@ -604,7 +610,7 @@ class App(BaseHTTPRequestHandler):
             return self.setup_post()
         if path == "/login":
             return self.login_post()
-        if path in {"/backup/create", "/backup/restore", "/users/create", "/users/password", "/users/role", "/users/active", "/users/delete", "/users/cleanup-tests"}:
+        if path in {"/backup/create", "/backup/restore", "/users/create", "/users/password", "/users/role", "/users/active", "/users/delete", "/users/cleanup-tests", "/license/install"}:
             if not self.require_admin_access():
                 return self.respond("Forbidden", status=403, content_type="text/plain")
         elif not self.require_write_access():
@@ -612,6 +618,7 @@ class App(BaseHTTPRequestHandler):
         routes = {
             "/backup/create": self.create_backup_post,
             "/backup/restore": self.restore_backup_post,
+            "/license/install": self.install_license_post,
             "/users/create": self.create_user_post,
             "/users/password": self.change_user_password_post,
             "/users/role": self.change_user_role_post,
@@ -983,6 +990,7 @@ class App(BaseHTTPRequestHandler):
     def create_user_post(self):
         values = self.form()
         try:
+            require_feature("create_user")
             create_user(values.get("username", ""), values.get("password", ""), values.get("role", "viewer"))
             self.redirect("/users?message=Utilisateur cree")
         except Exception as exc:
@@ -1112,6 +1120,47 @@ class App(BaseHTTPRequestHandler):
         </section>
         """
         self.respond(layout("A propos", content))
+
+    def license_page(self):
+        if not self.require_admin_access():
+            return self.respond("Forbidden", status=403, content_type="text/plain")
+        query = parse_qs(self.path.split("?", 1)[1]) if "?" in self.path else {}
+        message = query.get("message", [""])[0]
+        status = license_status()
+        rows = [
+            ["Edition", h(status["edition"])],
+            ["Client", h(status["customer"])],
+            ["Expiration", h(status["expires_at"])],
+            ["Utilisateurs", f"{status['user_count']} / {status['max_users']}"],
+            ["Factures", f"{status['invoice_count']} / {status['max_invoices']}"],
+            ["Etat", "Valide" if status["is_valid"] else "Expiree"],
+        ]
+        if status.get("is_demo"):
+            rows.append(["Demo", f"{status.get('days_left', 0)} jours restants"])
+        alert = f'<section class="alert">{h(message)}</section>' if message else ""
+        content = f"""
+        {alert}
+        <section class="panel"><h2>Licence</h2>{table(['Champ', 'Valeur'], rows)}</section>
+        <section class="panel">
+          <h2>Activer</h2>
+          <form method="post" action="/license/install" enctype="multipart/form-data">
+            {file_field('license_file', 'Fichier licence', '.json,.license')}
+            <button type="submit">Activer</button>
+          </form>
+        </section>
+        """
+        self.respond(layout("Licence", content))
+
+    def install_license_post(self):
+        _, files = self.multipart_form()
+        if "license_file" not in files:
+            return self.redirect("/license?message=Fichier manquant")
+        try:
+            payload = install_license(files["license_file"]["content"])
+            audit("license_install", "license", payload.get("customer", ""))
+            self.redirect("/license?message=Licence activee")
+        except Exception as exc:
+            self.redirect(f"/license?message={quote('Erreur licence: ' + str(exc))}")
 
     def create_backup_post(self):
         path = create_backup()
@@ -3975,10 +4024,10 @@ class App(BaseHTTPRequestHandler):
 
     def save_invoice(self):
         try:
-            length = int(self.headers.get("Content-Length", "0"))
-            data = self.rfile.read(length).decode("utf-8")
-            parsed = parse_qs(data)
-            values = {key: vals[0].strip() for key, vals in parsed.items()}
+            values = self.form()
+            parsed = parse_qs(self._cached_body.decode("utf-8")) if hasattr(self, "_cached_body") else {key: [value] for key, value in values.items()}
+            if not values.get("id"):
+                require_feature("create_invoice")
             if not values.get("invoice_number"):
                 raise ValueError("Le numero de facture est obligatoire.")
             invoice_type = values.get("invoice_type")

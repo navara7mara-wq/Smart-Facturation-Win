@@ -42,6 +42,7 @@ Source: "..\setup.cmd"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\run.cmd"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\controle-visuel.cmd"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\visual.config.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\config\license_public_key.pem"; DestDir: "{app}\config"; Flags: ignoreversion
 Source: "..\docs\*"; DestDir: "{app}\docs"; Flags: ignoreversion recursesubdirs
 Source: "..\database\*"; DestDir: "{app}\database"; Flags: ignoreversion recursesubdirs; Excludes: "__pycache__\*,*.pyc,*.pyo,*.log"
 Source: "..\scripts\*"; DestDir: "{app}\scripts"; Flags: ignoreversion recursesubdirs; Excludes: "__pycache__\*,*.pyc,*.pyo,*.log"

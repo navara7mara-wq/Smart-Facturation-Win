@@ -19,6 +19,8 @@ __pycache__/
 *.tmp
 *.zip
 .env
+config/license_private_key.pem
+data/license.json
 .venv/
 venv/
 env/

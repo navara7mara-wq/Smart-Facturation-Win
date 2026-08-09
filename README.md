@@ -93,6 +93,15 @@ powershell -ExecutionPolicy Bypass -File scripts/build_installer.ps1 -Version 1.
 
 Le build release tente aussi de produire l'installateur si `ISCC.exe` est disponible.
 
+## Licence
+
+Sans activation, l'application fonctionne en mode DEMO. Une licence standard se charge depuis
+la page `/license` avec un fichier signe genere par:
+
+```powershell
+python scripts/issue_license.py --customer "Client" --edition standard --expires-at 2027-12-31 --max-users 5 --max-invoices 10000 --output client.license.json
+```
+
 ## Controle de conformite visuelle
 
 ## Tests automatiques

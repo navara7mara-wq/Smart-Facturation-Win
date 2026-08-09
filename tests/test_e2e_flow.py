@@ -95,7 +95,11 @@ def test_first_run_csrf_backup_restore_e2e(tmp_path, monkeypatch):
 
         about_page = _request(opener, base_url + "/about")
         assert about_page.status == 200
-        assert "1.4.1" in about_page.read().decode("utf-8")
+        assert "1.5.0" in about_page.read().decode("utf-8")
+
+        license_page = _request(opener, base_url + "/license")
+        assert license_page.status == 200
+        assert "demo" in license_page.read().decode("utf-8").lower()
 
         guide_pdf = _request(opener, base_url + "/docs/Guide_utilisateur_PhoEniX_BPU.pdf")
         assert guide_pdf.status == 200

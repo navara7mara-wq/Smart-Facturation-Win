@@ -43,6 +43,12 @@ foreach ($item in $items) {
     }
 }
 
+New-Item -ItemType Directory -Path (Join-Path $Stage "config") -Force | Out-Null
+$PublicKey = Join-Path $Root "config\license_public_key.pem"
+if (Test-Path $PublicKey) {
+    Copy-Item -LiteralPath $PublicKey -Destination (Join-Path $Stage "config\license_public_key.pem")
+}
+
 Get-ChildItem -Path $Stage -Recurse -Directory -Filter "__pycache__" | Remove-Item -Recurse -Force
 Get-ChildItem -Path $Stage -Recurse -Directory -Filter ".pytest_cache" | Remove-Item -Recurse -Force
 Get-ChildItem -Path $Stage -Recurse -File -Include "*.pyc","*.pyo","*.log" | Remove-Item -Force

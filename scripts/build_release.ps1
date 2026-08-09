@@ -27,6 +27,7 @@ $items = @(
     "controle-visuel.cmd",
     "visual.config.json",
     "installer",
+    "docs",
     "database",
     "scripts",
     "services",

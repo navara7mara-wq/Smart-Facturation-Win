@@ -13,7 +13,7 @@ import threading
 import hmac as hmac_lib
 from datetime import datetime, timedelta
 
-from db import DEFAULT_TEMPLATE_SETTINGS, app_settings, audit, current_actor, db, ensure_template_defaults
+from db import DB_PATH, DEFAULT_TEMPLATE_SETTINGS, app_settings, audit, current_actor, db, ensure_template_defaults
 from services.billing import (
     amount_to_french,
     amount_words_placeholder,
@@ -54,6 +54,7 @@ ROOT_DIR = Path(__file__).resolve().parent
 UPLOAD_DIR = ROOT_DIR / "uploads"
 EXPORT_DIR = ROOT_DIR / "exports"
 PUBLIC_CSRF_COOKIE = "phoenix_public_csrf"
+APP_VERSION = "1.4.1"
 DOWNLOAD_DIR = Path.home() / "Downloads"
 BUNDLED_PYTHON = Path(r"C:\Users\Administrateur\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe")
 BUNDLED_NODE = Path(r"C:\Users\Administrateur\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe")
@@ -259,6 +260,7 @@ def layout(title, content, subtitle=""):
         ("/templates", "Templates", "i-template"),
         ("/users", "Utilisateurs", "i-building"),
         ("/backup", "Backup", "i-file"),
+        ("/about", "A propos", "i-file"),
     ]
     links = "".join(
         f'<a href="{url}" data-path="{url}"><svg aria-hidden="true"><use href="#{icon}"/></svg><span>{label}</span></a>'
@@ -313,6 +315,7 @@ def layout(title, content, subtitle=""):
       <span class="sapta-user-copy"><strong>{h(user_name)}</strong><small><a href="/logout">Deconnexion</a></small></span>
       <svg class="sapta-user-chevron"><use href="#i-chevron-down"/></svg>
     </div>
+    <div class="sapta-version">Version {h(APP_VERSION)}</div>
   </aside>
 
   <main class="sapta-main legacy-main">
@@ -513,6 +516,8 @@ class App(BaseHTTPRequestHandler):
             return self.status()
         if path.startswith("/static/"):
             return self.static_file(path)
+        if path.startswith("/docs/"):
+            return self.docs_file(path)
         if not self.require_login(path):
             return
         if path.endswith("/delete") or path in {"/mobilis/delete", "/purchase-orders/delete", "/purchase-orders/document/delete", "/purchase-orders/site/delete", "/sites/delete", "/invoices/delete", "/archives/delete"}:
@@ -576,6 +581,7 @@ class App(BaseHTTPRequestHandler):
             "/templates": self.templates,
             "/users": self.users,
             "/backup": self.backup,
+            "/about": self.about,
             "/static/style.css": self.style,
         }
         if path == "/contract":
@@ -728,6 +734,14 @@ class App(BaseHTTPRequestHandler):
             ".webp": "image/webp",
         }
         self.respond(target.read_bytes(), content_type=content_types.get(target.suffix.lower(), "application/octet-stream"))
+
+    def docs_file(self, path):
+        docs_root = (ROOT_DIR / "docs").resolve()
+        target = (ROOT_DIR / path.lstrip("/")).resolve()
+        if not str(target).startswith(str(docs_root)) or not target.exists() or not target.is_file():
+            return self.respond("Not found", status=404, content_type="text/plain")
+        content_type = "application/pdf" if target.suffix.lower() == ".pdf" else "application/octet-stream"
+        self.respond(target.read_bytes(), content_type=content_type)
 
     def uploaded_file(self, path):
         target = (ROOT_DIR / path.lstrip("/")).resolve()
@@ -1070,9 +1084,34 @@ class App(BaseHTTPRequestHandler):
             checks.append(["Database", "ERROR: " + str(exc)])
         backups = list_backups()
         checks.append(["Last backup", backups[0].name if backups else "Aucune"])
-        checks.append(["Version", "1.2.0"])
+        checks.append(["Version", APP_VERSION])
         checks.append(["Host", f"{os.environ.get('PHOENIX_HOST', '127.0.0.1')}:{os.environ.get('PHOENIX_PORT', '8000')}"])
         self.respond(layout("Status", table(["Check", "Etat"], checks)))
+
+    def about(self):
+        content = f"""
+        <section class="panel">
+          <h2>PhoEniX BPU</h2>
+          <p>Application locale de facturation BPU pour SAPTA / Mobilis.</p>
+          {table(['Information', 'Valeur'], [
+              ['Version', h(APP_VERSION)],
+              ['Mode', 'Local Windows'],
+              ['Base de donnees', h(str(DB_PATH))],
+              ['Sauvegardes', h(str(ROOT_DIR / 'backups'))],
+          ])}
+        </section>
+        <section class="panel">
+          <h2>Support</h2>
+          <p>Avant toute intervention, creer une sauvegarde depuis la page Backup.</p>
+          {table(['Action', 'Emplacement'], [
+              ['Documentation utilisateur', '<a href="/static/user-guide.html">Ouvrir le guide</a>'],
+              ['Guide PDF', '<a href="/docs/Guide_utilisateur_PhoEniX_BPU.pdf">Ouvrir le PDF</a>'],
+              ['Changelog', '<a href="/static/changelog.html">Ouvrir le changelog</a>'],
+              ['Diagnostic', '<a href="/status">Voir le statut technique</a>'],
+          ])}
+        </section>
+        """
+        self.respond(layout("A propos", content))
 
     def create_backup_post(self):
         path = create_backup()

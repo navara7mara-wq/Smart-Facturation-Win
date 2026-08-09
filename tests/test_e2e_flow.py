@@ -93,6 +93,14 @@ def test_first_run_csrf_backup_restore_e2e(tmp_path, monkeypatch):
         assert create_user.status == 200
         assert "viewer_e2e" in create_user.read().decode("utf-8")
 
+        about_page = _request(opener, base_url + "/about")
+        assert about_page.status == 200
+        assert "1.4.1" in about_page.read().decode("utf-8")
+
+        guide_pdf = _request(opener, base_url + "/docs/Guide_utilisateur_PhoEniX_BPU.pdf")
+        assert guide_pdf.status == 200
+        assert guide_pdf.read().startswith(b"%PDF")
+
         with db_module.db() as con:
             con.execute(
                 "UPDATE company_settings SET nom='SAPTA', rgc='RGC', nif='NIF', art='ART', adresse='Adresse', numero_compte='RIB' WHERE id=1"

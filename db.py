@@ -1,10 +1,11 @@
 import os
 import sqlite3
+import os
 from pathlib import Path
 
 
 ROOT_DIR = Path(__file__).resolve().parent
-DB_PATH = ROOT_DIR / "data" / "pos_ai.sqlite3"
+DB_PATH = Path(os.environ.get("PHOENIX_DB_PATH", ROOT_DIR / "data" / "pos_ai.sqlite3"))
 SCHEMA_PATH = ROOT_DIR / "database" / "schema.sql"
 
 DEFAULT_TEMPLATE_SETTINGS = {
@@ -64,6 +65,7 @@ def ensure_schema(connection: sqlite3.Connection) -> None:
             token TEXT PRIMARY KEY,
             user_id INTEGER NOT NULL,
             expires_at TEXT NOT NULL,
+            csrf_token TEXT NOT NULL DEFAULT '',
             created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id)
                 ON UPDATE CASCADE
@@ -80,9 +82,11 @@ def ensure_schema(connection: sqlite3.Connection) -> None:
     for column, statement in user_additions.items():
         if column not in user_columns:
             connection.execute(statement)
-    audit_columns = {row[1] for row in connection.execute("PRAGMA table_info(user_sessions)")}
-    if "last_seen_at" not in audit_columns:
+    session_columns = {row[1] for row in connection.execute("PRAGMA table_info(user_sessions)")}
+    if "last_seen_at" not in session_columns:
         connection.execute("ALTER TABLE user_sessions ADD COLUMN last_seen_at TEXT")
+    if "csrf_token" not in session_columns:
+        connection.execute("ALTER TABLE user_sessions ADD COLUMN csrf_token TEXT NOT NULL DEFAULT ''")
     connection.execute("""
         CREATE TABLE IF NOT EXISTS audit_log (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

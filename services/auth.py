@@ -53,6 +53,25 @@ def ensure_default_admin():
         )
 
 
+def first_run_required():
+    ensure_default_admin()
+    with db() as con:
+        row = con.execute(
+            "SELECT id, username, must_change_password, last_login_at FROM users WHERE username=?",
+            (DEFAULT_ADMIN_USERNAME,),
+        ).fetchone()
+        count = con.execute("SELECT COUNT(*) FROM users").fetchone()[0]
+    return bool(row and count == 1 and row["must_change_password"] and not row["last_login_at"])
+
+
+def complete_first_run_setup(current_password, new_password):
+    user = authenticate(DEFAULT_ADMIN_USERNAME, current_password)
+    if not user:
+        raise ValueError("Mot de passe initial invalide.")
+    update_user_password(user["id"], new_password)
+    return authenticate(DEFAULT_ADMIN_USERNAME, new_password)
+
+
 def authenticate(username, password):
     ensure_default_admin()
     now = datetime.utcnow()
@@ -90,13 +109,26 @@ def authenticate(username, password):
 
 def create_session(user_id):
     token = secrets.token_urlsafe(32)
+    csrf_token = secrets.token_urlsafe(32)
     expires_at = (datetime.utcnow() + timedelta(days=SESSION_DAYS)).isoformat(timespec="seconds")
     with db() as con:
         con.execute(
-            "INSERT INTO user_sessions(token, user_id, expires_at) VALUES(?, ?, ?)",
-            (token, user_id, expires_at),
+            "INSERT INTO user_sessions(token, user_id, expires_at, csrf_token) VALUES(?, ?, ?, ?)",
+            (token, user_id, expires_at, csrf_token),
         )
     return token
+
+
+def session_csrf_token(token):
+    if not token:
+        return ""
+    now = datetime.utcnow().isoformat(timespec="seconds")
+    with db() as con:
+        row = con.execute(
+            "SELECT csrf_token FROM user_sessions WHERE token=? AND expires_at>?",
+            (token, now),
+        ).fetchone()
+    return row["csrf_token"] if row else ""
 
 
 def get_session_user(token):

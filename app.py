@@ -10,6 +10,7 @@ import tempfile
 import json
 import os
 import threading
+import hmac as hmac_lib
 from datetime import datetime, timedelta
 
 from db import DEFAULT_TEMPLATE_SETTINGS, audit, current_actor, db, ensure_template_defaults
@@ -24,12 +25,15 @@ from services.auth import (
     DEFAULT_ADMIN_USERNAME,
     SESSION_COOKIE,
     authenticate,
+    complete_first_run_setup,
     create_session,
     create_user,
     delete_session,
     ensure_default_admin,
+    first_run_required,
     get_session_user,
     list_users,
+    session_csrf_token,
     set_user_active,
     set_user_role,
     update_user_password,
@@ -47,6 +51,7 @@ from services.xlsx import make_xlsx, styled
 ROOT_DIR = Path(__file__).resolve().parent
 UPLOAD_DIR = ROOT_DIR / "uploads"
 EXPORT_DIR = ROOT_DIR / "exports"
+PUBLIC_CSRF_COOKIE = "phoenix_public_csrf"
 DOWNLOAD_DIR = Path.home() / "Downloads"
 BUNDLED_PYTHON = Path(r"C:\Users\Administrateur\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe")
 BUNDLED_NODE = Path(r"C:\Users\Administrateur\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe")
@@ -114,6 +119,10 @@ def default_visual_blocks(document_type="facture"):
 
 def h(value) -> str:
     return escape("" if value is None else str(value), quote=True)
+
+
+def hmac_compare(left, right) -> bool:
+    return hmac_lib.compare_digest(str(left or ""), str(right or ""))
 
 
 def money(value) -> str:
@@ -373,7 +382,7 @@ def parse_code_sites(raw):
 
 
 class App(BaseHTTPRequestHandler):
-    public_paths = {"/login", "/favicon.ico"}
+    public_paths = {"/login", "/setup", "/favicon.ico"}
 
     def cookie_value(self, name):
         cookie_header = self.headers.get("Cookie", "")
@@ -388,8 +397,30 @@ class App(BaseHTTPRequestHandler):
     def current_user(self):
         return get_session_user(self.cookie_value(SESSION_COOKIE))
 
+    def public_csrf_token(self):
+        token = self.cookie_value(PUBLIC_CSRF_COOKIE)
+        return token if len(token) >= 32 else uuid4().hex + uuid4().hex
+
+    def csrf_input(self):
+        token = session_csrf_token(self.cookie_value(SESSION_COOKIE))
+        return f'<input type="hidden" name="csrf_token" value="{h(token)}">' if token else ""
+
+    def inject_csrf_inputs(self, body):
+        token = self.csrf_input()
+        if not token or not isinstance(body, str) or "<form" not in body:
+            return body
+        return re.sub(
+            r'(<form\b[^>]*method=["\']?post["\']?[^>]*>)',
+            r'\1' + token,
+            body,
+            flags=re.IGNORECASE,
+        )
+
     def require_login(self, path):
         if path in self.public_paths or path.startswith("/static/"):
+            return None
+        if first_run_required():
+            self.redirect("/setup")
             return None
         user = self.current_user()
         if user:
@@ -423,6 +454,20 @@ class App(BaseHTTPRequestHandler):
                 return False
         return True
 
+    def valid_csrf_post(self, path):
+        if not self.valid_same_origin_post():
+            return False
+        if path in {"/login", "/setup"}:
+            expected = self.cookie_value(PUBLIC_CSRF_COOKIE)
+            values = self.form()
+            return bool(expected and hmac_compare(values.get("csrf_token", ""), expected))
+        expected = session_csrf_token(self.cookie_value(SESSION_COOKIE))
+        if not expected:
+            return False
+        content_type = self.headers.get("Content-Type", "")
+        values = self.multipart_form()[0] if "multipart/form-data" in content_type else self.form()
+        return hmac_compare(values.get("csrf_token", ""), expected)
+
     def do_HEAD(self):
         path = self.path.split("?")[0]
         pdf_request = self.parse_pdf_request(path)
@@ -440,6 +485,8 @@ class App(BaseHTTPRequestHandler):
             return
         if path == "/login":
             return self.login()
+        if path == "/setup":
+            return self.first_run_setup()
         if path == "/logout":
             return self.logout()
         if path == "/status":
@@ -525,8 +572,10 @@ class App(BaseHTTPRequestHandler):
     def do_POST(self):
         path = self.path.split("?")[0]
         ensure_default_admin()
-        if not self.valid_same_origin_post():
+        if not self.valid_csrf_post(path):
             return self.respond("CSRF rejected", status=403, content_type="text/plain")
+        if path == "/setup":
+            return self.setup_post()
         if path == "/login":
             return self.login_post()
         if path in {"/backup/create", "/backup/restore", "/users/create", "/users/password", "/users/role", "/users/active"}:
@@ -560,11 +609,18 @@ class App(BaseHTTPRequestHandler):
         self.respond("Not found", status=404, content_type="text/plain")
 
     def form(self):
+        if hasattr(self, "_cached_form"):
+            return self._cached_form
         length = int(self.headers.get("Content-Length", "0"))
-        data = self.rfile.read(length).decode("utf-8")
-        return {key: values[0].strip() for key, values in parse_qs(data).items()}
+        if not hasattr(self, "_cached_body"):
+            self._cached_body = self.rfile.read(length)
+        data = self._cached_body.decode("utf-8")
+        self._cached_form = {key: values[0].strip() for key, values in parse_qs(data).items()}
+        return self._cached_form
 
     def multipart_form(self):
+        if hasattr(self, "_cached_multipart"):
+            return self._cached_multipart
         values, files = {}, {}
         content_type = self.headers.get("Content-Type", "")
         boundary_token = "boundary="
@@ -572,7 +628,9 @@ class App(BaseHTTPRequestHandler):
             return self.form(), files
         boundary = ("--" + content_type.split(boundary_token, 1)[1].split(";", 1)[0].strip().strip('"')).encode()
         length = int(self.headers.get("Content-Length", "0"))
-        body = self.rfile.read(length)
+        if not hasattr(self, "_cached_body"):
+            self._cached_body = self.rfile.read(length)
+        body = self._cached_body
         for part in body.split(boundary):
             part = part.strip(b"\r\n")
             if not part or part == b"--" or b"\r\n\r\n" not in part:
@@ -597,7 +655,8 @@ class App(BaseHTTPRequestHandler):
                 files[name] = {"filename": attrs["filename"], "content": content}
             else:
                 values[name] = content.decode("utf-8", errors="ignore").strip()
-        return values, files
+        self._cached_multipart = (values, files)
+        return self._cached_multipart
 
     def redirect(self, path):
         self.send_response(303)
@@ -620,10 +679,14 @@ class App(BaseHTTPRequestHandler):
             audit("soft_delete", table, row_id)
         self.redirect(f"{redirect_to}?message=Element supprime")
 
-    def respond(self, body, status=200, content_type="text/html; charset=utf-8"):
+    def respond(self, body, status=200, content_type="text/html; charset=utf-8", headers=None):
+        if content_type.startswith("text/html"):
+            body = self.inject_csrf_inputs(body)
         encoded = body.encode("utf-8") if isinstance(body, str) else body
         self.send_response(status)
         self.send_header("Content-Type", content_type)
+        for key, value in (headers or {}).items():
+            self.send_header(key, value)
         self.send_header("Content-Length", str(len(encoded)))
         self.end_headers()
         self.wfile.write(encoded)
@@ -737,22 +800,66 @@ class App(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def login(self):
+        if first_run_required():
+            return self.redirect("/setup")
         query = parse_qs(self.path.split("?", 1)[1]) if "?" in self.path else {}
         message = query.get("message", [""])[0]
         alert = f'<section class="alert">{h(message)}</section>' if message else ""
+        csrf_token = self.public_csrf_token()
         body = f"""<!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Connexion - PhoEniX BPU</title><link rel="stylesheet" href="/static/style.css"></head>
 <body><main class="content" style="max-width:420px;margin:80px auto">
 <h1>Connexion</h1>{alert}
 <form method="post" action="/login">
+  <input type="hidden" name="csrf_token" value="{h(csrf_token)}">
   {field('username', 'Utilisateur', DEFAULT_ADMIN_USERNAME, required=True)}
   {field('password', 'Mot de passe', '', field_type='password', required=True)}
   <button type="submit">Se connecter</button>
 </form>
-<p><small>Compte initial: {h(DEFAULT_ADMIN_USERNAME)} / {h(DEFAULT_ADMIN_PASSWORD)}. Changez-le avant toute livraison client.</small></p>
 </main></body></html>"""
-        self.respond(body)
+        self.respond(body, headers={"Set-Cookie": f"{PUBLIC_CSRF_COOKIE}={csrf_token}; HttpOnly; SameSite=Lax; Path=/"})
+
+    def first_run_setup(self):
+        if not first_run_required():
+            return self.redirect("/login")
+        query = parse_qs(self.path.split("?", 1)[1]) if "?" in self.path else {}
+        message = query.get("message", [""])[0]
+        alert = f'<section class="alert">{h(message)}</section>' if message else ""
+        csrf_token = self.public_csrf_token()
+        body = f"""<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Configuration initiale - PhoEniX BPU</title><link rel="stylesheet" href="/static/style.css"></head>
+<body><main class="content" style="max-width:520px;margin:70px auto">
+<h1>Configuration initiale</h1>{alert}
+<form method="post" action="/setup">
+  <input type="hidden" name="csrf_token" value="{h(csrf_token)}">
+  {field('current_password', 'Mot de passe initial admin', '', field_type='password', required=True)}
+  {field('new_password', 'Nouveau mot de passe admin', '', field_type='password', required=True)}
+  {field('confirm_password', 'Confirmation', '', field_type='password', required=True)}
+  <button type="submit">Initialiser</button>
+</form>
+<p><small>Le mot de passe doit contenir au moins 8 caracteres, avec lettres et chiffres.</small></p>
+</main></body></html>"""
+        self.respond(body, headers={"Set-Cookie": f"{PUBLIC_CSRF_COOKIE}={csrf_token}; HttpOnly; SameSite=Lax; Path=/"})
+
+    def setup_post(self):
+        if not first_run_required():
+            return self.redirect("/login")
+        values = self.form()
+        if values.get("new_password") != values.get("confirm_password"):
+            return self.redirect("/setup?message=Confirmation invalide")
+        try:
+            user = complete_first_run_setup(values.get("current_password", ""), values.get("new_password", ""))
+        except ValueError as exc:
+            return self.redirect(f"/setup?message={quote(str(exc))}")
+        token = create_session(user["id"])
+        audit("first_run_setup", "user", user["id"], user["username"])
+        self.send_response(303)
+        self.send_header("Location", "/")
+        self.send_header("Set-Cookie", f"{SESSION_COOKIE}={token}; HttpOnly; SameSite=Lax; Path=/")
+        self.send_header("Set-Cookie", f"{PUBLIC_CSRF_COOKIE}=; Max-Age=0; HttpOnly; SameSite=Lax; Path=/")
+        self.end_headers()
 
     def login_post(self):
         values = self.form()

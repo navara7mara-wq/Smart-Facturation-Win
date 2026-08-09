@@ -73,6 +73,9 @@ Mot de passe: admin123
 
 Changez ce mot de passe avant toute livraison client.
 
+Au premier lancement, l'application redirige vers `/setup` pour remplacer le mot de passe
+admin initial. Les formulaires POST utilisent ensuite un jeton CSRF lie a la session.
+
 Pour utiliser un autre port:
 
 ```powershell
@@ -86,6 +89,9 @@ powershell -ExecutionPolicy Bypass -File scripts/run_app.ps1 -Port 8001
 ```powershell
 python -m pytest
 ```
+
+Les tests couvrent aussi un parcours E2E local: setup initial, session, rejet CSRF,
+export Excel, creation/telechargement de backup et restauration controlee.
 
 ou:
 

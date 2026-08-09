@@ -4,8 +4,11 @@ uploads/
 exports/
 output/
 dist/
+node_modules/
 server_stdout.log
 server_stderr.log
+server_*.log
+debug_*.log
 __pycache__/
 *.pyc
 *.pyo

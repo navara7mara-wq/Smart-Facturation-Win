@@ -1,0 +1,79 @@
+{
+  "records": 10,
+  "active_records": 9,
+  "soft_deleted_records": 1,
+  "checks": [
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_01",
+      "active": true,
+      "reopen_behavior_matches_state": true,
+      "line_sum_matches_ht": true,
+      "ttc_reconciles": true
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_02",
+      "active": true,
+      "reopen_behavior_matches_state": true,
+      "line_sum_matches_ht": true,
+      "ttc_reconciles": true
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_03",
+      "active": true,
+      "reopen_behavior_matches_state": true,
+      "line_sum_matches_ht": true,
+      "ttc_reconciles": true
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_04",
+      "active": true,
+      "reopen_behavior_matches_state": true,
+      "line_sum_matches_ht": true,
+      "ttc_reconciles": true
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_05",
+      "active": true,
+      "reopen_behavior_matches_state": true,
+      "line_sum_matches_ht": true,
+      "ttc_reconciles": true
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_06",
+      "active": true,
+      "reopen_behavior_matches_state": true,
+      "line_sum_matches_ht": true,
+      "ttc_reconciles": true
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_07",
+      "active": true,
+      "reopen_behavior_matches_state": true,
+      "line_sum_matches_ht": true,
+      "ttc_reconciles": true
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_08",
+      "active": true,
+      "reopen_behavior_matches_state": true,
+      "line_sum_matches_ht": true,
+      "ttc_reconciles": true
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_09",
+      "active": true,
+      "reopen_behavior_matches_state": true,
+      "line_sum_matches_ht": true,
+      "ttc_reconciles": true
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_10",
+      "active": false,
+      "reopen_behavior_matches_state": true,
+      "line_sum_matches_ht": true,
+      "ttc_reconciles": true
+    }
+  ],
+  "integrity_check": "ok",
+  "foreign_key_violations": 0
+}

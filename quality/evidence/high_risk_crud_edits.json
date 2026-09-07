@@ -1,0 +1,177 @@
+{
+  "iterations_per_entity": 10,
+  "results": {
+    "clients": [
+      {
+        "id": 2,
+        "pass": false
+      },
+      {
+        "id": 3,
+        "pass": false
+      },
+      {
+        "id": 4,
+        "pass": false
+      },
+      {
+        "id": 5,
+        "pass": false
+      },
+      {
+        "id": 6,
+        "pass": false
+      },
+      {
+        "id": 7,
+        "pass": false
+      },
+      {
+        "id": 8,
+        "pass": false
+      },
+      {
+        "id": 9,
+        "pass": false
+      },
+      {
+        "id": 10,
+        "pass": false
+      },
+      {
+        "id": 11,
+        "pass": false
+      }
+    ],
+    "directions": [
+      {
+        "id": 1003,
+        "pass": true
+      },
+      {
+        "id": 1004,
+        "pass": true
+      },
+      {
+        "id": 1005,
+        "pass": true
+      },
+      {
+        "id": 1006,
+        "pass": true
+      },
+      {
+        "id": 1007,
+        "pass": true
+      },
+      {
+        "id": 1008,
+        "pass": true
+      },
+      {
+        "id": 1009,
+        "pass": true
+      },
+      {
+        "id": 1010,
+        "pass": true
+      },
+      {
+        "id": 1011,
+        "pass": true
+      },
+      {
+        "id": 1012,
+        "pass": true
+      }
+    ],
+    "purchase_orders": [
+      {
+        "id": 1004,
+        "pass": true
+      },
+      {
+        "id": 1005,
+        "pass": true
+      },
+      {
+        "id": 1006,
+        "pass": true
+      },
+      {
+        "id": 1007,
+        "pass": true
+      },
+      {
+        "id": 1008,
+        "pass": true
+      },
+      {
+        "id": 1009,
+        "pass": true
+      },
+      {
+        "id": 1010,
+        "pass": true
+      },
+      {
+        "id": 1011,
+        "pass": true
+      },
+      {
+        "id": 1012,
+        "pass": true
+      },
+      {
+        "id": 1013,
+        "pass": true
+      }
+    ],
+    "sites": [
+      {
+        "id": 1005,
+        "pass": true
+      },
+      {
+        "id": 1006,
+        "pass": true
+      },
+      {
+        "id": 1007,
+        "pass": true
+      },
+      {
+        "id": 1008,
+        "pass": true
+      },
+      {
+        "id": 1009,
+        "pass": true
+      },
+      {
+        "id": 1010,
+        "pass": true
+      },
+      {
+        "id": 1011,
+        "pass": true
+      },
+      {
+        "id": 1012,
+        "pass": true
+      },
+      {
+        "id": 1013,
+        "pass": true
+      },
+      {
+        "id": 1014,
+        "pass": true
+      }
+    ]
+  },
+  "passed": 30,
+  "failed": 10,
+  "integrity_check": "ok",
+  "foreign_key_violations": 0
+}

@@ -1,0 +1,95 @@
+{
+  "startup_access": {
+    "login_get_ms": 7.49,
+    "login_post_ms": 94.1
+  },
+  "page_timings": {
+    "dashboard": {
+      "iterations": 10,
+      "min_ms": 12.33,
+      "median_ms": 17.54,
+      "p95_ms": 31.57,
+      "max_ms": 31.79
+    },
+    "billing_table": {
+      "iterations": 10,
+      "min_ms": 22.88,
+      "median_ms": 31.85,
+      "p95_ms": 42.52,
+      "max_ms": 45.89
+    },
+    "invoices": {
+      "iterations": 10,
+      "min_ms": 14.49,
+      "median_ms": 14.69,
+      "p95_ms": 33.61,
+      "max_ms": 33.96
+    },
+    "invoice_search": {
+      "iterations": 10,
+      "min_ms": 14.37,
+      "median_ms": 15.49,
+      "p95_ms": 32.49,
+      "max_ms": 34.6
+    },
+    "clients": {
+      "iterations": 10,
+      "min_ms": 13.04,
+      "median_ms": 19.59,
+      "p95_ms": 32.28,
+      "max_ms": 32.43
+    },
+    "bpu": {
+      "iterations": 10,
+      "min_ms": 10.79,
+      "median_ms": 13.36,
+      "p95_ms": 30.91,
+      "max_ms": 31.62
+    },
+    "settings": {
+      "iterations": 10,
+      "min_ms": 11.42,
+      "median_ms": 18.68,
+      "p95_ms": 31.75,
+      "max_ms": 32.07
+    }
+  },
+  "document_timings": {
+    "invoice_xlsx": {
+      "iterations": 1,
+      "min_ms": 2780.92,
+      "median_ms": 2780.92,
+      "p95_ms": 2780.92,
+      "max_ms": 2780.92
+    },
+    "invoice_pdf": {
+      "iterations": 1,
+      "min_ms": 4877.44,
+      "median_ms": 4877.44,
+      "p95_ms": 4877.44,
+      "max_ms": 4877.44
+    }
+  },
+  "resource_before": {
+    "rss_bytes": 128045056
+  },
+  "resource_after": {
+    "rss_bytes": 127528960
+  },
+  "resource_delta": {
+    "rss_bytes": -516096
+  },
+  "csrf_negative": {
+    "status": 200,
+    "persisted_rows": 0,
+    "elapsed_ms": 40.05
+  },
+  "headers": {
+    "status": 200,
+    "content_security_policy": null,
+    "x_content_type_options": null,
+    "x_frame_options": null,
+    "referrer_policy": null,
+    "cache_control": null
+  }
+}

@@ -1,178 +1,144 @@
-# POS AI
+# PhoEniX BPU 2.5.2 RC-2
 
-Programme de facturation de projets pour Mobilis.
+Application Windows locale de facturation et de suivi des factures Mobilis.
 
-## Phase 1
+## Installation client
 
-Cette base contient le schema SQLite approuve pour:
-
-- Parametres de l'entreprise
-- Directions regionales Mobilis
-- Contrat unique
-- BPU unique
-- Bons de commande
-- Sites
-- Factures
-- Lignes de facture
-- Sites des factures NDC
-
-## Initialiser la base
-
-Installation Windows recommandee:
-
-```powershell
-.\setup.cmd
-```
-
-Installer d'abord les dependances Python:
-
-```powershell
-python -m pip install -r requirements.txt
-```
-
-Installer les dependances Node utilisees pour les PDF et les controles visuels:
-
-```powershell
-npm install
-```
-
-```powershell
-python scripts/init_db.py
-```
-
-La base est creee dans:
+Utiliser l'installateur hors ligne:
 
 ```text
-data/pos_ai.sqlite3
+dist\installer\PhoEniX_BPU_Setup_2.5.2.exe
 ```
 
-## Lancer l'application locale
+Le poste client n'a pas besoin de Python, Node.js ou d'une connexion Internet. Le programme,
+le moteur Excel et le runtime PDF sont inclus. L'installateur cree les raccourcis du menu
+Demarrer et, sur demande, du Bureau.
 
-Lancement Windows recommande:
-
-```powershell
-.\run.cmd
-```
-
-```powershell
-python app.py
-```
-
-Puis ouvrir:
+Les donnees client sont separees des fichiers du programme:
 
 ```text
-http://127.0.0.1:8000
+%LOCALAPPDATA%\SAPTA\PhoEniX BPU
 ```
+
+Ce dossier contient la base SQLite, les pieces jointes, les exports, les sauvegardes et les
+logs. Il est conserve pendant une mise a jour ou une desinstallation.
+
+## Premier lancement
+
+L'application ouvre une fenetre Windows dediee et utilise un port local aleatoire sur
+`127.0.0.1`. Une seule instance peut etre ouverte a la fois.
 
 Compte initial:
 
 ```text
 Utilisateur: admin
-Mot de passe: admin123
+Au premier lancement, l'application exige la creation du mot de passe administrateur. Aucun mot de passe administrateur universel n'est fourni.
 ```
 
-Changez ce mot de passe avant toute livraison client.
+Le premier lancement impose le remplacement de ce mot de passe. Les formulaires POST sont
+proteges par un jeton CSRF lie a la session.
 
-Au premier lancement, l'application redirige vers `/setup` pour remplacer le mot de passe
-admin initial. Les formulaires POST utilisent ensuite un jeton CSRF lie a la session.
+## Fonctionnalites principales
 
-Pour utiliser un autre port:
+- Cycle facture calcule: Brouillon, Prete DTC, Deposee DTC, En attente paiement, Payee.
+- Suivi separe des dates DTC, Mobilis et OV avec validation chronologique.
+- Verrouillage financier a partir du depot DTC et audit des operations sensibles.
+- Types BC ACQ, CONST, CONST/ACQ, NDC et MGC.
+- Factures NDC multi-sites limitees a l'article technique 6.
+- Tableau de bord avec montants, encaissements, retards et filtres.
+- Exports Excel et PDF, sauvegarde, restauration controlee et gestion des utilisateurs.
+- Mode DEMO et activation par fichier licence signe.
+
+## Developpement
+
+Installer les dependances applicatives:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/run_app.ps1 -Port 8001
+python -m pip install -r requirements.txt
+npm install
 ```
 
-## Installer Windows
-
-Le projet contient un script Inno Setup dans `installer/PhoEniX_BPU.iss`.
-Pour creer un installateur `.exe`, installer Inno Setup 6 puis lancer:
+Lancer le mode web:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/build_installer.ps1 -Version 1.4.0
+python app.py
 ```
 
-Le build release tente aussi de produire l'installateur si `ISCC.exe` est disponible.
-
-## Licence
-
-Sans activation, l'application fonctionne en mode DEMO. Une licence standard se charge depuis
-la page `/license` avec un fichier signe genere par:
+Lancer le mode desktop depuis les sources:
 
 ```powershell
-python scripts/issue_license.py --customer "Client" --edition standard --expires-at 2027-12-31 --max-users 5 --max-invoices 10000 --output client.license.json
+python desktop.py
 ```
 
-## Controle de conformite visuelle
-
-## Tests automatiques
+## Tests
 
 ```powershell
-python -m pytest
-```
-
-Les tests couvrent aussi un parcours E2E local: setup initial, session, rejet CSRF,
-export Excel, creation/telechargement de backup et restauration controlee.
-
-ou:
-
-```powershell
-npm test
-```
-
-Les huit interfaces principales disposent d'une image de reference fixe. Le test ouvre
-chaque page dans Chrome avec la resolution de sa reference, prend une capture et produit
-un rapport avec les differences signalees en rouge.
-
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts/run_visual_tests.ps1
-```
-
-Pour bloquer automatiquement une livraison lorsqu'une page est sous le seuil defini:
-
-```powershell
+python -m pytest -q -W error
 powershell -ExecutionPolicy Bypass -File scripts/run_visual_tests.ps1 -Strict
 ```
 
-Le rapport est cree dans:
+La regression visuelle couvre 16 vues en resolutions desktop et compactes. Le rapport est
+genere dans `output\visual-regression\report.html`.
 
-```text
-output/visual-regression/report.html
+Tester une installation, une mise a jour et une desinstallation isolees:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/test_installer.ps1 -Version 2.5.2
 ```
 
-Pour une utilisation sans commande, double-cliquer sur `controle-visuel.cmd`. Le test
-sera execute puis le rapport s'ouvrira automatiquement dans le navigateur.
+## Build commercial
 
-Les routes, resolutions et images de reference sont declarees dans
-`visual.config.json`. Toute modification volontaire du design doit etre validee avant
-de remplacer une image dans `tests/visual/baselines`.
+Installer les outils de build:
 
-## Regles implementees
-
-- `bpu_items.article_number` est unique.
-- `sites.code_site` est unique.
-- Les factures normales exigent un seul site.
-- Les factures `NDC` n'ont pas de `site_id` direct et utilisent `invoice_sites`.
-- Un site ne peut entrer que dans une seule facture `NDC`.
-- Une facture `NDC` accepte uniquement l'article `6`.
-- Les informations BPU sont sauvegardees dans `invoice_lines` en snapshot.
-- L'application exige une connexion avec roles `admin`, `editor` ou `viewer`.
-- La sauvegarde/restauration est reservee au role `admin`.
-- Les mots de passe faibles sont refuses et le compte est verrouille apres echecs repetes.
-- Les factures deposees ne peuvent pas etre supprimees.
-- La page `/status` affiche l'etat technique de base.
-
-## Nouvelle interface Table Facturation
-
-Une nouvelle interface independante a ete ajoutee sans supprimer l'ancienne page:
-
-```text
-http://127.0.0.1:8000/table-facturation-new
+```powershell
+python -m pip install -r requirements-build.txt
 ```
 
-Fichiers principaux:
+Generer l'application, l'archive Portable, l'Installer et le manifeste SHA-256:
 
-- `templates/table_facturation_new.html`
-- `static/sapta-new.css`
-- `static/table-facturation-new.js`
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/build_release.ps1 -Version 2.5.2
+```
 
-La page comprend les filtres SQLite, la pagination, la modification instantanee des remarques et de l'etat de depot, les actions facture et l'export Excel filtre. L'ancienne route `/table-facturation` reste disponible comme sauvegarde.
+Le certificat Authenticode commercial n'est pas stocke dans le projet. Une fois le certificat
+installe dans le magasin Windows, signer et verifier les binaires avec:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/sign_release.ps1 -CertificateThumbprint THUMBPRINT -Version 2.5.2
+```
+
+## Licence produit
+
+Sans activation, l'application fonctionne en mode DEMO. Depuis la page Licence, le client
+telecharge une demande d'activation liee a son appareil. L'editeur importe cette demande dans
+`PhoEniX License Studio`, definit l'expiration et les limites, puis remet uniquement le fichier
+`.license.json` signe au client.
+
+Construire l'outil prive de l'editeur:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/build_license_studio.ps1
+```
+
+L'executable est cree dans `dist/publisher`. Il ne contient jamais la cle privee. Au premier
+lancement, importer la cle Ed25519 existante et creer un mot de passe maitre d'au moins 12
+caracteres. Le coffre chiffre est conserve dans le profil Windows de l'editeur.
+
+```text
+dist\publisher\PhoEniX License Studio.exe
+```
+
+La commande de secours exige egalement une demande d'activation:
+
+```powershell
+python scripts/issue_license.py --request activation-request.json --customer "Client" --edition standard --expires-at 2027-12-31 --max-users 5 --max-invoices 10000 --output client.license.json
+```
+
+Pour une licence perpetuelle avec un nombre de factures illimite:
+
+```powershell
+python scripts/issue_license.py --request activation-request.json --customer "Client" --edition enterprise --perpetual --max-users 25 --unlimited-invoices --output client.license.json
+```
+
+Ne jamais distribuer `config/license_private_key.pem` ni le coffre chiffre. Sauvegarder le coffre
+et son mot de passe dans deux emplacements hors ligne separes.

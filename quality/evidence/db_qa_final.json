@@ -1,0 +1,137 @@
+{
+  "path": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\tmp\\rc1-audit\\data\\QA_RC1.sqlite3",
+  "size": 798720,
+  "sha256": "08fc9ef7cc27375bc1a3088b03acc6c2e33af60f8c245b8150ab8b49e75f36f1",
+  "integrity_check": "ok",
+  "foreign_key_check": [],
+  "counts": {
+    "app_settings": 5,
+    "audit_log": 436,
+    "bpu_items": 610,
+    "bpu_st_items": 1132,
+    "bpu_st_versions": 2,
+    "client_directions": 13,
+    "clients": 11,
+    "company_branches": 3,
+    "company_settings": 1,
+    "contract_settings": 1,
+    "data_import_batches": 2,
+    "design_offices": 1,
+    "invoice_lines": 148,
+    "invoice_sites": 2,
+    "invoice_tracking": 49,
+    "invoice_tracking_events": 145,
+    "invoice_unlock_authorizations": 0,
+    "invoices": 49,
+    "mobilis_client_settings": 1,
+    "mobilis_directions": 3,
+    "permissions": 14,
+    "purchase_orders": 60,
+    "role_permissions": 33,
+    "schema_migrations": 17,
+    "sites": 60,
+    "subcontractors": 1,
+    "template_settings": 21,
+    "typologies": 7,
+    "user_permissions": 0,
+    "user_sessions": 29,
+    "users": 2
+  },
+  "checks": {
+    "orphan_invoice_lines": 0,
+    "orphan_invoices_purchase_order": 0,
+    "orphan_invoices_site": 0,
+    "orphan_sites_purchase_order": 0,
+    "duplicate_invoice_number": 0,
+    "duplicate_purchase_order_number": 0,
+    "line_total_mismatch": 0,
+    "ttc_formula_mismatch": 0
+  },
+  "schema_migrations": [
+    [
+      1,
+      "invoice_lifecycle_tracking",
+      "2026-08-22 12:35:53"
+    ],
+    [
+      2,
+      "invoice_permissions_and_locking",
+      "2026-08-22 13:14:10"
+    ],
+    [
+      3,
+      "bpu_st_numbering",
+      "2026-08-22 17:25:39"
+    ],
+    [
+      4,
+      "invoice_nature_typology_ndc",
+      "2026-08-24 06:51:18"
+    ],
+    [
+      5,
+      "clients_branches_super_admin",
+      "2026-08-24 06:51:18"
+    ],
+    [
+      6,
+      "bpu_st_versioning",
+      "2026-08-24 06:51:18"
+    ],
+    [
+      7,
+      "normalize_invoice_typologies",
+      "2026-08-24 06:53:45"
+    ],
+    [
+      8,
+      "normalize_colocation_typology",
+      "2026-08-24 06:54:04"
+    ],
+    [
+      9,
+      "purchase_orders_use_clients",
+      "2026-08-24 07:11:20"
+    ],
+    [
+      10,
+      "repair_legacy_french_encoding",
+      "2026-08-24 07:11:46"
+    ],
+    [
+      11,
+      "normalize_legacy_mobilis_name",
+      "2026-08-24 07:12:10"
+    ],
+    [
+      12,
+      "direction_sigles",
+      "2026-08-24 10:41:25"
+    ],
+    [
+      13,
+      "normalize_known_organization_labels",
+      "2026-08-24 10:58:52"
+    ],
+    [
+      14,
+      "client_sigles",
+      "2026-08-24 12:58:31"
+    ],
+    [
+      15,
+      "typology_catalog_and_invoice_labels",
+      "2026-08-24 15:36:26"
+    ],
+    [
+      16,
+      "site_subcontractors_and_design_offices",
+      "2026-08-24 17:21:10"
+    ],
+    [
+      17,
+      "partner_contacts_and_excel_imports",
+      "2026-08-24 20:23:08"
+    ]
+  ]
+}

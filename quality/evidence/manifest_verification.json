@@ -1,0 +1,20 @@
+[
+  {
+    "Artifact": "PhoEniX_BPU_Portable_2.5.1.zip",
+    "Expected": "345d780df36731e5d29e576497c04952bacb4b32952083ea37f5f482d0fc1130",
+    "Actual": "345d780df36731e5d29e576497c04952bacb4b32952083ea37f5f482d0fc1130",
+    "Match": true
+  },
+  {
+    "Artifact": "PhoEniX License Studio.exe",
+    "Expected": "d864fb6e1ac516bb92bf08d807e13340bd06ff0b77276e6241cb27f0c6efb5a9",
+    "Actual": "d864fb6e1ac516bb92bf08d807e13340bd06ff0b77276e6241cb27f0c6efb5a9",
+    "Match": true
+  },
+  {
+    "Artifact": "PhoEniX_BPU_Setup_2.5.1.exe",
+    "Expected": "ed35356cf04bf50313d71d2a1f254fccad3358dee545f4ac2361b98fb9ed1f28",
+    "Actual": "ed35356cf04bf50313d71d2a1f254fccad3358dee545f4ac2361b98fb9ed1f28",
+    "Match": true
+  }
+]

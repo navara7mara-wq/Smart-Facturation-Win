@@ -1,0 +1,128 @@
+[
+  {
+    "file": "quality\\evidence\\generated\\ndc_devis_estimatif.pdf",
+    "bytes": 137487,
+    "sha256": "e209a727f0ba58dbf001564054e9c09f497f1787d498cb2b10e6e4597443781a",
+    "pages": 1,
+    "page_details": [
+      {
+        "page": 1,
+        "width": 595.92,
+        "height": 842.88,
+        "text_chars": 400,
+        "rendered": "quality\\evidence\\rendered\\ndc_devis_estimatif_p1.png"
+      }
+    ],
+    "expected_token_checks": {
+      "120/2026": false,
+      "100 000": true,
+      "113 050": false
+    },
+    "text_preview": "DEVIS ESTIMATIF NDC\nCode de site : 17451A, 29164\nNom de site : 2 sites NDC\nTypologie de site : NDC\nN°\nDésignations\nUnité\nQuantités\nPU/HT\nMontant/HT\nA\nFOURNITURES\n6\nEtude de charge (Note de calcul) certifiée par un\nbureau d'étude agréer\nForfait\n2\n50 000,00\n100 000,00\nFOURNITURES TOTAL\n100 000,00\nTOTAL GENERAL\n100 000,00\nArrêté la présente Facture à la somme de:\nCENT MILLE DINARS\nL'ENTREPRISE/SAPTA\n"
+  },
+  {
+    "file": "quality\\evidence\\generated\\ndc_devis_quantitatif.pdf",
+    "bytes": 132912,
+    "sha256": "221eec10abc7f424a01e6d35e6657dd548b20db2c3ba07342a0ff5ac8ab4a25a",
+    "pages": 1,
+    "page_details": [
+      {
+        "page": 1,
+        "width": 595.92,
+        "height": 842.88,
+        "text_chars": 283,
+        "rendered": "quality\\evidence\\rendered\\ndc_devis_quantitatif_p1.png"
+      }
+    ],
+    "expected_token_checks": {
+      "120/2026": false,
+      "100 000": false,
+      "113 050": false
+    },
+    "text_preview": "DEVIS QUANTITATIF NDC\nATTACHEMENT\nCode de site : 17451A, 29164\nNom de site : 2 sites NDC\nTypologie de site : NDC\nN°\nDésignations\nUnité\nQuantités\nA\nFOURNITURES\n6\nEtude de charge (Note de calcul) certifiée par un bureau d'étude agréer\nForfait\n2\nVALIDATION MOBILIS\nVALIDATION EPE SAPTA\n"
+  },
+  {
+    "file": "quality\\evidence\\generated\\ndc_facture.pdf",
+    "bytes": 129107,
+    "sha256": "adb1d7bb0a3f0be5d0f9d9895d5afecce5d1605a2c233afd7dec47b7591b8986",
+    "pages": 1,
+    "page_details": [
+      {
+        "page": 1,
+        "width": 595.92,
+        "height": 842.88,
+        "text_chars": 906,
+        "rendered": "quality\\evidence\\rendered\\ndc_facture_p1.png"
+      }
+    ],
+    "expected_token_checks": {
+      "120/2026": true,
+      "100 000": true,
+      "113 050": true
+    },
+    "text_preview": "RGC: 16/00-0011369/B/00 du 03/03/2025\nNIF: 000016001136983\nART: 1610712344\nADRESSE: 63A BOULVARD BOUGARA EL\nBIAR ALGER\nN° COMPTE: 00 400 117 401 7000 10 116\nAGENCE EL KHETTABI 232\nDOIT : Algérie Télécom Mobile / Mobilis\nDirection Régionale Mobilis Chlef\nnouvelle ville chlef\nRGC N°: 0962287 B 03\nNIF N°: 16/00-0962287 B 03\nFACTURE N° : 120/2026\nRéférence Contrat: 22/ATM/DG/25\nCode de site: 17451A, 29164\nNom de site: 2 sites NDC\nTypologie de site: NDC\nBon de commande: 303/2026\nN°\nDésignation\nUnité\nQuantités\nPU/HT\nMontant/HT\nA\nFOURNITURES\n6\nEtude de charge (Note de calcul) certifiée par un\nbureau d'étude agréer\nForfait\n2\n50 000,00\n100 000,00\nTOTAL FOURNITURES HT\n100 000,00\nTOTAL EN H.T\n100 000,00\nRETENUE DE GARANTIE 5%\n5 000,00\nMONTANT HT APRES RG\n95 000,00\nT V A 19%\n18 050,00\nTOTAL EN T T C\n1"
+  },
+  {
+    "file": "quality\\evidence\\generated\\normal_devis_estimatif.pdf",
+    "bytes": 109838,
+    "sha256": "0c43f7fc11d573d1020243b6d4a62377d7666ce531b6b5ed0263407f04ce5f97",
+    "pages": 1,
+    "page_details": [
+      {
+        "page": 1,
+        "width": 595.92,
+        "height": 842.88,
+        "text_chars": 490,
+        "rendered": "quality\\evidence\\rendered\\normal_devis_estimatif_p1.png"
+      }
+    ],
+    "expected_token_checks": {
+      "QA_RC1_AUDIT_20260825_FAC_01": false,
+      "95 625": true,
+      "108 104": false
+    },
+    "text_preview": "DEVIS ESTIMATIF ACQ\nCode de site : QA_RC1_AUDIT_20260825_SITE_01\nNom de site : QA_RC1_AUDIT_20260825 Site Alger\nTypologie de site : A9\nN°\nDésignations\nUnité\nQuantités\nPU/HT\nMontant/HT\nA\nFOURNITURES\n1\nAcquisition de Deux (02) candidats pour un point\nnominal avec confection de documents SA2\nForfait\n1.125\n85 000,00\n95 625,00\nFOURNITURES TOTAL\n95 625,00\nTOTAL GENERAL\n95 625,00\nArrêté la présente Facture à la somme de:\nQUATRE-VINGT-QUINZE MILLE SIX CENT VINGT-CINQ DINARS\nL'ENTREPRISE/SAPTA\n"
+  },
+  {
+    "file": "quality\\evidence\\generated\\normal_devis_quantitatif.pdf",
+    "bytes": 105887,
+    "sha256": "4515b7321bb296fa11f422600e15d1527b7c6c233ba36fbfce95bbb723ed69ff",
+    "pages": 1,
+    "page_details": [
+      {
+        "page": 1,
+        "width": 595.92,
+        "height": 842.88,
+        "text_chars": 341,
+        "rendered": "quality\\evidence\\rendered\\normal_devis_quantitatif_p1.png"
+      }
+    ],
+    "expected_token_checks": {
+      "QA_RC1_AUDIT_20260825_FAC_01": false,
+      "95 625": false,
+      "108 104": false
+    },
+    "text_preview": "DEVIS QUANTITATIF ACQ\nATTACHEMENT\nCode de site : QA_RC1_AUDIT_20260825_SITE_01\nNom de site : QA_RC1_AUDIT_20260825 Site Alger\nTypologie de site : A9\nN°\nDésignations\nUnité\nQuantités\nA\nFOURNITURES\n1\nAcquisition de Deux (02) candidats pour un point nominal avec confection de\ndocuments SA2\nForfait\n1.125\nVALIDATION MOBILIS\nVALIDATION EPE SAPTA\n"
+  },
+  {
+    "file": "quality\\evidence\\generated\\normal_facture.pdf",
+    "bytes": 99170,
+    "sha256": "af1cbf9b72b8e4840e0f6d45d2d8b1eda26c41d68b7cdb6f91a7da78d011d797",
+    "pages": 1,
+    "page_details": [
+      {
+        "page": 1,
+        "width": 595.92,
+        "height": 842.88,
+        "text_chars": 1010,
+        "rendered": "quality\\evidence\\rendered\\normal_facture_p1.png"
+      }
+    ],
+    "expected_token_checks": {
+      "QA_RC1_AUDIT_20260825_FAC_01": true,
+      "95 625": true,
+      "108 104": true
+    },
+    "text_preview": "RGC: 16/00-0011369/B/00 du 03/03/2025\nNIF: 000016001136983\nART: 1610712344\nADRESSE: 63A BOULVARD BOUGARA EL\nBIAR ALGER\nN° COMPTE: 00 400 117 401 7000 10 116\nAGENCE EL KHETTABI 232\nDOIT : QA_RC1_AUDIT_20260825_01 Société\nAlger\nQA_RC1_AUDIT_20260825 Direction Alger\nQA adresse Alger\nRGC N°: QA-RGC-01\nNIF N°: QA-NIF-01\nFACTURE N° : QA_RC1_AUDIT_20260825_FAC_01\nRéférence Contrat: 22/ATM/DG/25\nCode de site: QA_RC1_AUDIT_20260825_SITE_01\nNom de site: QA_RC1_AUDIT_20260825 Site Alger\nTypologie de site: A9\nBon de commande: QA_RC1_AUDIT_20260825_BC_01\nN°\nDésignation\nUnité\nQuantités\nPU/HT\nMontant/HT\nA\nFOURNITURES\n1\nAcquisition de Deux (02) candidats pour un point\nnominal avec confection de documents SA2\nForfait\n1.125\n85 000,00\n95 625,00\nTOTAL FOURNITURES HT\n95 625,00\nTOTAL EN H.T\n95 625,00\nRETENUE DE"
+  }
+]

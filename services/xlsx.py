@@ -1,6 +1,15 @@
 import zipfile
+from decimal import Decimal
 from html import escape
 from io import BytesIO
+
+
+class ExactNumber(str):
+    """A numeric Open XML literal that must not pass through binary float."""
+
+
+def exact_number(value):
+    return ExactNumber(str(value))
 
 
 def xlsx_cell_ref(row_index, col_index):
@@ -26,7 +35,9 @@ def worksheet_xml(rows):
             if isinstance(value, tuple):
                 value, style = value
             style_attr = f' s="{style}"' if style is not None else ""
-            if isinstance(value, (int, float)):
+            if isinstance(value, ExactNumber):
+                cells.append(f'<c r="{ref}"{style_attr}><v>{xlsx_escape(value)}</v></c>')
+            elif isinstance(value, (int, float, Decimal)):
                 cells.append(f'<c r="{ref}"{style_attr}><v>{value}</v></c>')
             else:
                 cells.append(f'<c r="{ref}" t="inlineStr"{style_attr}><is><t>{xlsx_escape(value)}</t></is></c>')

@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{CSRF_TOKEN}}">
   <title>Table Facturation - SAPTA Facturation</title>
   <link rel="stylesheet" href="/static/sapta-new.css">
 </head>
@@ -41,10 +42,9 @@
       <a class="active" href="/table-facturation-new"><svg><use href="#i-table"/></svg><span>Table Facturation</span></a>
       <a href="/invoices"><svg><use href="#i-file"/></svg><span>Factures</span></a>
       <a href="/purchase-orders"><svg><use href="#i-clipboard"/></svg><span>Bons de commande</span></a>
-      <a href="/mobilis"><svg><use href="#i-radio"/></svg><span>Mobilis</span></a>
+      <a href="/clients"><svg><use href="#i-radio"/></svg><span>Clients</span></a>
       <a href="/bpu"><svg><use href="#i-calculator"/></svg><span>BPU</span></a>
-      <a href="/company"><svg><use href="#i-building"/></svg><span>Entreprise</span></a>
-      <a href="/templates"><svg><use href="#i-template"/></svg><span>Templates</span></a>
+      <a href="/settings"><svg><use href="#i-template"/></svg><span>Parametres</span></a>
     </nav>
 
     <div class="sapta-user">
@@ -56,68 +56,90 @@
 
   <main class="sapta-main">
     <div class="sapta-page">
-      <h1>Table Facturation</h1>
+      <div class="facturation-title-row">
+        <h1>Table Facturation</h1>
+        <div class="facturation-title-filters" aria-label="Filtres principaux">
+          <label class="filter-control title-filter-control">
+            <span class="filter-label">{{COMPANY_DIRECTION_LABEL}}</span>
+            <span class="select-wrap"><select name="company_branch" form="facturation-filter-form">{{BRANCH_OPTIONS}}</select><svg><use href="#i-chevron-down"/></svg></span>
+          </label>
+          <label class="filter-control title-filter-control client-filter-control">
+            <span class="filter-label">Client</span>
+            <span class="select-wrap"><select name="client" form="facturation-filter-form" data-client-filter>{{CLIENT_OPTIONS}}</select><svg><use href="#i-chevron-down"/></svg></span>
+          </label>
+        </div>
+      </div>
       {{ALERT}}
 
       <section class="facturation-card">
-        <form class="facturation-filters" method="get" action="/table-facturation-new" autocomplete="off">
+        <form class="facturation-filters" id="facturation-filter-form" method="get" action="/table-facturation-new" autocomplete="off">
           <label class="filter-control search-control">
             <span class="filter-label sr-only">Recherche</span>
             <svg><use href="#i-search"/></svg>
             <input name="q" value="{{SEARCH}}" placeholder="Rechercher site, BC ou facture">
           </label>
 
-          <label class="filter-control">
-            <span class="filter-label">Direction</span>
+          <label class="filter-control client-direction-filter-control">
+            <span class="filter-label">{{CLIENT_DIRECTION_LABEL}}</span>
             <span class="select-wrap"><select name="direction">{{DIRECTION_OPTIONS}}</select><svg><use href="#i-chevron-down"/></svg></span>
           </label>
 
           <label class="filter-control">
             <span class="filter-label">Type BC</span>
-            <span class="select-wrap"><select name="type">{{TYPE_OPTIONS}}</select><svg><use href="#i-chevron-down"/></svg></span>
+            <span class="select-wrap"><select name="nature">{{NATURE_OPTIONS}}</select><svg><use href="#i-chevron-down"/></svg></span>
           </label>
 
           <label class="filter-control">
-            <span class="filter-label">Région</span>
-            <span class="select-wrap"><select name="region">{{REGION_OPTIONS}}</select><svg><use href="#i-chevron-down"/></svg></span>
+            <span class="filter-label">Typologie</span>
+            <span class="select-wrap"><select name="typology">{{TYPOLOGY_OPTIONS}}</select><svg><use href="#i-chevron-down"/></svg></span>
           </label>
 
-          <label class="filter-control">
+          <label class="filter-control status-filter-control">
             <span class="filter-label">État dépôt</span>
-            <span class="select-wrap"><select name="depos">{{DEPOS_OPTIONS}}</select><svg><use href="#i-chevron-down"/></svg></span>
+            <span class="select-wrap"><select name="status">{{STATUS_OPTIONS}}</select><svg><use href="#i-chevron-down"/></svg></span>
           </label>
 
           <div class="filter-control date-range-control">
             <span class="filter-label sr-only">Période</span>
             <svg class="date-icon"><use href="#i-calendar"/></svg>
-            <input aria-label="Date de début" type="date" name="date_start" value="{{DATE_START}}">
+            <input aria-label="Date de début" type="date" name="date_start" value="{{DATE_START}}" min="{{DATE_MIN}}" max="{{DATE_MAX}}">
             <span class="date-arrow">→</span>
-            <input aria-label="Date de fin" type="date" name="date_end" value="{{DATE_END}}">
+            <input aria-label="Date de fin" type="date" name="date_end" value="{{DATE_END}}" min="{{DATE_MIN}}" max="{{DATE_MAX}}">
           </div>
+
+          <label class="cancelled-filter-toggle">
+            <input type="checkbox" name="show_cancelled" value="1"{{SHOW_CANCELLED_CHECKED}}>
+            <span>Afficher les factures annulées</span>
+          </label>
 
           <input type="hidden" name="per_page" value="{{PER_PAGE}}">
           <button class="clear-filters" type="button" data-clear-filters title="Réinitialiser les filtres" aria-label="Réinitialiser les filtres"><svg><use href="#i-filter-x"/></svg></button>
-          <button class="export-excel" type="submit" formaction="/table-facturation-new/export" title="Exporter les résultats filtrés"><svg><use href="#i-excel"/></svg><span>Exporter Excel</span></button>
+          <button class="export-excel" type="submit" formaction="/table-facturation-new/export" title="Exporter Excel" aria-label="Exporter Excel"><svg><use href="#i-excel"/></svg></button>
         </form>
 
         <div class="facturation-table-wrap">
           <table class="facturation-table">
             <colgroup>
-              <col class="c-site"><col class="c-bet"><col class="c-typologie"><col class="c-type"><col class="c-bc"><col class="c-facture"><col class="c-region"><col class="c-date"><col class="c-ttc"><col class="c-remarque"><col class="c-depose"><col class="c-maj"><col class="c-actions">
+              <col class="c-direction"><col class="c-bc"><col class="c-site"><col class="c-type-bc"><col class="c-object"><col class="c-partner"><col class="c-partner"><col class="c-typology"><col class="c-facture"><col class="c-date"><col class="c-ttc"><col class="c-tracking"><col class="c-tracking"><col class="c-tracking"><col class="c-transfer"><col class="c-status"><col class="c-remarque"><col class="c-actions">
             </colgroup>
             <thead><tr>
-              <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="site"><span>C. SITE</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
-              <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="bet"><span>BET</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
-              <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="typologie"><span>TYPOLOGIE</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
-              <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="type"><span>TYPE BC</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
-              <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="bc"><span>N° BON DE COMMANDE</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
+              <th><span>DR MOBILIS</span></th>
+              <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="bc"><span>N° BC</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
+              <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="site"><span>CODE SITE</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
+              <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="invoice_type"><span>TYPE BC</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
+              <th><span>OBJET BC</span></th>
+              <th><span>BET</span></th>
+              <th><span>ST</span></th>
+              <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="typology"><span>TYPOLOGIE SITE</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
               <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="invoice"><span>N° FACTURE</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
-              <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="region"><span>RÉGION</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
               <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="date"><span>DATE FACTURE</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
-              <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="ttc"><span>TTC</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
+              <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="ttc"><span>TTC FACTURE</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
+              <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="dtc"><span>DATE DÉPÔT DTC</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
+              <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="mobilis"><span>DATE DÉPÔT MOBILIS</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
+              <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="ov"><span>DATE PAIEMENT</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
+              <th><span>N° ORDRE DE VIREMENT</span></th>
+              <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="status"><span>ÉTAT</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
               <th><span>REMARQUE</span></th>
-              <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="depos"><span>DÉPOSÉ</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
-              <th class="sortable-header"><button type="button" class="table-sort-button" data-sort-key="maj"><span>MAJ</span><span class="table-sort-arrow" aria-hidden="true"></span></button></th>
               <th><span>ACTIONS</span></th>
             </tr></thead>
             <tbody>{{ROWS}}</tbody>

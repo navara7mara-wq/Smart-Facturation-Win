@@ -1,0 +1,2628 @@
+[
+  {
+    "file": "ndc_xlsx.xlsx",
+    "sheets": [
+      {
+        "title": "Facture",
+        "max_row": 963,
+        "max_column": 24,
+        "print_area": "'Facture'!$A$1:$F$39",
+        "images": 0,
+        "merged_count": 7,
+        "found": [
+          {
+            "cell": "A13",
+            "value": "FACTURE N� : 120/2026"
+          },
+          {
+            "cell": "F22",
+            "value": "Montant/HT"
+          },
+          {
+            "cell": "A24",
+            "value": 6
+          },
+          {
+            "cell": "D24",
+            "value": 2
+          },
+          {
+            "cell": "E24",
+            "value": 50000
+          },
+          {
+            "cell": "F24",
+            "value": 100000
+          },
+          {
+            "cell": "E25",
+            "value": "TOTAL EN HT"
+          },
+          {
+            "cell": "F25",
+            "value": 100000
+          },
+          {
+            "cell": "F27",
+            "value": 100000
+          },
+          {
+            "cell": "E28",
+            "value": "RETENUE DE GARANTIE 5%"
+          },
+          {
+            "cell": "F28",
+            "value": 5000
+          },
+          {
+            "cell": "E29",
+            "value": "MONTANT HT APRES RETENUE DE GARANTIE"
+          },
+          {
+            "cell": "F29",
+            "value": 95000
+          },
+          {
+            "cell": "E30",
+            "value": "TVA 19%"
+          },
+          {
+            "cell": "F30",
+            "value": 18050
+          },
+          {
+            "cell": "F31",
+            "value": 113050
+          }
+        ],
+        "formula_count": 0,
+        "formula_errors": []
+      },
+      {
+        "title": "Devis Quantitatif",
+        "max_row": 42,
+        "max_column": 4,
+        "print_area": "'Devis Quantitatif'!$A$1:$D$42",
+        "images": 1,
+        "merged_count": 1,
+        "found": [
+          {
+            "cell": "A15",
+            "value": 6
+          },
+          {
+            "cell": "D15",
+            "value": 2
+          }
+        ],
+        "formula_count": 0,
+        "formula_errors": []
+      },
+      {
+        "title": "Devis Estimatif",
+        "max_row": 42,
+        "max_column": 6,
+        "print_area": "'Devis Estimatif'!$A$1:$F$42",
+        "images": 1,
+        "merged_count": 1,
+        "found": [
+          {
+            "cell": "F13",
+            "value": "Montant/HT"
+          },
+          {
+            "cell": "A15",
+            "value": 6
+          },
+          {
+            "cell": "D15",
+            "value": 2
+          },
+          {
+            "cell": "E15",
+            "value": 50000
+          },
+          {
+            "cell": "F15",
+            "value": 100000
+          },
+          {
+            "cell": "A16",
+            "value": "TOTAL  FOURNITURES  HT (01)"
+          },
+          {
+            "cell": "F16",
+            "value": 100000
+          },
+          {
+            "cell": "B18",
+            "value": "TOTAL GENERAL"
+          },
+          {
+            "cell": "F18",
+            "value": 100000
+          }
+        ],
+        "formula_count": 0,
+        "formula_errors": []
+      },
+      {
+        "title": "BPU",
+        "max_row": 1000,
+        "max_column": 25,
+        "print_area": "",
+        "images": 1,
+        "merged_count": 1,
+        "found": [
+          {
+            "cell": "A6",
+            "value": 1
+          },
+          {
+            "cell": "D6",
+            "value": 85000
+          },
+          {
+            "cell": "A7",
+            "value": 2
+          },
+          {
+            "cell": "D7",
+            "value": 40000
+          },
+          {
+            "cell": "A8",
+            "value": 3
+          },
+          {
+            "cell": "D8",
+            "value": 40000
+          },
+          {
+            "cell": "A9",
+            "value": 4
+          },
+          {
+            "cell": "D9",
+            "value": 40000
+          },
+          {
+            "cell": "A10",
+            "value": 5
+          },
+          {
+            "cell": "D10",
+            "value": 100000
+          },
+          {
+            "cell": "A11",
+            "value": 6
+          },
+          {
+            "cell": "D11",
+            "value": 50000
+          },
+          {
+            "cell": "A12",
+            "value": 7
+          },
+          {
+            "cell": "D12",
+            "value": 25000
+          },
+          {
+            "cell": "A13",
+            "value": 8
+          },
+          {
+            "cell": "D13",
+            "value": 20000
+          },
+          {
+            "cell": "A14",
+            "value": 9
+          },
+          {
+            "cell": "D14",
+            "value": 22000
+          },
+          {
+            "cell": "A15",
+            "value": 10
+          },
+          {
+            "cell": "D15",
+            "value": 40000
+          },
+          {
+            "cell": "A16",
+            "value": 11
+          },
+          {
+            "cell": "D16",
+            "value": 15000
+          },
+          {
+            "cell": "A17",
+            "value": 12
+          },
+          {
+            "cell": "D17",
+            "value": 15000
+          },
+          {
+            "cell": "A18",
+            "value": 13
+          },
+          {
+            "cell": "D18",
+            "value": 30000
+          },
+          {
+            "cell": "A19",
+            "value": 14
+          },
+          {
+            "cell": "D19",
+            "value": 30000
+          },
+          {
+            "cell": "A20",
+            "value": 15
+          },
+          {
+            "cell": "D20",
+            "value": 35000
+          },
+          {
+            "cell": "A21",
+            "value": 16
+          },
+          {
+            "cell": "D21",
+            "value": 100000
+          },
+          {
+            "cell": "A23",
+            "value": 17
+          },
+          {
+            "cell": "D23",
+            "value": 9700
+          },
+          {
+            "cell": "A24",
+            "value": 18
+          },
+          {
+            "cell": "D24",
+            "value": 12125
+          },
+          {
+            "cell": "A25",
+            "value": 19
+          },
+          {
+            "cell": "D25",
+            "value": 17460
+          },
+          {
+            "cell": "A26",
+            "value": 20
+          },
+          {
+            "cell": "D26",
+            "value": 24250
+          },
+          {
+            "cell": "A27",
+            "value": 21
+          },
+          {
+            "cell": "D27",
+            "value": 4850
+          },
+          {
+            "cell": "A28",
+            "value": 22
+          },
+          {
+            "cell": "D28",
+            "value": 5820
+          },
+          {
+            "cell": "A29",
+            "value": 23
+          },
+          {
+            "cell": "D29",
+            "value": 2910
+          },
+          {
+            "cell": "A30",
+            "value": 24
+          },
+          {
+            "cell": "D30",
+            "value": 35000
+          },
+          {
+            "cell": "A31",
+            "value": 25
+          },
+          {
+            "cell": "D31",
+            "value": 20000
+          },
+          {
+            "cell": "A32",
+            "value": 26
+          },
+          {
+            "cell": "D32",
+            "value": 35000
+          },
+          {
+            "cell": "A33",
+            "value": 27
+          },
+          {
+            "cell": "D33",
+            "value": 20000
+          },
+          {
+            "cell": "A34",
+            "value": 28
+          },
+          {
+            "cell": "D34",
+            "value": 82450
+          },
+          {
+            "cell": "A35",
+            "value": 29
+          },
+          {
+            "cell": "D35",
+            "value": 14550
+          },
+          {
+            "cell": "A36",
+            "value": 30
+          },
+          {
+            "cell": "D36",
+            "value": 50000
+          },
+          {
+            "cell": "A37",
+            "value": 31
+          },
+          {
+            "cell": "D37",
+            "value": 25000
+          },
+          {
+            "cell": "A38",
+            "value": 32
+          },
+          {
+            "cell": "D38",
+            "value": 70000
+          },
+          {
+            "cell": "A39",
+            "value": 33
+          },
+          {
+            "cell": "D39",
+            "value": 45000
+          },
+          {
+            "cell": "A40",
+            "value": 34
+          },
+          {
+            "cell": "D40",
+            "value": 85000
+          },
+          {
+            "cell": "A41",
+            "value": 35
+          },
+          {
+            "cell": "D41",
+            "value": 60000
+          },
+          {
+            "cell": "A42",
+            "value": 36
+          },
+          {
+            "cell": "D42",
+            "value": 110000
+          },
+          {
+            "cell": "A43",
+            "value": 37
+          },
+          {
+            "cell": "D43",
+            "value": 70000
+          },
+          {
+            "cell": "A44",
+            "value": 38
+          },
+          {
+            "cell": "D44",
+            "value": 120000
+          },
+          {
+            "cell": "A45",
+            "value": 39
+          },
+          {
+            "cell": "D45",
+            "value": 85000
+          },
+          {
+            "cell": "A46",
+            "value": 40
+          },
+          {
+            "cell": "D46",
+            "value": 125000
+          },
+          {
+            "cell": "A47",
+            "value": 41
+          },
+          {
+            "cell": "D47",
+            "value": 85000
+          },
+          {
+            "cell": "A48",
+            "value": 42
+          },
+          {
+            "cell": "D48",
+            "value": 140000
+          },
+          {
+            "cell": "A49",
+            "value": 43
+          },
+          {
+            "cell": "D49",
+            "value": 100000
+          },
+          {
+            "cell": "A50",
+            "value": 44
+          },
+          {
+            "cell": "D50",
+            "value": 165000
+          },
+          {
+            "cell": "A51",
+            "value": 45
+          },
+          {
+            "cell": "D51",
+            "value": 110000
+          },
+          {
+            "cell": "A52",
+            "value": 46
+          },
+          {
+            "cell": "D52",
+            "value": 180000
+          },
+          {
+            "cell": "A53",
+            "value": 47
+          },
+          {
+            "cell": "D53",
+            "value": 120000
+          },
+          {
+            "cell": "A54",
+            "value": 48
+          },
+          {
+            "cell": "D54",
+            "value": 3880
+          },
+          {
+            "cell": "A55",
+            "value": 49
+          },
+          {
+            "cell": "D55",
+            "value": 2910
+          },
+          {
+            "cell": "A56",
+            "value": 50
+          },
+          {
+            "cell": "D56",
+            "value": 7760
+          },
+          {
+            "cell": "A57",
+            "value": 51
+          },
+          {
+            "cell": "D57",
+            "value": 4850
+          },
+          {
+            "cell": "A58",
+            "value": 52
+          },
+          {
+            "cell": "D58",
+            "value": 3395
+          },
+          {
+            "cell": "A59",
+            "value": 53
+          },
+          {
+            "cell": "D59",
+            "value": 1940
+          },
+          {
+            "cell": "A60",
+            "value": 54
+          },
+          {
+            "cell": "D60",
+            "value": 2425
+          },
+          {
+            "cell": "A61",
+            "value": 55
+          },
+          {
+            "cell": "D61",
+            "value": 1940
+          },
+          {
+            "cell": "A62",
+            "value": 56
+          },
+          {
+            "cell": "D62",
+            "value": 145.5
+          },
+          {
+            "cell": "A63",
+            "value": 57
+          },
+          {
+            "cell": "D63",
+            "value": 145.5
+          },
+          {
+            "cell": "A64",
+            "value": 58
+          },
+          {
+            "cell": "D64",
+            "value": 1940
+          },
+          {
+            "cell": "A65",
+            "value": 59
+          },
+          {
+            "cell": "D65",
+            "value": 10000
+          },
+          {
+            "cell": "A66",
+            "value": 60
+          },
+          {
+            "cell": "D66",
+            "value": 250000
+          },
+          {
+            "cell": "A67",
+            "value": 61
+          },
+          {
+            "cell": "D67",
+            "value": 15000
+          },
+          {
+            "cell": "A68",
+            "value": 62
+          },
+          {
+            "cell": "D68",
+            "value": 16000
+          },
+          {
+            "cell": "A69",
+            "value": 63
+          },
+          {
+            "cell": "D69",
+            "value": 11000
+          },
+          {
+            "cell": "A70",
+            "value": 64
+          },
+          {
+            "cell": "D70",
+            "value": 30000
+          },
+          {
+            "cell": "A71",
+            "value": 65
+          },
+          {
+            "cell": "D71",
+            "value": 20000
+          },
+          {
+            "cell": "A72",
+            "value": 66
+          },
+          {
+            "cell": "D72",
+            "value": 3880
+          },
+          {
+            "cell": "A73",
+            "value": 67
+          },
+          {
+            "cell": "D73",
+            "value": 2910
+          },
+          {
+            "cell": "A74",
+            "value": 68
+          },
+          {
+            "cell": "D74",
+            "value": 4850
+          },
+          {
+            "cell": "A75",
+            "value": 69
+          },
+          {
+            "cell": "D75",
+            "value": 388
+          },
+          {
+            "cell": "A76",
+            "value": 70
+          },
+          {
+            "cell": "D76",
+            "value": 3880
+          },
+          {
+            "cell": "A77",
+            "value": 71
+          },
+          {
+            "cell": "D77",
+            "value": 4850
+          },
+          {
+            "cell": "A78",
+            "value": 72
+          },
+          {
+            "cell": "D78",
+            "value": 5820
+          },
+          {
+            "cell": "A79",
+            "value": 73
+          },
+          {
+            "cell": "D79",
+            "value": 4850
+          },
+          {
+            "cell": "A80",
+            "value": 74
+          },
+          {
+            "cell": "D80",
+            "value": 5820
+          },
+          {
+            "cell": "A81",
+            "value": 75
+          },
+          {
+            "cell": "D81",
+            "value": 3880
+          },
+          {
+            "cell": "A82",
+            "value": 76
+          },
+          {
+            "cell": "D82",
+            "value": 2910
+          },
+          {
+            "cell": "A83",
+            "value": 77
+          },
+          {
+            "cell": "D83",
+            "value": 2910
+          },
+          {
+            "cell": "A84",
+            "value": 78
+          },
+          {
+            "cell": "D84",
+            "value": 2910
+          },
+          {
+            "cell": "A85",
+            "value": 79
+          },
+          {
+            "cell": "D85",
+            "value": 4850
+          },
+          {
+            "cell": "A86",
+            "value": 80
+          },
+          {
+            "cell": "D86",
+            "value": 2910
+          },
+          {
+            "cell": "A87",
+            "value": 81
+          },
+          {
+            "cell": "D87",
+            "value": 2425
+          },
+          {
+            "cell": "A88",
+            "value": 82
+          },
+          {
+            "cell": "D88",
+            "value": 1455
+          },
+          {
+            "cell": "A89",
+            "value": 83
+          },
+          {
+            "cell": "D89",
+            "value": 33950
+          },
+          {
+            "cell": "A90",
+            "value": 84
+          },
+          {
+            "cell": "D90",
+            "value": 19400
+          },
+          {
+            "cell": "A91",
+            "value": 85
+          },
+          {
+            "cell": "D91",
+            "value": 23280
+          },
+          {
+            "cell": "A92",
+            "value": 86
+          },
+          {
+            "cell": "D92",
+            "value": 116400
+          },
+          {
+            "cell": "A93",
+            "value": 87
+          },
+          {
+            "cell": "D93",
+            "value": 33950
+          },
+          {
+            "cell": "A94",
+            "value": 88
+          },
+          {
+            "cell": "D94",
+            "value": 24250
+          },
+          {
+            "cell": "A95",
+            "value": 89
+          },
+          {
+            "cell": "D95",
+            "value": 48500
+          },
+          {
+            "cell": "A96",
+            "value": 90
+          },
+          {
+            "cell": "D96",
+            "value": 11640
+          },
+          {
+            "cell": "A97",
+            "value": 91
+          },
+          {
+            "cell": "D97",
+            "value": 7760
+          },
+          {
+            "cell": "A98",
+            "value": 92
+          },
+          {
+            "cell": "D98",
+            "value": 2425
+          },
+          {
+            "cell": "A99",
+            "value": 93
+          },
+          {
+            "cell": "D99",
+            "value": 2425
+          },
+          {
+            "cell": "A100",
+            "value": 94
+          },
+          {
+            "cell": "D100",
+            "value": 485
+          },
+          {
+            "cell": "A101",
+            "value": 95
+          },
+          {
+            "cell": "D101",
+            "value": 13580
+          },
+          {
+            "cell": "A102",
+            "value": 96
+          },
+          {
+            "cell": "D102",
+            "value": 6790
+          },
+          {
+            "cell": "A103",
+            "value": 97
+          },
+          {
+            "cell": "D103",
+            "value": 2425
+          },
+          {
+            "cell": "A104",
+            "value": 98
+          },
+          {
+            "cell": "D104",
+            "value": 16490
+          },
+          {
+            "cell": "A105",
+            "value": 99
+          },
+          {
+            "cell": "D105",
+            "value": 12610
+          },
+          {
+            "cell": "A106",
+            "value": 100
+          },
+          {
+            "cell": "D106",
+            "value": 51410
+          },
+          {
+            "cell": "A107",
+            "value": 101
+          },
+          {
+            "cell": "D107",
+            "value": 58200
+          },
+          {
+            "cell": "A108",
+            "value": 102
+          },
+          {
+            "cell": "D108",
+            "value": 3880
+          },
+          {
+            "cell": "A109",
+            "value": 103
+          },
+          {
+            "cell": "D109",
+            "value": 970
+          },
+          {
+            "cell": "A110",
+            "value": 104
+          },
+          {
+            "cell": "D110",
+            "value": 970
+          },
+          {
+            "cell": "A111",
+            "value": 105
+          },
+          {
+            "cell": "D111",
+            "value": 29100
+          },
+          {
+            "cell": "A112",
+            "value": 106
+          },
+          {
+            "cell": "D112",
+            "value": 9700
+          },
+          {
+            "cell": "A113",
+            "value": 107
+          },
+          {
+            "cell": "D113",
+            "value": 32010
+          },
+          {
+            "cell": "A114",
+            "value": 108
+          },
+          {
+            "cell": "D114",
+            "value": 970
+          },
+          {
+            "cell": "A115",
+            "value": 109
+          },
+          {
+            "cell": "D115",
+            "value": 14550
+          },
+          {
+            "cell": "A116",
+            "value": 110
+          },
+          {
+            "cell": "D116",
+            "value": 7760
+          },
+          {
+            "cell": "A117",
+            "value": 111
+          },
+          {
+            "cell": "D117",
+            "value": 7760
+          },
+          {
+            "cell": "A118",
+            "value": 112
+          },
+          {
+            "cell": "D118",
+            "value": 970
+          },
+          {
+            "cell": "A119",
+            "value": 113
+          },
+          {
+            "cell": "D119",
+            "value": 194000
+          },
+          {
+            "cell": "A120",
+            "value": 114
+          },
+          {
+            "cell": "D120",
+            "value": 174600
+          },
+          {
+            "cell": "A121",
+            "value": 115
+          },
+          {
+            "cell": "D121",
+            "value": 194000
+          },
+          {
+            "cell": "A122",
+            "value": 116
+          },
+          {
+            "cell": "D122",
+            "value": 135800
+          },
+          {
+            "cell": "A123",
+            "value": 117
+          },
+          {
+            "cell": "D123",
+            "value": 48500
+          },
+          {
+            "cell": "A124",
+            "value": 118
+          },
+          {
+            "cell": "D124",
+            "value": 17460
+          },
+          {
+            "cell": "A125",
+            "value": 119
+          },
+          {
+            "cell": "D125",
+            "value": 77600
+          },
+          {
+            "cell": "A126",
+            "value": 120
+          },
+          {
+            "cell": "D126",
+            "value": 9700
+          },
+          {
+            "cell": "A127",
+            "value": 121
+          },
+          {
+            "cell": "D127",
+            "value": 7760
+          },
+          {
+            "cell": "A128",
+            "value": 122
+          },
+          {
+            "cell": "D128",
+            "value": 6790
+          },
+          {
+            "cell": "A129",
+            "value": 123
+          },
+          {
+            "cell": "D129",
+            "value": 1746
+          },
+          {
+            "cell": "A130",
+            "value": 124
+          },
+          {
+            "cell": "D130",
+            "value": 1746
+          },
+          {
+            "cell": "A131",
+            "value": 125
+          },
+          {
+            "cell": "D131",
+            "value": 3395
+          },
+          {
+            "cell": "A132",
+            "value": 126
+          },
+          {
+            "cell": "D132",
+            "value": 1455
+          },
+          {
+            "cell": "A133",
+            "value": 127
+          },
+          {
+            "cell": "D133",
+            "value": 776
+          },
+          {
+            "cell": "A134",
+            "value": 128
+          },
+          {
+            "cell": "D134",
+            "value": 2425
+          },
+          {
+            "cell": "A135",
+            "value": 129
+          },
+          {
+            "cell": "D135",
+            "value": 776
+          },
+          {
+            "cell": "A136",
+            "value": 130
+          },
+          {
+            "cell": "D136",
+            "value": 2716
+          },
+          {
+            "cell": "A137",
+            "value": 131
+          },
+          {
+            "cell": "D137",
+            "value": 4850
+          },
+          {
+            "cell": "A138",
+            "value": 132
+          },
+          {
+            "cell": "D138",
+            "value": 19400
+          },
+          {
+            "cell": "A139",
+            "value": 133
+          },
+          {
+            "cell": "D139",
+            "value": 5820
+          },
+          {
+            "cell": "A140",
+            "value": 134
+          },
+          {
+            "cell": "D140",
+            "value": 3395
+          },
+          {
+            "cell": "A141",
+            "value": 135
+          },
+          {
+            "cell": "D141",
+            "value": 7760
+          },
+          {
+            "cell": "A142",
+            "value": 136
+          },
+          {
+            "cell": "D142",
+            "value": 2910
+          },
+          {
+            "cell": "A143",
+            "value": 137
+          },
+          {
+            "cell": "D143",
+            "value": 1455
+          },
+          {
+            "cell": "A144",
+            "value": 138
+          },
+          {
+            "cell": "D144",
+            "value": 3880
+          },
+          {
+            "cell": "A145",
+            "value": 139
+          },
+          {
+            "cell": "D145",
+            "value": 4850
+          },
+          {
+            "cell": "A146",
+            "value": 140
+          },
+          {
+            "cell": "D146",
+            "value": 1940
+          },
+          {
+            "cell": "A147",
+            "value": 141
+          },
+          {
+            "cell": "D147",
+            "value": 970
+          },
+          {
+            "cell": "A148",
+            "value": 142
+          },
+          {
+            "cell": "D148",
+            "value": 4850
+          },
+          {
+            "cell": "A149",
+            "value": 143
+          },
+          {
+            "cell": "D149",
+            "value": 2425
+          },
+          {
+            "cell": "A150",
+            "value": 144
+          },
+          {
+            "cell": "D150",
+            "value": 5335
+          }
+        ],
+        "formula_count": 0,
+        "formula_errors": []
+      }
+    ]
+  },
+  {
+    "file": "normal_xlsx.xlsx",
+    "sheets": [
+      {
+        "title": "Facture",
+        "max_row": 963,
+        "max_column": 24,
+        "print_area": "'Facture'!$A$1:$F$39",
+        "images": 0,
+        "merged_count": 7,
+        "found": [
+          {
+            "cell": "A13",
+            "value": "FACTURE N� : QA_RC1_AUDIT_20260825_FAC_01"
+          },
+          {
+            "cell": "F22",
+            "value": "Montant/HT"
+          },
+          {
+            "cell": "A24",
+            "value": 1
+          },
+          {
+            "cell": "D24",
+            "value": 1.125
+          },
+          {
+            "cell": "E24",
+            "value": 85000
+          },
+          {
+            "cell": "F24",
+            "value": 95625
+          },
+          {
+            "cell": "E25",
+            "value": "TOTAL EN HT"
+          },
+          {
+            "cell": "F25",
+            "value": 95625
+          },
+          {
+            "cell": "F27",
+            "value": 95625
+          },
+          {
+            "cell": "E28",
+            "value": "RETENUE DE GARANTIE 5%"
+          },
+          {
+            "cell": "F28",
+            "value": 4781.25
+          },
+          {
+            "cell": "E29",
+            "value": "MONTANT HT APRES RETENUE DE GARANTIE"
+          },
+          {
+            "cell": "F29",
+            "value": 90843.75
+          },
+          {
+            "cell": "E30",
+            "value": "TVA 19%"
+          },
+          {
+            "cell": "F30",
+            "value": 17260.31
+          },
+          {
+            "cell": "F31",
+            "value": 108104.06
+          }
+        ],
+        "formula_count": 0,
+        "formula_errors": []
+      },
+      {
+        "title": "Devis Quantitatif",
+        "max_row": 42,
+        "max_column": 4,
+        "print_area": "'Devis Quantitatif'!$A$1:$D$42",
+        "images": 1,
+        "merged_count": 1,
+        "found": [
+          {
+            "cell": "A15",
+            "value": 1
+          },
+          {
+            "cell": "D15",
+            "value": 1.125
+          }
+        ],
+        "formula_count": 0,
+        "formula_errors": []
+      },
+      {
+        "title": "Devis Estimatif",
+        "max_row": 42,
+        "max_column": 6,
+        "print_area": "'Devis Estimatif'!$A$1:$F$42",
+        "images": 1,
+        "merged_count": 1,
+        "found": [
+          {
+            "cell": "F13",
+            "value": "Montant/HT"
+          },
+          {
+            "cell": "A15",
+            "value": 1
+          },
+          {
+            "cell": "D15",
+            "value": 1.125
+          },
+          {
+            "cell": "E15",
+            "value": 85000
+          },
+          {
+            "cell": "F15",
+            "value": 95625
+          },
+          {
+            "cell": "A16",
+            "value": "TOTAL  FOURNITURES  HT (01)"
+          },
+          {
+            "cell": "F16",
+            "value": 95625
+          },
+          {
+            "cell": "B18",
+            "value": "TOTAL GENERAL"
+          },
+          {
+            "cell": "F18",
+            "value": 95625
+          }
+        ],
+        "formula_count": 0,
+        "formula_errors": []
+      },
+      {
+        "title": "BPU",
+        "max_row": 1000,
+        "max_column": 25,
+        "print_area": "",
+        "images": 1,
+        "merged_count": 1,
+        "found": [
+          {
+            "cell": "A6",
+            "value": 1
+          },
+          {
+            "cell": "D6",
+            "value": 85000
+          },
+          {
+            "cell": "A7",
+            "value": 2
+          },
+          {
+            "cell": "D7",
+            "value": 40000
+          },
+          {
+            "cell": "A8",
+            "value": 3
+          },
+          {
+            "cell": "D8",
+            "value": 40000
+          },
+          {
+            "cell": "A9",
+            "value": 4
+          },
+          {
+            "cell": "D9",
+            "value": 40000
+          },
+          {
+            "cell": "A10",
+            "value": 5
+          },
+          {
+            "cell": "D10",
+            "value": 100000
+          },
+          {
+            "cell": "A11",
+            "value": 6
+          },
+          {
+            "cell": "D11",
+            "value": 50000
+          },
+          {
+            "cell": "A12",
+            "value": 7
+          },
+          {
+            "cell": "D12",
+            "value": 25000
+          },
+          {
+            "cell": "A13",
+            "value": 8
+          },
+          {
+            "cell": "D13",
+            "value": 20000
+          },
+          {
+            "cell": "A14",
+            "value": 9
+          },
+          {
+            "cell": "D14",
+            "value": 22000
+          },
+          {
+            "cell": "A15",
+            "value": 10
+          },
+          {
+            "cell": "D15",
+            "value": 40000
+          },
+          {
+            "cell": "A16",
+            "value": 11
+          },
+          {
+            "cell": "D16",
+            "value": 15000
+          },
+          {
+            "cell": "A17",
+            "value": 12
+          },
+          {
+            "cell": "D17",
+            "value": 15000
+          },
+          {
+            "cell": "A18",
+            "value": 13
+          },
+          {
+            "cell": "D18",
+            "value": 30000
+          },
+          {
+            "cell": "A19",
+            "value": 14
+          },
+          {
+            "cell": "D19",
+            "value": 30000
+          },
+          {
+            "cell": "A20",
+            "value": 15
+          },
+          {
+            "cell": "D20",
+            "value": 35000
+          },
+          {
+            "cell": "A21",
+            "value": 16
+          },
+          {
+            "cell": "D21",
+            "value": 100000
+          },
+          {
+            "cell": "A23",
+            "value": 17
+          },
+          {
+            "cell": "D23",
+            "value": 9700
+          },
+          {
+            "cell": "A24",
+            "value": 18
+          },
+          {
+            "cell": "D24",
+            "value": 12125
+          },
+          {
+            "cell": "A25",
+            "value": 19
+          },
+          {
+            "cell": "D25",
+            "value": 17460
+          },
+          {
+            "cell": "A26",
+            "value": 20
+          },
+          {
+            "cell": "D26",
+            "value": 24250
+          },
+          {
+            "cell": "A27",
+            "value": 21
+          },
+          {
+            "cell": "D27",
+            "value": 4850
+          },
+          {
+            "cell": "A28",
+            "value": 22
+          },
+          {
+            "cell": "D28",
+            "value": 5820
+          },
+          {
+            "cell": "A29",
+            "value": 23
+          },
+          {
+            "cell": "D29",
+            "value": 2910
+          },
+          {
+            "cell": "A30",
+            "value": 24
+          },
+          {
+            "cell": "D30",
+            "value": 35000
+          },
+          {
+            "cell": "A31",
+            "value": 25
+          },
+          {
+            "cell": "D31",
+            "value": 20000
+          },
+          {
+            "cell": "A32",
+            "value": 26
+          },
+          {
+            "cell": "D32",
+            "value": 35000
+          },
+          {
+            "cell": "A33",
+            "value": 27
+          },
+          {
+            "cell": "D33",
+            "value": 20000
+          },
+          {
+            "cell": "A34",
+            "value": 28
+          },
+          {
+            "cell": "D34",
+            "value": 82450
+          },
+          {
+            "cell": "A35",
+            "value": 29
+          },
+          {
+            "cell": "D35",
+            "value": 14550
+          },
+          {
+            "cell": "A36",
+            "value": 30
+          },
+          {
+            "cell": "D36",
+            "value": 50000
+          },
+          {
+            "cell": "A37",
+            "value": 31
+          },
+          {
+            "cell": "D37",
+            "value": 25000
+          },
+          {
+            "cell": "A38",
+            "value": 32
+          },
+          {
+            "cell": "D38",
+            "value": 70000
+          },
+          {
+            "cell": "A39",
+            "value": 33
+          },
+          {
+            "cell": "D39",
+            "value": 45000
+          },
+          {
+            "cell": "A40",
+            "value": 34
+          },
+          {
+            "cell": "D40",
+            "value": 85000
+          },
+          {
+            "cell": "A41",
+            "value": 35
+          },
+          {
+            "cell": "D41",
+            "value": 60000
+          },
+          {
+            "cell": "A42",
+            "value": 36
+          },
+          {
+            "cell": "D42",
+            "value": 110000
+          },
+          {
+            "cell": "A43",
+            "value": 37
+          },
+          {
+            "cell": "D43",
+            "value": 70000
+          },
+          {
+            "cell": "A44",
+            "value": 38
+          },
+          {
+            "cell": "D44",
+            "value": 120000
+          },
+          {
+            "cell": "A45",
+            "value": 39
+          },
+          {
+            "cell": "D45",
+            "value": 85000
+          },
+          {
+            "cell": "A46",
+            "value": 40
+          },
+          {
+            "cell": "D46",
+            "value": 125000
+          },
+          {
+            "cell": "A47",
+            "value": 41
+          },
+          {
+            "cell": "D47",
+            "value": 85000
+          },
+          {
+            "cell": "A48",
+            "value": 42
+          },
+          {
+            "cell": "D48",
+            "value": 140000
+          },
+          {
+            "cell": "A49",
+            "value": 43
+          },
+          {
+            "cell": "D49",
+            "value": 100000
+          },
+          {
+            "cell": "A50",
+            "value": 44
+          },
+          {
+            "cell": "D50",
+            "value": 165000
+          },
+          {
+            "cell": "A51",
+            "value": 45
+          },
+          {
+            "cell": "D51",
+            "value": 110000
+          },
+          {
+            "cell": "A52",
+            "value": 46
+          },
+          {
+            "cell": "D52",
+            "value": 180000
+          },
+          {
+            "cell": "A53",
+            "value": 47
+          },
+          {
+            "cell": "D53",
+            "value": 120000
+          },
+          {
+            "cell": "A54",
+            "value": 48
+          },
+          {
+            "cell": "D54",
+            "value": 3880
+          },
+          {
+            "cell": "A55",
+            "value": 49
+          },
+          {
+            "cell": "D55",
+            "value": 2910
+          },
+          {
+            "cell": "A56",
+            "value": 50
+          },
+          {
+            "cell": "D56",
+            "value": 7760
+          },
+          {
+            "cell": "A57",
+            "value": 51
+          },
+          {
+            "cell": "D57",
+            "value": 4850
+          },
+          {
+            "cell": "A58",
+            "value": 52
+          },
+          {
+            "cell": "D58",
+            "value": 3395
+          },
+          {
+            "cell": "A59",
+            "value": 53
+          },
+          {
+            "cell": "D59",
+            "value": 1940
+          },
+          {
+            "cell": "A60",
+            "value": 54
+          },
+          {
+            "cell": "D60",
+            "value": 2425
+          },
+          {
+            "cell": "A61",
+            "value": 55
+          },
+          {
+            "cell": "D61",
+            "value": 1940
+          },
+          {
+            "cell": "A62",
+            "value": 56
+          },
+          {
+            "cell": "D62",
+            "value": 145.5
+          },
+          {
+            "cell": "A63",
+            "value": 57
+          },
+          {
+            "cell": "D63",
+            "value": 145.5
+          },
+          {
+            "cell": "A64",
+            "value": 58
+          },
+          {
+            "cell": "D64",
+            "value": 1940
+          },
+          {
+            "cell": "A65",
+            "value": 59
+          },
+          {
+            "cell": "D65",
+            "value": 10000
+          },
+          {
+            "cell": "A66",
+            "value": 60
+          },
+          {
+            "cell": "D66",
+            "value": 250000
+          },
+          {
+            "cell": "A67",
+            "value": 61
+          },
+          {
+            "cell": "D67",
+            "value": 15000
+          },
+          {
+            "cell": "A68",
+            "value": 62
+          },
+          {
+            "cell": "D68",
+            "value": 16000
+          },
+          {
+            "cell": "A69",
+            "value": 63
+          },
+          {
+            "cell": "D69",
+            "value": 11000
+          },
+          {
+            "cell": "A70",
+            "value": 64
+          },
+          {
+            "cell": "D70",
+            "value": 30000
+          },
+          {
+            "cell": "A71",
+            "value": 65
+          },
+          {
+            "cell": "D71",
+            "value": 20000
+          },
+          {
+            "cell": "A72",
+            "value": 66
+          },
+          {
+            "cell": "D72",
+            "value": 3880
+          },
+          {
+            "cell": "A73",
+            "value": 67
+          },
+          {
+            "cell": "D73",
+            "value": 2910
+          },
+          {
+            "cell": "A74",
+            "value": 68
+          },
+          {
+            "cell": "D74",
+            "value": 4850
+          },
+          {
+            "cell": "A75",
+            "value": 69
+          },
+          {
+            "cell": "D75",
+            "value": 388
+          },
+          {
+            "cell": "A76",
+            "value": 70
+          },
+          {
+            "cell": "D76",
+            "value": 3880
+          },
+          {
+            "cell": "A77",
+            "value": 71
+          },
+          {
+            "cell": "D77",
+            "value": 4850
+          },
+          {
+            "cell": "A78",
+            "value": 72
+          },
+          {
+            "cell": "D78",
+            "value": 5820
+          },
+          {
+            "cell": "A79",
+            "value": 73
+          },
+          {
+            "cell": "D79",
+            "value": 4850
+          },
+          {
+            "cell": "A80",
+            "value": 74
+          },
+          {
+            "cell": "D80",
+            "value": 5820
+          },
+          {
+            "cell": "A81",
+            "value": 75
+          },
+          {
+            "cell": "D81",
+            "value": 3880
+          },
+          {
+            "cell": "A82",
+            "value": 76
+          },
+          {
+            "cell": "D82",
+            "value": 2910
+          },
+          {
+            "cell": "A83",
+            "value": 77
+          },
+          {
+            "cell": "D83",
+            "value": 2910
+          },
+          {
+            "cell": "A84",
+            "value": 78
+          },
+          {
+            "cell": "D84",
+            "value": 2910
+          },
+          {
+            "cell": "A85",
+            "value": 79
+          },
+          {
+            "cell": "D85",
+            "value": 4850
+          },
+          {
+            "cell": "A86",
+            "value": 80
+          },
+          {
+            "cell": "D86",
+            "value": 2910
+          },
+          {
+            "cell": "A87",
+            "value": 81
+          },
+          {
+            "cell": "D87",
+            "value": 2425
+          },
+          {
+            "cell": "A88",
+            "value": 82
+          },
+          {
+            "cell": "D88",
+            "value": 1455
+          },
+          {
+            "cell": "A89",
+            "value": 83
+          },
+          {
+            "cell": "D89",
+            "value": 33950
+          },
+          {
+            "cell": "A90",
+            "value": 84
+          },
+          {
+            "cell": "D90",
+            "value": 19400
+          },
+          {
+            "cell": "A91",
+            "value": 85
+          },
+          {
+            "cell": "D91",
+            "value": 23280
+          },
+          {
+            "cell": "A92",
+            "value": 86
+          },
+          {
+            "cell": "D92",
+            "value": 116400
+          },
+          {
+            "cell": "A93",
+            "value": 87
+          },
+          {
+            "cell": "D93",
+            "value": 33950
+          },
+          {
+            "cell": "A94",
+            "value": 88
+          },
+          {
+            "cell": "D94",
+            "value": 24250
+          },
+          {
+            "cell": "A95",
+            "value": 89
+          },
+          {
+            "cell": "D95",
+            "value": 48500
+          },
+          {
+            "cell": "A96",
+            "value": 90
+          },
+          {
+            "cell": "D96",
+            "value": 11640
+          },
+          {
+            "cell": "A97",
+            "value": 91
+          },
+          {
+            "cell": "D97",
+            "value": 7760
+          },
+          {
+            "cell": "A98",
+            "value": 92
+          },
+          {
+            "cell": "D98",
+            "value": 2425
+          },
+          {
+            "cell": "A99",
+            "value": 93
+          },
+          {
+            "cell": "D99",
+            "value": 2425
+          },
+          {
+            "cell": "A100",
+            "value": 94
+          },
+          {
+            "cell": "D100",
+            "value": 485
+          },
+          {
+            "cell": "A101",
+            "value": 95
+          },
+          {
+            "cell": "D101",
+            "value": 13580
+          },
+          {
+            "cell": "A102",
+            "value": 96
+          },
+          {
+            "cell": "D102",
+            "value": 6790
+          },
+          {
+            "cell": "A103",
+            "value": 97
+          },
+          {
+            "cell": "D103",
+            "value": 2425
+          },
+          {
+            "cell": "A104",
+            "value": 98
+          },
+          {
+            "cell": "D104",
+            "value": 16490
+          },
+          {
+            "cell": "A105",
+            "value": 99
+          },
+          {
+            "cell": "D105",
+            "value": 12610
+          },
+          {
+            "cell": "A106",
+            "value": 100
+          },
+          {
+            "cell": "D106",
+            "value": 51410
+          },
+          {
+            "cell": "A107",
+            "value": 101
+          },
+          {
+            "cell": "D107",
+            "value": 58200
+          },
+          {
+            "cell": "A108",
+            "value": 102
+          },
+          {
+            "cell": "D108",
+            "value": 3880
+          },
+          {
+            "cell": "A109",
+            "value": 103
+          },
+          {
+            "cell": "D109",
+            "value": 970
+          },
+          {
+            "cell": "A110",
+            "value": 104
+          },
+          {
+            "cell": "D110",
+            "value": 970
+          },
+          {
+            "cell": "A111",
+            "value": 105
+          },
+          {
+            "cell": "D111",
+            "value": 29100
+          },
+          {
+            "cell": "A112",
+            "value": 106
+          },
+          {
+            "cell": "D112",
+            "value": 9700
+          },
+          {
+            "cell": "A113",
+            "value": 107
+          },
+          {
+            "cell": "D113",
+            "value": 32010
+          },
+          {
+            "cell": "A114",
+            "value": 108
+          },
+          {
+            "cell": "D114",
+            "value": 970
+          },
+          {
+            "cell": "A115",
+            "value": 109
+          },
+          {
+            "cell": "D115",
+            "value": 14550
+          },
+          {
+            "cell": "A116",
+            "value": 110
+          },
+          {
+            "cell": "D116",
+            "value": 7760
+          },
+          {
+            "cell": "A117",
+            "value": 111
+          },
+          {
+            "cell": "D117",
+            "value": 7760
+          },
+          {
+            "cell": "A118",
+            "value": 112
+          },
+          {
+            "cell": "D118",
+            "value": 970
+          },
+          {
+            "cell": "A119",
+            "value": 113
+          },
+          {
+            "cell": "D119",
+            "value": 194000
+          },
+          {
+            "cell": "A120",
+            "value": 114
+          },
+          {
+            "cell": "D120",
+            "value": 174600
+          },
+          {
+            "cell": "A121",
+            "value": 115
+          },
+          {
+            "cell": "D121",
+            "value": 194000
+          },
+          {
+            "cell": "A122",
+            "value": 116
+          },
+          {
+            "cell": "D122",
+            "value": 135800
+          },
+          {
+            "cell": "A123",
+            "value": 117
+          },
+          {
+            "cell": "D123",
+            "value": 48500
+          },
+          {
+            "cell": "A124",
+            "value": 118
+          },
+          {
+            "cell": "D124",
+            "value": 17460
+          },
+          {
+            "cell": "A125",
+            "value": 119
+          },
+          {
+            "cell": "D125",
+            "value": 77600
+          },
+          {
+            "cell": "A126",
+            "value": 120
+          },
+          {
+            "cell": "D126",
+            "value": 9700
+          },
+          {
+            "cell": "A127",
+            "value": 121
+          },
+          {
+            "cell": "D127",
+            "value": 7760
+          },
+          {
+            "cell": "A128",
+            "value": 122
+          },
+          {
+            "cell": "D128",
+            "value": 6790
+          },
+          {
+            "cell": "A129",
+            "value": 123
+          },
+          {
+            "cell": "D129",
+            "value": 1746
+          },
+          {
+            "cell": "A130",
+            "value": 124
+          },
+          {
+            "cell": "D130",
+            "value": 1746
+          },
+          {
+            "cell": "A131",
+            "value": 125
+          },
+          {
+            "cell": "D131",
+            "value": 3395
+          },
+          {
+            "cell": "A132",
+            "value": 126
+          },
+          {
+            "cell": "D132",
+            "value": 1455
+          },
+          {
+            "cell": "A133",
+            "value": 127
+          },
+          {
+            "cell": "D133",
+            "value": 776
+          },
+          {
+            "cell": "A134",
+            "value": 128
+          },
+          {
+            "cell": "D134",
+            "value": 2425
+          },
+          {
+            "cell": "A135",
+            "value": 129
+          },
+          {
+            "cell": "D135",
+            "value": 776
+          },
+          {
+            "cell": "A136",
+            "value": 130
+          },
+          {
+            "cell": "D136",
+            "value": 2716
+          },
+          {
+            "cell": "A137",
+            "value": 131
+          },
+          {
+            "cell": "D137",
+            "value": 4850
+          },
+          {
+            "cell": "A138",
+            "value": 132
+          },
+          {
+            "cell": "D138",
+            "value": 19400
+          },
+          {
+            "cell": "A139",
+            "value": 133
+          },
+          {
+            "cell": "D139",
+            "value": 5820
+          },
+          {
+            "cell": "A140",
+            "value": 134
+          },
+          {
+            "cell": "D140",
+            "value": 3395
+          },
+          {
+            "cell": "A141",
+            "value": 135
+          },
+          {
+            "cell": "D141",
+            "value": 7760
+          },
+          {
+            "cell": "A142",
+            "value": 136
+          },
+          {
+            "cell": "D142",
+            "value": 2910
+          },
+          {
+            "cell": "A143",
+            "value": 137
+          },
+          {
+            "cell": "D143",
+            "value": 1455
+          },
+          {
+            "cell": "A144",
+            "value": 138
+          },
+          {
+            "cell": "D144",
+            "value": 3880
+          },
+          {
+            "cell": "A145",
+            "value": 139
+          },
+          {
+            "cell": "D145",
+            "value": 4850
+          },
+          {
+            "cell": "A146",
+            "value": 140
+          },
+          {
+            "cell": "D146",
+            "value": 1940
+          },
+          {
+            "cell": "A147",
+            "value": 141
+          },
+          {
+            "cell": "D147",
+            "value": 970
+          },
+          {
+            "cell": "A148",
+            "value": 142
+          },
+          {
+            "cell": "D148",
+            "value": 4850
+          },
+          {
+            "cell": "A149",
+            "value": 143
+          },
+          {
+            "cell": "D149",
+            "value": 2425
+          },
+          {
+            "cell": "A150",
+            "value": 144
+          },
+          {
+            "cell": "D150",
+            "value": 5335
+          }
+        ],
+        "formula_count": 0,
+        "formula_errors": []
+      }
+    ]
+  }
+]

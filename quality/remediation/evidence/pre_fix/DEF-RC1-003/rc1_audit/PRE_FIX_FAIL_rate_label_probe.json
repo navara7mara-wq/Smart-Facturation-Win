@@ -1,0 +1,26 @@
+{
+  "configured_rates": {
+    "retention": "10%",
+    "tax": "20%"
+  },
+  "database_totals": {
+    "total_ht": "85000.00",
+    "retenue_garantie": "8500.00",
+    "montant_ht_apres_rg": "76500.00",
+    "tva": "15300.00",
+    "total_ttc": "91800.00"
+  },
+  "xlsx_labels": {
+    "retention": "RETENUE DE GARANTIE 5%",
+    "tax": "TVA 19%"
+  },
+  "pdf_has_5_percent_label": true,
+  "pdf_has_19_percent_label": true,
+  "pdf_has_10_percent_label": false,
+  "pdf_has_20_percent_label": false,
+  "paths": {
+    "xlsx": "quality\\evidence\\rate_label\\rate_10_20.xlsx",
+    "pdf": "quality\\evidence\\rate_label\\rate_10_20.pdf",
+    "rendered": "quality\\evidence\\rate_label\\rate_10_20.png"
+  }
+}

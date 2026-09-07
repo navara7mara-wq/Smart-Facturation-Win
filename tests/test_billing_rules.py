@@ -1,9 +1,15 @@
+from contextlib import closing
+from decimal import Decimal
 import sqlite3
 from pathlib import Path
 
 import pytest
 
 from services.billing import amount_to_french, parse_invoice_lines, totals_from_lines
+from services.money import line_total, truncate_money
+
+
+pytestmark = pytest.mark.unit
 
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
@@ -71,13 +77,39 @@ def test_parse_invoice_lines_rejects_invalid_rows():
 def test_totals_from_lines_apply_retenue_and_tva():
     lines = [{"montant_ht": 1000.0}, {"montant_ht": 250.0}]
 
-    assert totals_from_lines(lines) == (1250.0, 62.5, 1187.5, 225.62, 1413.12)
+    assert totals_from_lines(lines) == tuple(map(Decimal, ("1250.00", "62.50", "1187.50", "225.62", "1413.12")))
 
 
 def test_totals_from_lines_accept_custom_financial_rates():
     lines = [{"montant_ht": 1000.0}]
 
-    assert totals_from_lines(lines, retention_rate=0.1, tax_rate=0.2) == (1000.0, 100.0, 900.0, 180.0, 1080.0)
+    assert totals_from_lines(lines, retention_rate=10, tax_rate=20) == tuple(map(Decimal, ("1000.00", "100.00", "900.00", "180.00", "1080.00")))
+
+
+@pytest.mark.parametrize(
+    ("source", "expected"),
+    [
+        ("12.349", "12.34"),
+        ("12.345", "12.34"),
+        ("12.999", "12.99"),
+        ("100.005", "100.00"),
+        ("-12.999", "-12.99"),
+    ],
+)
+def test_authoritative_money_is_truncated_toward_zero(source, expected):
+    assert truncate_money(source) == Decimal(expected)
+
+
+@pytest.mark.parametrize(
+    ("case_id", "quantity", "unit_price", "expected"),
+    [
+        ("FIN-G-06", "1", "0.005", "0.00"),
+        ("FIN-G-07", "1", "0.015", "0.01"),
+        ("FIN-G-19", "1", "0.025", "0.02"),
+    ],
+)
+def test_known_rc1_boundary_failures_follow_approved_truncation(case_id, quantity, unit_price, expected):
+    assert line_total(unit_price, quantity) == Decimal(expected), case_id
 
 
 def test_amount_to_french_handles_zero_without_mojibake():
@@ -85,7 +117,7 @@ def test_amount_to_french_handles_zero_without_mojibake():
 
 
 def test_ndc_invoice_requires_no_direct_site():
-    with memory_db() as connection:
+    with closing(memory_db()) as connection:
         ndc_po_id, _, ndc_site_id, _ = seed_invoice_context(connection)
 
         with pytest.raises(sqlite3.IntegrityError):
@@ -99,7 +131,7 @@ def test_ndc_invoice_requires_no_direct_site():
 
 
 def test_invoice_sites_accepts_only_ndc_invoices():
-    with memory_db() as connection:
+    with closing(memory_db()) as connection:
         _, regular_po_id, _, regular_site_id = seed_invoice_context(connection)
         invoice_id = connection.execute(
             """
@@ -117,7 +149,7 @@ def test_invoice_sites_accepts_only_ndc_invoices():
 
 
 def test_ndc_invoice_lines_accept_only_article_6():
-    with memory_db() as connection:
+    with closing(memory_db()) as connection:
         ndc_po_id, _, _, _ = seed_invoice_context(connection)
         invoice_id = connection.execute(
             """

@@ -1,60 +1,45 @@
 import argparse
-import base64
 import json
+import os
+import sys
 from pathlib import Path
 
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
-
-
 ROOT = Path(__file__).resolve().parents[1]
-PRIVATE_KEY = ROOT / "config" / "license_private_key.pem"
-PUBLIC_KEY = ROOT / "config" / "license_public_key.pem"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from services.license_issuer import issue_license, load_private_key, parse_request_bytes
 
 
-def canonical(payload):
-    return json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
-
-
-def ensure_keys():
-    PRIVATE_KEY.parent.mkdir(parents=True, exist_ok=True)
-    if PRIVATE_KEY.exists():
-        private_key = serialization.load_pem_private_key(PRIVATE_KEY.read_bytes(), password=None)
-    else:
-        private_key = Ed25519PrivateKey.generate()
-        PRIVATE_KEY.write_bytes(private_key.private_bytes(
-            encoding=serialization.Encoding.PEM,
-            format=serialization.PrivateFormat.PKCS8,
-            encryption_algorithm=serialization.NoEncryption(),
-        ))
-    public_key = private_key.public_key()
-    PUBLIC_KEY.write_bytes(public_key.public_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo,
-    ))
-    return private_key
+DEFAULT_KEY = ROOT / "config" / "license_private_key.pem"
 
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--request", required=True)
+    parser.add_argument("--key", default=str(DEFAULT_KEY))
     parser.add_argument("--customer", required=True)
     parser.add_argument("--edition", default="standard")
-    parser.add_argument("--expires-at", required=True)
+    term = parser.add_mutually_exclusive_group(required=True)
+    term.add_argument("--expires-at")
+    term.add_argument("--perpetual", action="store_true")
     parser.add_argument("--max-users", type=int, default=5)
     parser.add_argument("--max-invoices", type=int, default=1000000)
+    parser.add_argument("--unlimited-invoices", action="store_true")
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
-
-    payload = {
-        "customer": args.customer,
-        "edition": args.edition,
-        "expires_at": args.expires_at,
-        "max_users": args.max_users,
-        "max_invoices": args.max_invoices,
-    }
-    private_key = ensure_keys()
-    signature = base64.b64encode(private_key.sign(canonical(payload))).decode("ascii")
-    document = {"payload": payload, "signature": signature}
+    password = os.environ.get("PHOENIX_LICENSE_KEY_PASSWORD")
+    private_key = load_private_key(Path(args.key).read_bytes(), password)
+    request_payload = parse_request_bytes(Path(args.request).read_bytes())
+    document = issue_license(
+        private_key,
+        request_payload,
+        args.customer,
+        args.edition,
+        None if args.perpetual else args.expires_at,
+        args.max_users,
+        None if args.unlimited_invoices else args.max_invoices,
+    )
     Path(args.output).write_text(json.dumps(document, ensure_ascii=False, indent=2), encoding="utf-8")
     print(args.output)
 

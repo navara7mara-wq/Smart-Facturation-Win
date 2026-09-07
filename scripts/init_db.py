@@ -1,21 +1,19 @@
 from pathlib import Path
-import sqlite3
+import sys
 
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
-DB_DIR = ROOT_DIR / "data"
-DB_PATH = DB_DIR / "pos_ai.sqlite3"
-SCHEMA_PATH = ROOT_DIR / "database" / "schema.sql"
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from db import DB_PATH, db
 
 
 def initialize_database() -> None:
-    DB_DIR.mkdir(parents=True, exist_ok=True)
-    schema = SCHEMA_PATH.read_text(encoding="utf-8")
-
-    with sqlite3.connect(DB_PATH) as connection:
-        connection.execute("PRAGMA foreign_keys = ON;")
-        connection.executescript(schema)
-        connection.commit()
+    with db() as connection:
+        result = connection.execute("PRAGMA integrity_check").fetchone()[0]
+        if result != "ok":
+            raise RuntimeError(f"Database integrity check failed: {result}")
 
     print(f"Database initialized: {DB_PATH}")
 

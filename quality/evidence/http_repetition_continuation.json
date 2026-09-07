@@ -1,0 +1,105 @@
+{
+  "reopen": [
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_01",
+      "pass": true
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_02",
+      "pass": true
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_03",
+      "pass": true
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_04",
+      "pass": true
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_05",
+      "pass": true
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_06",
+      "pass": true
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_07",
+      "pass": true
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_08",
+      "pass": true
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_09",
+      "pass": true
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_10",
+      "pass": true
+    }
+  ],
+  "search": [
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_01",
+      "pass": false
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_02",
+      "pass": false
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_03",
+      "pass": false
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_04",
+      "pass": false
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_05",
+      "pass": false
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_06",
+      "pass": false
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_07",
+      "pass": false
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_08",
+      "pass": false
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_09",
+      "pass": false
+    },
+    {
+      "invoice": "QA_RC1_AUDIT_20260825_FAC_10",
+      "pass": false
+    }
+  ],
+  "double_submit": {
+    "database_count": 1,
+    "pass": true
+  },
+  "csrf_get_delete": {
+    "invoice": "QA_RC1_AUDIT_20260825_FAC_10",
+    "http_status": 200,
+    "before": null,
+    "after": "2026-08-25 13:32:25",
+    "state_changed_without_csrf": true
+  },
+  "database": {
+    "integrity_check": "ok",
+    "foreign_key_violations": 0,
+    "qa_clients": 10,
+    "qa_purchase_orders": 10,
+    "qa_sites": 10,
+    "qa_invoices": 10
+  }
+}

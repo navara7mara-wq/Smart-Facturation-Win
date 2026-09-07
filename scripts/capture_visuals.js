@@ -7,6 +7,8 @@ const configPath = process.argv[2] || path.join(root, "visual.config.json");
 const outputDir = process.argv[3] || path.join(root, "output", "visual-regression", "current");
 const pageId = process.argv[4] || "";
 const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+const visualUsername = process.env.PHOENIX_VISUAL_USERNAME || "admin";
+const visualPassword = process.env.PHOENIX_VISUAL_PASSWORD || "Visual123";
 
 const browserCandidates = [
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
@@ -447,6 +449,26 @@ async function main() {
         if (message.type() === "error") errors.push(message.text());
       });
 
+      if (item.auth !== false) {
+        await page.goto(new URL("/login", config.base_url).toString(), {
+          waitUntil: "networkidle",
+        });
+        if (new URL(page.url()).pathname === "/setup") {
+          throw new Error("La base visuelle exige encore la configuration initiale");
+        }
+        if (new URL(page.url()).pathname === "/login") {
+          await page.locator('input[name="username"]').fill(visualUsername);
+          await page.locator('input[name="password"]').fill(visualPassword);
+          await Promise.all([
+            page.waitForURL((url) => new URL(url).pathname !== "/login", { waitUntil: "networkidle" }),
+            page.locator('button[type="submit"]').click(),
+          ]);
+          if (new URL(page.url()).pathname === "/login") {
+            throw new Error("La connexion visuelle a echoue");
+          }
+        }
+      }
+
       await page.goto(new URL(item.route, config.base_url).toString(), {
         waitUntil: "networkidle",
       });
@@ -480,9 +502,16 @@ async function main() {
         fullPage: false,
         animations: "disabled",
       });
+      const diagnostics = await page.evaluate(() => ({
+        bodyOverflow: document.body.scrollWidth > window.innerWidth + 1,
+        bodyWidth: document.body.scrollWidth,
+        viewportWidth: window.innerWidth,
+        bodyHeight: document.body.scrollHeight,
+        textLength: (document.body.innerText || "").trim().length,
+      }));
       fs.writeFileSync(
         path.join(outputDir, `${item.id}.json`),
-        JSON.stringify({ url: page.url(), title: await page.title(), errors }, null, 2),
+        JSON.stringify({ url: page.url(), title: await page.title(), errors, ...diagnostics }, null, 2),
       );
       console.log(`CAPTURED ${item.id} ${item.width}x${item.height}`);
       await context.close();

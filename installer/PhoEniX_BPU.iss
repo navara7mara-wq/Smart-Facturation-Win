@@ -1,68 +1,56 @@
 #define MyAppName "PhoEniX BPU"
 #define MyAppVersion GetEnv("PHOENIX_VERSION")
 #if MyAppVersion == ""
-#define MyAppVersion "1.4.0"
+#define MyAppVersion "2.5.2"
 #endif
 #define MyAppPublisher "SAPTA"
-#define MyAppExeName "run.cmd"
+#define MyAppExeName "PhoEniX BPU.exe"
+#define MyAppId GetEnv("PHOENIX_APP_ID")
+#if MyAppId == ""
+#define MyAppId "{{88E7A8A1-A5B2-45EF-9F4D-7E8B49D0305A}"
+#endif
+#define MyOutputSuffix GetEnv("PHOENIX_OUTPUT_SUFFIX")
 
 [Setup]
-AppId={{88E7A8A1-A5B2-45EF-9F4D-7E8B49D0305A}
+AppId={#MyAppId}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
+AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
-DefaultDirName={autopf}\PhoEniX BPU
+DefaultDirName={localappdata}\Programs\PhoEniX BPU
 DefaultGroupName=PhoEniX BPU
 DisableProgramGroupPage=yes
 OutputDir=..\dist\installer
-OutputBaseFilename=PhoEniX_BPU_Setup_{#MyAppVersion}
-Compression=lzma
+OutputBaseFilename=PhoEniX_BPU_Setup_{#MyAppVersion}{#MyOutputSuffix}
+Compression=lzma2/max
 SolidCompression=yes
 WizardStyle=modern
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 PrivilegesRequired=lowest
-UninstallDisplayIcon={app}\run.cmd
+CloseApplications=yes
+RestartApplications=no
+SetupLogging=yes
+UninstallDisplayIcon={app}\{#MyAppExeName}
+VersionInfoVersion={#MyAppVersion}.0
+VersionInfoCompany={#MyAppPublisher}
+VersionInfoDescription=Installation de {#MyAppName}
+VersionInfoProductName={#MyAppName}
+VersionInfoProductVersion={#MyAppVersion}
 
 [Languages]
 Name: "french"; MessagesFile: "compiler:Languages\French.isl"
 
 [Tasks]
-Name: "desktopicon"; Description: "Creer un raccourci sur le Bureau"; GroupDescription: "Raccourcis:"; Flags: unchecked
+Name: "desktopicon"; Description: "Créer un raccourci sur le Bureau"; GroupDescription: "Raccourcis :"; Flags: unchecked
 
 [Files]
-Source: "..\app.py"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\db.py"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\requirements.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\package.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\package-lock.json"; DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
-Source: "..\README.md"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\RELEASE_CHECKLIST.md"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\setup.cmd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\run.cmd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\controle-visuel.cmd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\visual.config.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\config\license_public_key.pem"; DestDir: "{app}\config"; Flags: ignoreversion
-Source: "..\docs\*"; DestDir: "{app}\docs"; Flags: ignoreversion recursesubdirs
-Source: "..\database\*"; DestDir: "{app}\database"; Flags: ignoreversion recursesubdirs; Excludes: "__pycache__\*,*.pyc,*.pyo,*.log"
-Source: "..\scripts\*"; DestDir: "{app}\scripts"; Flags: ignoreversion recursesubdirs; Excludes: "__pycache__\*,*.pyc,*.pyo,*.log"
-Source: "..\services\*"; DestDir: "{app}\services"; Flags: ignoreversion recursesubdirs; Excludes: "__pycache__\*,*.pyc,*.pyo,*.log"
-Source: "..\static\*"; DestDir: "{app}\static"; Flags: ignoreversion recursesubdirs
-Source: "..\templates\*"; DestDir: "{app}\templates"; Flags: ignoreversion recursesubdirs
-Source: "..\tests\*"; DestDir: "{app}\tests"; Flags: ignoreversion recursesubdirs; Excludes: "__pycache__\*,*.pyc,*.pyo,*.log"
-
-[Dirs]
-Name: "{app}\data"
-Name: "{app}\uploads"
-Name: "{app}\exports"
-Name: "{app}\backups"
-Name: "{app}\output"
+Source: "..\dist\desktop\PhoEniX BPU\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{group}\PhoEniX BPU"; Filename: "{app}\run.cmd"; WorkingDir: "{app}"
-Name: "{group}\Configuration PhoEniX BPU"; Filename: "{app}\setup.cmd"; WorkingDir: "{app}"
-Name: "{group}\Desinstaller PhoEniX BPU"; Filename: "{uninstallexe}"
-Name: "{autodesktop}\PhoEniX BPU"; Filename: "{app}\run.cmd"; WorkingDir: "{app}"; Tasks: desktopicon
+Name: "{group}\PhoEniX BPU"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"
+Name: "{group}\Désinstaller PhoEniX BPU"; Filename: "{uninstallexe}"
+Name: "{autodesktop}\PhoEniX BPU"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\setup.cmd"; WorkingDir: "{app}"; Description: "Installer les dependances et initialiser PhoEniX BPU"; Flags: postinstall skipifsilent
+Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Description: "Lancer PhoEniX BPU"; Flags: postinstall nowait skipifsilent unchecked

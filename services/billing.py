@@ -1,4 +1,12 @@
+from decimal import Decimal
+
 from db import app_settings
+from services.money import (
+    decimal_value,
+    financial_totals,
+    fraction_to_percent,
+    truncate_money,
+)
 
 
 def parse_invoice_lines(raw):
@@ -10,7 +18,7 @@ def parse_invoice_lines(raw):
         parts = [part.strip() for part in line.replace("\t", ",").split(",") if part.strip()]
         if len(parts) != 2:
             raise ValueError("Chaque ligne article doit etre: N article, quantite")
-        lines.append((int(float(parts[0])), float(parts[1])))
+        lines.append((int(decimal_value(parts[0])), decimal_value(parts[1])))
     if not lines:
         raise ValueError("Aucune ligne de facture saisie.")
     return lines
@@ -18,20 +26,26 @@ def parse_invoice_lines(raw):
 
 def billing_rates():
     settings = app_settings()
-    return float(settings["retention_rate"]), float(settings["tax_rate"])
+    return (
+        fraction_to_percent(settings["retention_rate"]),
+        fraction_to_percent(settings["tax_rate"]),
+    )
 
 
 def totals_from_lines(lines, retention_rate=None, tax_rate=None):
+    """Return authoritative totals using percentage rates and truncation.
+
+    The optional rate arguments are percentage values (5 means 5%).
+    """
     if retention_rate is None or tax_rate is None:
         default_retention_rate, default_tax_rate = billing_rates()
         retention_rate = default_retention_rate if retention_rate is None else retention_rate
         tax_rate = default_tax_rate if tax_rate is None else tax_rate
-    total_ht = sum(line["montant_ht"] for line in lines)
-    retenue = round(total_ht * retention_rate, 2)
-    ht_after_rg = round(total_ht - retenue, 2)
-    tva = round(ht_after_rg * tax_rate, 2)
-    total_ttc = round(ht_after_rg + tva, 2)
-    return total_ht, retenue, ht_after_rg, tva, total_ttc
+    return financial_totals(
+        (line["montant_ht"] for line in lines),
+        retention_rate,
+        tax_rate,
+    )
 
 
 def amount_words_placeholder(amount):
@@ -39,8 +53,11 @@ def amount_words_placeholder(amount):
 
 
 def amount_to_french(amount):
-    dinars = int(float(amount or 0))
-    cents = int(round((float(amount or 0) - dinars) * 100))
+    authoritative = truncate_money(amount)
+    sign = -1 if authoritative < 0 else 1
+    absolute = abs(authoritative)
+    dinars = int(absolute) * sign
+    cents = int((absolute - int(absolute)) * Decimal("100"))
     text = number_to_french(dinars)
     if cents:
         return f"{text} dinars et {number_to_french(cents)} centimes"

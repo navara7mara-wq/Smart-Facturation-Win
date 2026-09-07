@@ -3,6 +3,8 @@ from pathlib import Path
 import sys
 import json
 import tempfile
+import re
+import zipfile
 
 from openpyxl import load_workbook
 from openpyxl.drawing.spreadsheet_drawing import AnchorMarker, OneCellAnchor
@@ -67,7 +69,8 @@ def visual_block(document_type, block_id):
 
 
 def block_content(document_type, block_id, fallback):
-    return str(visual_block(document_type, block_id).get("content") or fallback)
+    content = str(visual_block(document_type, block_id).get("content") or fallback)
+    return "\n".join(line for line in content.splitlines() if "{{Region}}" not in line)
 
 
 def block_number(document_type, block_id, field, fallback):
@@ -160,7 +163,7 @@ def apply_visual_text_blocks(ws, document_type):
         write_lines(ws, 7, 1, block_content(document_type, "enterprise_info", "RGC: {{Entreprise.RGC}}\nNIF: {{Entreprise.NIF}}\nART: {{Entreprise.ART}}\nADRESSE: {{Entreprise.Adresse}}\nN° COMPTE: {{Entreprise.RIB}}"))
         write_lines(ws, 7, 4, block_content(document_type, "client_info", "DOIT : {{Client.Nom}}\n{{Client.Direction}}\n{{Client.Adresse}}\nRGC N°: {{Client.RGC}}\nNIF N°: {{Client.NIF}}"))
         set_merged_text(ws, 13, 1, 6, block_content(document_type, "invoice_title", "FACTURE N° : {{N_Facture}}"))
-        write_lines(ws, 15, 1, block_content(document_type, "site_info", "Référence Contrat: {{Ref_Contrat}}\nCode de site: {{Code_Site}}\nNom de site: {{Nom_Site}}\nRégion: {{Region}}\nTypologie de site: {{Typologie}}\nBon de commande: {{N_BC}}"))
+        write_lines(ws, 15, 1, block_content(document_type, "site_info", "Référence Contrat: {{Ref_Contrat}}\nCode de site: {{Code_Site}}\nNom de site: {{Nom_Site}}\nTypologie de site: {{Typologie}}\nBon de commande: {{N_BC}}"))
         signature = block_content(document_type, "signature", "L'ENTREPRISE/{{Entreprise.Nom}}")
         for row in range(1, ws.max_row + 1):
             if isinstance(ws.cell(row, 1).value, str) and "L'ENTREPRISE" in ws.cell(row, 1).value:
@@ -169,7 +172,7 @@ def apply_visual_text_blocks(ws, document_type):
         set_table_header_from_block(ws, document_type, "articles_table")
         set_totals_labels_from_block(ws, document_type)
     else:
-        write_lines(ws, 7, 1, block_content(document_type, "site_info", "Code de site: {{Code_Site}}\nNom de site: {{Nom_Site}}\nRégion: {{Region}}\nTypologie de site: {{Typologie}}"))
+        write_lines(ws, 7, 1, block_content(document_type, "site_info", "Code de site: {{Code_Site}}\nNom de site: {{Nom_Site}}\nTypologie de site: {{Typologie}}"))
         set_table_header_from_block(ws, document_type, "articles_table")
         if document_type == "devis_estimatif":
             signature = block_content(document_type, "signature", "L'ENTREPRISE/{{Entreprise.Nom}}")
@@ -208,6 +211,21 @@ def set_totals_labels_from_block(ws, document_type):
         ws.cell(row, 5).value = label
 
 
+def force_invoice_rate_labels(ws, invoice):
+    """Rate labels are always authoritative invoice snapshots, never template text."""
+    for row in range(1, ws.max_row + 1):
+        label = ws.cell(row, 5).value
+        if not isinstance(label, str):
+            continue
+        normalized = label.upper()
+        if "RETENUE" in normalized:
+            ws.cell(row, 5).value = (
+                f"RETENUE DE GARANTIE {app.format_rate(invoice['rg_rate'])}%"
+            )
+        elif "TVA" in normalized or "T V A" in normalized:
+            ws.cell(row, 5).value = f"TVA {app.format_rate(invoice['tva_rate'])} %"
+
+
 def image_anchor(cell_coordinate, width_px, height_px, col_offset_px=0, row_offset_px=0):
     row, col = coordinate_to_tuple(cell_coordinate)
     marker = AnchorMarker(
@@ -225,7 +243,7 @@ def place_logo(ws, placeholder, image_path, anchor_coordinate=None, col_offset_p
         return
     path = Path(image_path)
     if not path.is_absolute():
-        path = ROOT_DIR / path
+        path = app.resolve_stored_upload_path(path)
     if not path.exists():
         return
     coordinate = anchor_coordinate
@@ -384,8 +402,7 @@ def build(invoice_id, output_path):
         "Ref_Contrat": contract["reference_contrat"],
         "Code_Site": site_label,
         "Nom_Site": site_name,
-        "Region": invoice["region"] or "",
-        "Typologie": invoice["typologie_site"] or "",
+        "Typologie": app.typology_export_label(invoice),
         "N_BC": invoice["numero_bc"],
         "Total_Fournitures_HT": sum(line["montant_ht"] for line in groups["fourniture"] + groups["acquisition"] + groups["ndc"]),
         "Total_Prestations_HT": sum(line["montant_ht"] for line in groups["prestation"]),
@@ -394,6 +411,8 @@ def build(invoice_id, output_path):
         "Montant_HT_Apres_Retenue": invoice["montant_ht_apres_rg"],
         "Montant_TVA": invoice["tva"],
         "Montant_TTC": invoice["total_ttc"],
+        "RG_RATE": app.format_rate(invoice["rg_rate"]),
+        "TVA_RATE": app.format_rate(invoice["tva_rate"]),
         "Montant_En_Lettres": app.amount_to_french(invoice["total_ttc"]).upper(),
     }
 
@@ -435,11 +454,64 @@ def build(invoice_id, output_path):
     )
     for sheet_name in ("Facture", "Devis Quantitatif", "Devis Estimatif"):
         replace_placeholders(wb[sheet_name], mapping)
+    force_invoice_rate_labels(wb["Facture"], invoice)
     format_facture_sheet(wb["Facture"])
     format_devis_sheet(wb["Devis Quantitatif"], with_prices=False)
     format_devis_sheet(wb["Devis Estimatif"], with_prices=True)
 
+    exact_money_cells = collect_exact_money_cells(wb)
     wb.save(output_path)
+    rewrite_exact_money_literals(output_path, exact_money_cells)
+
+
+def collect_exact_money_cells(wb):
+    """Capture official amount cells as Decimal strings before openpyxl float serialization."""
+    result = {}
+    for sheet_index, ws in enumerate(wb.worksheets, start=1):
+        sheet_values = {}
+        for row in ws.iter_rows():
+            for cell in row:
+                if cell.column not in (5, 6) or cell.value in (None, ""):
+                    continue
+                if not isinstance(cell.value, (int, float)):
+                    continue
+                if "0.00" not in str(cell.number_format):
+                    continue
+                sheet_values[cell.coordinate] = app.money_storage(cell.value)
+        if sheet_values:
+            result[sheet_index] = sheet_values
+    return result
+
+
+def rewrite_exact_money_literals(output_path, exact_money_cells):
+    """Keep XLSX numeric cells exact by bypassing openpyxl's binary-float writer."""
+    output_path = Path(output_path)
+    temporary = output_path.with_suffix(output_path.suffix + ".exact.tmp")
+    with zipfile.ZipFile(output_path, "r") as source, zipfile.ZipFile(
+        temporary, "w", zipfile.ZIP_DEFLATED
+    ) as target:
+        for item in source.infolist():
+            content = source.read(item.filename)
+            match = re.fullmatch(r"xl/worksheets/sheet(\d+)\.xml", item.filename)
+            if match and int(match.group(1)) in exact_money_cells:
+                text = content.decode("utf-8")
+                for coordinate, exact_value in exact_money_cells[int(match.group(1))].items():
+                    pattern = re.compile(
+                        rf'(<c\b[^>]*\br="{re.escape(coordinate)}"[^>]*>.*?<v>).*?(</v>)',
+                        re.DOTALL,
+                    )
+                    text, count = pattern.subn(
+                        lambda found: f"{found.group(1)}{exact_value}{found.group(2)}",
+                        text,
+                        count=1,
+                    )
+                    if count != 1:
+                        raise RuntimeError(
+                            f"Impossible de préserver la valeur monétaire exacte {coordinate}."
+                        )
+                content = text.encode("utf-8")
+            target.writestr(item, content)
+    temporary.replace(output_path)
 
 
 def fill_facture_sheet(ws, first_section, second_section):
@@ -603,7 +675,7 @@ def resolve_image_path(image_path):
         return None
     path = Path(image_path)
     if not path.is_absolute():
-        path = ROOT_DIR / path
+        path = app.resolve_stored_upload_path(path)
     return path if path.exists() else None
 
 

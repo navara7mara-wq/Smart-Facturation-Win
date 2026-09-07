@@ -1,4 +1,5 @@
 import base64
+from contextlib import closing
 import json
 import sqlite3
 
@@ -6,6 +7,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from services import licensing
+from services.machine_identity import LICENSE_SCHEMA, PRODUCT_ID
 
 
 def canonical(payload):
@@ -23,11 +25,14 @@ def test_verify_signed_license_document(tmp_path, monkeypatch):
     monkeypatch.setattr(licensing, "PUBLIC_KEY_PATH", public_path)
 
     payload = {
+        "schema": LICENSE_SCHEMA,
+        "product": PRODUCT_ID,
         "customer": "Client",
         "edition": "standard",
         "expires_at": "2999-12-31",
         "max_users": 5,
         "max_invoices": 100,
+        "machine_id": licensing.machine_id(),
     }
     document = {
         "payload": payload,
@@ -38,23 +43,23 @@ def test_verify_signed_license_document(tmp_path, monkeypatch):
 
 
 def test_demo_license_blocks_invoice_limit(monkeypatch):
-    connection = sqlite3.connect(":memory:")
-    connection.row_factory = sqlite3.Row
-    connection.execute("CREATE TABLE app_settings(key TEXT PRIMARY KEY, value TEXT NOT NULL, updated_by TEXT NOT NULL DEFAULT '')")
-    connection.execute("CREATE TABLE invoices(id INTEGER PRIMARY KEY, deleted_at TEXT)")
-    connection.execute("CREATE TABLE users(id INTEGER PRIMARY KEY, is_active INTEGER NOT NULL DEFAULT 1)")
-    for index in range(licensing.DEMO_MAX_INVOICES):
-        connection.execute("INSERT INTO invoices(id) VALUES(?)", (index + 1,))
-    connection.execute("INSERT INTO users(id) VALUES(1)")
-    monkeypatch.setattr(licensing, "LICENSE_PATH", licensing.Path("missing-license.json"))
-    monkeypatch.setattr(licensing, "app_settings", lambda: {})
-    monkeypatch.setattr(licensing, "db", lambda: _ConnectionContext(connection))
+    with closing(sqlite3.connect(":memory:")) as connection:
+        connection.row_factory = sqlite3.Row
+        connection.execute("CREATE TABLE app_settings(key TEXT PRIMARY KEY, value TEXT NOT NULL, updated_by TEXT NOT NULL DEFAULT '')")
+        connection.execute("CREATE TABLE invoices(id INTEGER PRIMARY KEY, deleted_at TEXT)")
+        connection.execute("CREATE TABLE users(id INTEGER PRIMARY KEY, is_active INTEGER NOT NULL DEFAULT 1)")
+        for index in range(licensing.DEMO_MAX_INVOICES):
+            connection.execute("INSERT INTO invoices(id) VALUES(?)", (index + 1,))
+        connection.execute("INSERT INTO users(id) VALUES(1)")
+        monkeypatch.setattr(licensing, "LICENSE_PATH", licensing.Path("missing-license.json"))
+        monkeypatch.setattr(licensing, "app_settings", lambda: {})
+        monkeypatch.setattr(licensing, "db", lambda: _ConnectionContext(connection))
 
-    try:
-        licensing.require_feature("create_invoice")
-        assert False, "demo invoice limit should block creation"
-    except ValueError as exc:
-        assert "Limite de factures" in str(exc)
+        try:
+            licensing.require_feature("create_invoice")
+            assert False, "demo invoice limit should block creation"
+        except ValueError as exc:
+            assert "Limite de factures" in str(exc)
 
 
 class _ConnectionContext:

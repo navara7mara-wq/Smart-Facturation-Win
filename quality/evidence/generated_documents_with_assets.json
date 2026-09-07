@@ -1,0 +1,138 @@
+[
+  {
+    "label": "normal",
+    "invoice_id": 11,
+    "invoice_number": "QA_RC1_AUDIT_20260825_FAC_01",
+    "kind": "xlsx",
+    "path": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\quality\\evidence\\generated\\normal_xlsx.xlsx",
+    "bytes": 201597,
+    "sha256": "90cc03d05bf453e5ab5372ed73b9fc98946f4672070ff767650faf36ca6ce66a",
+    "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "database_totals": {
+      "total_ht": 95625,
+      "retenue_garantie": 4781.25,
+      "montant_ht_apres_rg": 90843.75,
+      "tva": 17260.31,
+      "total_ttc": 108104.06
+    }
+  },
+  {
+    "label": "normal",
+    "invoice_id": 11,
+    "invoice_number": "QA_RC1_AUDIT_20260825_FAC_01",
+    "kind": "facture",
+    "path": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\quality\\evidence\\generated\\normal_facture.pdf",
+    "bytes": 99170,
+    "sha256": "5130fc877ca0f628fef0ef37a83acba5eebe17df5e5f7bc2eec2988c4b82b920",
+    "content_type": "application/pdf",
+    "database_totals": {
+      "total_ht": 95625,
+      "retenue_garantie": 4781.25,
+      "montant_ht_apres_rg": 90843.75,
+      "tva": 17260.31,
+      "total_ttc": 108104.06
+    }
+  },
+  {
+    "label": "normal",
+    "invoice_id": 11,
+    "invoice_number": "QA_RC1_AUDIT_20260825_FAC_01",
+    "kind": "devis_quantitatif",
+    "path": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\quality\\evidence\\generated\\normal_devis_quantitatif.pdf",
+    "bytes": 105887,
+    "sha256": "84f639f2788f558685ebc25e411dc76b134973717224f1a0e13508231a387152",
+    "content_type": "application/pdf",
+    "database_totals": {
+      "total_ht": 95625,
+      "retenue_garantie": 4781.25,
+      "montant_ht_apres_rg": 90843.75,
+      "tva": 17260.31,
+      "total_ttc": 108104.06
+    }
+  },
+  {
+    "label": "normal",
+    "invoice_id": 11,
+    "invoice_number": "QA_RC1_AUDIT_20260825_FAC_01",
+    "kind": "devis_estimatif",
+    "path": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\quality\\evidence\\generated\\normal_devis_estimatif.pdf",
+    "bytes": 109838,
+    "sha256": "5fdf9df4f8249c0d4bf8660d9bf95cb401b716db27a8f9bc35004e69d30d5df9",
+    "content_type": "application/pdf",
+    "database_totals": {
+      "total_ht": 95625,
+      "retenue_garantie": 4781.25,
+      "montant_ht_apres_rg": 90843.75,
+      "tva": 17260.31,
+      "total_ttc": 108104.06
+    }
+  },
+  {
+    "label": "ndc",
+    "invoice_id": 8,
+    "invoice_number": "120/2026",
+    "kind": "xlsx",
+    "path": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\quality\\evidence\\generated\\ndc_xlsx.xlsx",
+    "bytes": 248952,
+    "sha256": "7c5aefa891b01841f7af431ebdcf14e94b18446c11b5ad4d3b95b6104bc4fd50",
+    "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "database_totals": {
+      "total_ht": 100000,
+      "retenue_garantie": 5000,
+      "montant_ht_apres_rg": 95000,
+      "tva": 18050,
+      "total_ttc": 113050
+    }
+  },
+  {
+    "label": "ndc",
+    "invoice_id": 8,
+    "invoice_number": "120/2026",
+    "kind": "facture",
+    "path": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\quality\\evidence\\generated\\ndc_facture.pdf",
+    "bytes": 129107,
+    "sha256": "91512ded1e626e3533e8507f5a063cf7644e6f46039fabfd3f903668beedeaa7",
+    "content_type": "application/pdf",
+    "database_totals": {
+      "total_ht": 100000,
+      "retenue_garantie": 5000,
+      "montant_ht_apres_rg": 95000,
+      "tva": 18050,
+      "total_ttc": 113050
+    }
+  },
+  {
+    "label": "ndc",
+    "invoice_id": 8,
+    "invoice_number": "120/2026",
+    "kind": "devis_quantitatif",
+    "path": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\quality\\evidence\\generated\\ndc_devis_quantitatif.pdf",
+    "bytes": 132912,
+    "sha256": "471fdb2c5c78d9d545e9e439ca553927f235b7274f7fb4e32198094fbab897b1",
+    "content_type": "application/pdf",
+    "database_totals": {
+      "total_ht": 100000,
+      "retenue_garantie": 5000,
+      "montant_ht_apres_rg": 95000,
+      "tva": 18050,
+      "total_ttc": 113050
+    }
+  },
+  {
+    "label": "ndc",
+    "invoice_id": 8,
+    "invoice_number": "120/2026",
+    "kind": "devis_estimatif",
+    "path": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\quality\\evidence\\generated\\ndc_devis_estimatif.pdf",
+    "bytes": 137487,
+    "sha256": "35de98e384383996feff4bc12e9748d2ce8e0de0710ed59f63ef8f67826fff46",
+    "content_type": "application/pdf",
+    "database_totals": {
+      "total_ht": 100000,
+      "retenue_garantie": 5000,
+      "montant_ht_apres_rg": 95000,
+      "tva": 18050,
+      "total_ttc": 113050
+    }
+  }
+]

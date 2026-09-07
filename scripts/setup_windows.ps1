@@ -32,4 +32,5 @@ if (-not $SkipTests) {
 
 Write-Host ""
 Write-Host "Setup complete." -ForegroundColor Green
-Write-Host "Run the app with: powershell -ExecutionPolicy Bypass -File scripts/run_app.ps1"
+Write-Host "Desktop: .\run-desktop.cmd"
+Write-Host "Web mode: powershell -ExecutionPolicy Bypass -File scripts/run_app.ps1"

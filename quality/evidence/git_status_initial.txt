@@ -1,0 +1,105 @@
+## master
+ M .gitignore
+ M README.md
+ M RELEASE_CHECKLIST.md
+ M app.py
+ M database/schema.sql
+ M db.py
+ M installer/PhoEniX_BPU.iss
+ M package-lock.json
+ M package.json
+ M requirements.txt
+ M scripts/build_installer.ps1
+ M scripts/build_release.ps1
+ M scripts/capture_visuals.js
+ M scripts/export_invoice_template.py
+ M scripts/init_db.py
+ M scripts/issue_license.py
+ M scripts/render_pdf.js
+ M scripts/run_visual_tests.ps1
+ M scripts/setup_windows.ps1
+ M scripts/visual_regression.py
+ M services/auth.py
+ M services/backups.py
+ M services/invoice_exports.py
+ M services/licensing.py
+ M services/uploads.py
+ M static/changelog.html
+ M static/sapta-new.css
+ M static/style.css
+ M static/table-facturation-new.js
+ M templates/table_facturation_new.html
+ M tests/test_auth.py
+ M tests/test_backups.py
+ M tests/test_billing_rules.py
+ M tests/test_e2e_flow.py
+ M tests/test_licensing.py
+ M tests/test_spreadsheets.py
+ M tests/visual/baselines/bons-de-commande.png
+ M tests/visual/baselines/bpu.png
+ M tests/visual/baselines/dashboard.png
+ M tests/visual/baselines/entreprise.png
+ M tests/visual/baselines/factures.png
+ M tests/visual/baselines/mobilis.png
+ M tests/visual/baselines/table-facturation-new.png
+ M tests/visual/baselines/templates.png
+ M visual.config.json
+?? database/__init__.py
+?? database/migration_backups/
+?? database/migrations.py
+?? database/phoenix_bpu.db
+?? desktop.py
+?? installer/phoenix-bpu.ico
+?? installer/version_info.txt
+?? license_studio.py
+?? pytest.ini
+?? quality/
+?? requirements-build.txt
+?? resources/
+?? run-desktop.cmd
+?? run-desktop.vbs
+?? scripts/__init__.py
+?? scripts/build_desktop.ps1
+?? scripts/build_icon.py
+?? scripts/build_license_studio.ps1
+?? scripts/seed_visual_db.py
+?? scripts/sign_release.ps1
+?? scripts/test_installer.ps1
+?? scripts/verify_stage_one.js
+?? services/bpu_mapping.py
+?? services/dashboard.py
+?? services/data_imports.py
+?? services/invoice_lifecycle.py
+?? services/invoice_types.py
+?? services/license_issuer.py
+?? services/machine_identity.py
+?? services/site_partners.py
+?? services/typologies.py
+?? static/app-ui.js
+?? static/vendor/
+?? tests/test_bpu_mapping.py
+?? tests/test_dashboard.py
+?? tests/test_data_imports.py
+?? tests/test_db.py
+?? tests/test_desktop.py
+?? tests/test_fresh_install.py
+?? tests/test_invoice_lifecycle.py
+?? tests/test_invoice_types.py
+?? tests/test_invoice_workflow.py
+?? tests/test_large_dataset.py
+?? tests/test_license_studio.py
+?? tests/test_migrations.py
+?? tests/test_site_partners.py
+?? tests/test_typologies.py
+?? tests/visual/baselines/about.png
+?? tests/visual/baselines/backup.png
+?? tests/visual/baselines/clients.png
+?? tests/visual/baselines/company-branches.png
+?? tests/visual/baselines/dashboard-compact.png
+?? tests/visual/baselines/license.png
+?? tests/visual/baselines/login.png
+?? tests/visual/baselines/settings.png
+?? tests/visual/baselines/status.png
+?? tests/visual/baselines/table-facturation-compact.png
+?? tests/visual/baselines/users.png
+?? tmp/

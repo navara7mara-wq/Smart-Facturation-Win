@@ -1,0 +1,33 @@
+﻿{
+    "version":  "2.5.2",
+    "install":  "ok",
+    "first_smoke":  {
+                        "application":  "PhoEniX BPU",
+                        "version":  "2.5.2",
+                        "url":  "http://127.0.0.1:65401",
+                        "database":  "ok",
+                        "http":  "ok",
+                        "excel_runtime":  "ok",
+                        "pdf_runtime":  "ok",
+                        "webview_runtime":  "ok",
+                        "fresh_install_empty":  "ok",
+                        "default_admin":  "secure-first-run-required",
+                        "elapsed_ms":  6142
+                    },
+    "update":  "ok",
+    "data_preserved":  true,
+    "uninstall":  "ok",
+    "runtime":  {
+                    "application":  "PhoEniX BPU",
+                    "version":  "2.5.2",
+                    "url":  "http://127.0.0.1:55911",
+                    "database":  "ok",
+                    "http":  "ok",
+                    "excel_runtime":  "ok",
+                    "pdf_runtime":  "ok",
+                    "webview_runtime":  "ok",
+                    "fresh_install_empty":  "not_applicable",
+                    "default_admin":  "preserved",
+                    "elapsed_ms":  6552
+                }
+}

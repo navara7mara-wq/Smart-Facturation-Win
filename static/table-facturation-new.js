@@ -1,5 +1,6 @@
 (() => {
   const toast = document.querySelector('[data-toast]');
+  const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
   let toastTimer;
 
   function showToast(message, isError = false) {
@@ -14,7 +15,7 @@
   async function saveRow(row, values) {
     const invoiceId = row?.dataset.invoiceId;
     if (!invoiceId) return;
-    const body = new URLSearchParams({ invoice_id: invoiceId, ...values });
+    const body = new URLSearchParams({ invoice_id: invoiceId, csrf_token: csrfToken, ...values });
     const response = await fetch('/table-facturation-new/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
@@ -26,12 +27,22 @@
   }
 
   const filterForm = document.querySelector('.facturation-filters');
+  const filterControls = filterForm ? Array.from(filterForm.elements) : [];
+  const clientFilter = filterControls.find((control) => control.matches?.('[data-client-filter]'));
+  if (clientFilter) {
+    clientFilter.addEventListener('change', () => {
+      const direction = filterControls.find((control) => control.matches?.('select[name="direction"]'));
+      if (direction) direction.value = '';
+      filterForm.requestSubmit();
+    });
+  }
   let searchTimer;
   filterForm?.querySelector('input[name="q"]')?.addEventListener('input', () => {
     clearTimeout(searchTimer);
     searchTimer = setTimeout(() => filterForm.requestSubmit(), 420);
   });
-  filterForm?.querySelectorAll('select[name], input[type="date"]').forEach((control) => {
+  filterControls.filter((control) => control.matches?.('select[name], input[type="date"], input[name="show_cancelled"]')).forEach((control) => {
+    if (control === clientFilter) return;
     control.addEventListener('change', () => filterForm.requestSubmit());
   });
 
@@ -46,22 +57,110 @@
     window.location.href = url.toString();
   });
 
-  document.querySelectorAll('[data-deposit-toggle]').forEach((checkbox) => {
-    checkbox.addEventListener('change', async () => {
-      const row = checkbox.closest('tr[data-invoice-id]');
-      checkbox.disabled = true;
+  function applyLifecyclePayload(row, payload) {
+    row.dataset.statusCode = payload.status || '';
+    const status = row.querySelector('[data-status]');
+    if (status) {
+      status.textContent = payload.status_label;
+      status.className = `status-badge status-${String(payload.status || '').toLowerCase()}`;
+    }
+    ['date_depot_dtc', 'date_depot_mobilis', 'date_ov'].forEach((field) => {
+      const input = row.querySelector(`[data-tracking-date][data-field="${field}"]`);
+      if (input) input.value = payload[field] || '';
+    });
+    const paymentReference = row.querySelector('[data-payment-reference]');
+    if (paymentReference) paymentReference.value = payload.numero_ordre_virement || '';
+    row.querySelector('.migration-review')?.remove();
+    syncTrackingAvailability(row);
+  }
+
+  function syncTrackingAvailability(row) {
+    const status = row.dataset.statusCode || '';
+    const dtc = row.querySelector('[data-field="date_depot_dtc"]');
+    const mobilis = row.querySelector('[data-field="date_depot_mobilis"]');
+    const ov = row.querySelector('[data-field="date_ov"]');
+    const paymentReference = row.querySelector('[data-payment-reference]');
+    if (dtc) dtc.disabled = dtc.dataset.authorized !== 'true' || status === 'BROUILLON' || status === 'CANCELLED';
+    if (mobilis) mobilis.disabled = mobilis.dataset.authorized !== 'true' || !dtc?.value || status === 'CANCELLED';
+    if (ov) ov.disabled = ov.dataset.authorized !== 'true' || !mobilis?.value || status === 'CANCELLED';
+    if (paymentReference) paymentReference.disabled = paymentReference.dataset.authorized !== 'true' || !mobilis?.value || status === 'CANCELLED';
+  }
+
+  document.querySelectorAll('[data-tracking-date]').forEach((input) => {
+    let initial = input.value;
+    syncTrackingAvailability(input.closest('tr[data-invoice-id]'));
+    input.addEventListener('change', async () => {
+      const row = input.closest('tr[data-invoice-id]');
+      let reason = '';
+      if (initial) {
+        reason = window.prompt('Motif de correction obligatoire :', '')?.trim() || '';
+        if (!reason) {
+          input.value = initial;
+          showToast('La correction a été annulée : motif manquant.', true);
+          return;
+        }
+      }
+      input.disabled = true;
       try {
-        const payload = await saveRow(row, { depos: checkbox.checked ? '1' : '0' });
-        const date = row.querySelector('[data-deposit-date]');
-        const label = row.querySelector('[data-deposit-label]');
-        if (date) date.textContent = checkbox.checked ? payload.date : '—';
-        if (label) label.textContent = checkbox.checked ? 'Oui' : 'Non';
-        showToast('État de dépôt enregistré');
+        const payload = await saveRow(row, { [input.dataset.field]: input.value, reason });
+        initial = input.value;
+        applyLifecyclePayload(row, payload);
+        showToast('Suivi de la facture enregistré');
+        if (input.dataset.field === 'date_depot_dtc' || new URL(window.location.href).searchParams.get('status')) {
+          setTimeout(() => window.location.reload(), 350);
+        }
       } catch (error) {
-        checkbox.checked = !checkbox.checked;
+        input.value = initial;
         showToast(error.message, true);
       } finally {
-        checkbox.disabled = false;
+        syncTrackingAvailability(row);
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-payment-reference]').forEach((input) => {
+    let initial = input.value;
+    input.addEventListener('change', async () => {
+      const row = input.closest('tr[data-invoice-id]');
+      const value = input.value.trim();
+      let reason = '';
+      if (initial) {
+        reason = window.prompt('Motif de correction obligatoire :', '')?.trim() || '';
+        if (!reason) {
+          input.value = initial;
+          showToast('La correction a été annulée : motif manquant.', true);
+          return;
+        }
+      }
+      input.disabled = true;
+      try {
+        const payload = await saveRow(row, { numero_ordre_virement: value, reason });
+        initial = payload.numero_ordre_virement || '';
+        input.value = initial;
+        showToast('N° ordre de virement enregistré');
+      } catch (error) {
+        input.value = initial;
+        showToast(error.message, true);
+      } finally {
+        syncTrackingAvailability(row);
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-lifecycle-action]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const row = button.closest('tr[data-invoice-id]');
+      const action = button.dataset.lifecycleAction;
+      const promptLabel = action === 'restore' ? 'Motif de restauration :' : 'Motif d’annulation :';
+      const reason = window.prompt(promptLabel, '')?.trim() || '';
+      if (!reason) return;
+      button.disabled = true;
+      try {
+        await saveRow(row, { action, reason });
+        window.location.reload();
+      } catch (error) {
+        showToast(error.message, true);
+        button.disabled = false;
       }
     });
   });

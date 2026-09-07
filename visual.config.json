@@ -1,88 +1,23 @@
 {
-  "base_url": "http://127.0.0.1:8000",
+  "base_url": "http://127.0.0.1:8765",
   "pixel_threshold": 18,
   "minimum_similarity": 99.5,
   "pages": [
-    {
-      "id": "dashboard",
-      "label": "Tableau de bord",
-      "route": "/",
-      "reference": "tests/visual/baselines/dashboard.png",
-      "fixture": "dashboard",
-      "width": 1672,
-      "height": 941
-    },
-    {
-      "id": "table-facturation",
-      "label": "Table Facturation",
-      "route": "/table-facturation",
-      "reference": "tests/visual/baselines/table-facturation.png",
-      "fixture": "table-facturation",
-      "width": 1536,
-      "height": 1024
-    },
-    {
-      "id": "table-facturation-new",
-      "label": "Table Facturation — nouvelle interface",
-      "route": "/table-facturation-new",
-      "reference": "tests/visual/baselines/table-facturation-new.png",
-      "fixture": "table-facturation",
-      "width": 1536,
-      "height": 1024
-    },
-    {
-      "id": "factures",
-      "label": "Factures",
-      "route": "/invoices",
-      "reference": "tests/visual/baselines/factures.png",
-      "fixture": "factures",
-      "width": 1672,
-      "height": 941
-    },
-    {
-      "id": "bons-de-commande",
-      "label": "Bons de commande",
-      "route": "/purchase-orders",
-      "reference": "tests/visual/baselines/bons-de-commande.png",
-      "fixture": "bons-de-commande",
-      "width": 1672,
-      "height": 941
-    },
-    {
-      "id": "mobilis",
-      "label": "Mobilis",
-      "route": "/mobilis?edit_id=1001",
-      "reference": "tests/visual/baselines/mobilis.png",
-      "fixture": "mobilis",
-      "width": 1672,
-      "height": 941
-    },
-    {
-      "id": "bpu",
-      "label": "BPU",
-      "route": "/bpu",
-      "reference": "tests/visual/baselines/bpu.png",
-      "fixture": "bpu",
-      "width": 1672,
-      "height": 941
-    },
-    {
-      "id": "entreprise",
-      "label": "Entreprise",
-      "route": "/company",
-      "reference": "tests/visual/baselines/entreprise.png",
-      "fixture": "entreprise",
-      "width": 1672,
-      "height": 941
-    },
-    {
-      "id": "templates",
-      "label": "Templates",
-      "route": "/templates?doc=devis_quantitatif",
-      "reference": "tests/visual/baselines/templates.png",
-      "fixture": "templates",
-      "width": 1672,
-      "height": 941
-    }
+    {"id":"login","label":"Connexion","route":"/login","reference":"tests/visual/baselines/login.png","fixture":"","auth":false,"width":1440,"height":900},
+    {"id":"dashboard","label":"Tableau de bord","route":"/","reference":"tests/visual/baselines/dashboard.png","fixture":"","width":1440,"height":900},
+    {"id":"dashboard-compact","label":"Tableau de bord compact","route":"/","reference":"tests/visual/baselines/dashboard-compact.png","fixture":"","width":1024,"height":700},
+    {"id":"table-facturation-new","label":"Table Facturation","route":"/table-facturation-new","reference":"tests/visual/baselines/table-facturation-new.png","fixture":"","width":1536,"height":1024},
+    {"id":"table-facturation-compact","label":"Table Facturation compacte","route":"/table-facturation-new","reference":"tests/visual/baselines/table-facturation-compact.png","fixture":"","width":1024,"height":700},
+    {"id":"factures","label":"Factures","route":"/invoices","reference":"tests/visual/baselines/factures.png","fixture":"","width":1440,"height":900},
+    {"id":"bons-de-commande","label":"Bons de commande","route":"/purchase-orders?view_id=1","reference":"tests/visual/baselines/bons-de-commande.png","fixture":"","width":1440,"height":900},
+    {"id":"clients","label":"Clients","route":"/clients","reference":"tests/visual/baselines/clients.png","fixture":"","width":1440,"height":900},
+    {"id":"bpu","label":"BPU","route":"/bpu","reference":"tests/visual/baselines/bpu.png","fixture":"","width":1440,"height":900},
+    {"id":"templates","label":"Templates","route":"/templates?doc=devis_quantitatif","reference":"tests/visual/baselines/templates.png","fixture":"","width":1440,"height":900},
+    {"id":"settings","label":"Parametres","route":"/settings","reference":"tests/visual/baselines/settings.png","fixture":"","width":1440,"height":900},
+    {"id":"users","label":"Utilisateurs","route":"/users","reference":"tests/visual/baselines/users.png","fixture":"","width":1440,"height":900},
+    {"id":"backup","label":"Sauvegarde","route":"/backup","reference":"tests/visual/baselines/backup.png","fixture":"","width":1440,"height":900},
+    {"id":"license","label":"Licence","route":"/license","reference":"tests/visual/baselines/license.png","fixture":"","width":1440,"height":900},
+    {"id":"about","label":"A propos et support","route":"/about","reference":"tests/visual/baselines/about.png","fixture":"","width":1440,"height":900},
+    {"id":"status","label":"Etat technique","route":"/status","reference":"tests/visual/baselines/status.png","fixture":"","width":1440,"height":900}
   ]
 }

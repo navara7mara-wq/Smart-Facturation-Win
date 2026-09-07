@@ -4,6 +4,7 @@ import argparse
 import json
 import os
 import socket
+import shutil
 import subprocess
 import sys
 import time
@@ -18,6 +19,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONFIG = ROOT / "visual.config.json"
 DEFAULT_OUTPUT = ROOT / "output" / "visual-regression"
+VISUAL_DB = DEFAULT_OUTPUT / "visual-test.sqlite3"
 BUNDLED_NODE = Path(
     r"C:\Users\Administrateur\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe"
 )
@@ -48,10 +50,26 @@ def start_server(base_url: str) -> subprocess.Popen[str] | None:
     host = "127.0.0.1"
     port = int(base_url.rsplit(":", 1)[1].split("/", 1)[0])
     if port_is_open(host, port):
-        return None
+        raise RuntimeError(
+            f"Le port visuel isole {port} est deja utilise. Fermez le processus concerne."
+        )
+    VISUAL_DB.unlink(missing_ok=True)
+    env = os.environ.copy()
+    env["PHOENIX_DB_PATH"] = str(VISUAL_DB)
+    env["PHOENIX_PORT"] = str(port)
+    env["PHOENIX_HOST"] = host
+    subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "seed_visual_db.py")],
+        cwd=ROOT,
+        env=env,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     process = subprocess.Popen(
         [sys.executable, str(ROOT / "app.py")],
         cwd=ROOT,
+        env=env,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
         text=True,
@@ -67,6 +85,8 @@ def capture(config_path: Path, current_dir: Path, page_id: str = "") -> None:
     env = os.environ.copy()
     if BUNDLED_NODE_MODULES.exists():
         env["NODE_PATH"] = str(BUNDLED_NODE_MODULES)
+    env["PHOENIX_VISUAL_USERNAME"] = "admin"
+    env["PHOENIX_VISUAL_PASSWORD"] = "Visual123"
     command = [
             str(node),
             str(ROOT / "scripts" / "capture_visuals.js"),
@@ -150,7 +170,11 @@ def build_report(config: dict, output_dir: Path, results: list[dict]) -> Path:
     report_path = output_dir / "report.html"
     cards = []
     for result in results:
-        passed = result["similarity"] >= config["minimum_similarity"]
+        passed = (
+            result["similarity"] >= config["minimum_similarity"]
+            and not result["errors"]
+            and not result["body_overflow"]
+        )
         status_class = "good" if passed else "review"
         status_label = "CONFORME" if passed else "A CORRIGER"
         cards.append(
@@ -161,6 +185,7 @@ def build_report(config: dict, output_dir: Path, results: list[dict]) -> Path:
                 <div class="score {status_class}"><small>{status_label}</small>{result['similarity']:.3f}%</div>
               </header>
               <p>Taux brut pixel par pixel: <strong>{result['pixel_similarity']:.3f}%</strong>. {result['changed_percent']:.3f}% des pixels depassent le seuil de {config['pixel_threshold']}.</p>
+              <p>Console: <strong>{'OK' if not result['errors'] else escape(' | '.join(result['errors']))}</strong> — Debordement page: <strong>{'NON' if not result['body_overflow'] else 'OUI'}</strong></p>
               <div class="images">
                 <figure><figcaption>Reference</figcaption><img src="{result['reference_uri']}" alt="Reference"></figure>
                 <figure><figcaption>Capture actuelle</figcaption><img src="current/{result['id']}.png" alt="Capture"></figure>
@@ -194,6 +219,11 @@ def main() -> int:
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--no-capture", action="store_true", help="Compare les captures existantes.")
     parser.add_argument("--strict", action="store_true", help="Retourne une erreur si une page est sous le seuil.")
+    parser.add_argument(
+        "--update-baselines",
+        action="store_true",
+        help="Remplace explicitement les references par les captures validees.",
+    )
     parser.add_argument("--page", default="", help="Limite le controle a l'identifiant d'une page.")
     args = parser.parse_args()
 
@@ -212,8 +242,14 @@ def main() -> int:
         if not args.no_capture:
             capture(config_path, current_dir, args.page)
 
-        results = []
         selected_pages = [item for item in config["pages"] if not args.page or item["id"] == args.page]
+        if args.update_baselines:
+            for item in selected_pages:
+                reference_path = (ROOT / item["reference"]).resolve()
+                reference_path.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(current_dir / f"{item['id']}.png", reference_path)
+
+        results = []
         if args.page and not selected_pages:
             raise ValueError(f"Page inconnue: {args.page}")
         for item in selected_pages:
@@ -226,10 +262,15 @@ def main() -> int:
                 diff_path,
                 int(config["pixel_threshold"]),
             )
+            diagnostics = json.loads(
+                (current_dir / f"{item['id']}.json").read_text(encoding="utf-8")
+            )
             results.append(
                 {
                     **item,
                     **metrics,
+                    "errors": diagnostics.get("errors", []),
+                    "body_overflow": bool(diagnostics.get("bodyOverflow")),
                     "reference_uri": reference_path.as_uri(),
                 }
             )
@@ -243,7 +284,12 @@ def main() -> int:
         )
         report_path = build_report(config, output_dir, results)
         print(f"\nRapport: {report_path}")
-        failed = [item for item in results if item["similarity"] < config["minimum_similarity"]]
+        failed = [
+            item for item in results
+            if item["similarity"] < config["minimum_similarity"]
+            or item["errors"]
+            or item["body_overflow"]
+        ]
         if args.strict and failed:
             print(
                 f"ECHEC: {len(failed)} interface(s) sous le seuil de "
@@ -254,6 +300,10 @@ def main() -> int:
     finally:
         if server is not None:
             server.terminate()
+            try:
+                server.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                server.kill()
 
 
 if __name__ == "__main__":

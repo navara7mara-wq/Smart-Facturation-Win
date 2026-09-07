@@ -1,0 +1,880 @@
+{
+  "iterations": [
+    {
+      "scenario": 11,
+      "invoice": "QA_RC1_CRITICAL3_20260825_FAC_11",
+      "line_count": 1,
+      "date": "2026-04-01",
+      "expected_after_edit": {
+        "total_ht": "43350.00",
+        "retenue_garantie": "2167.50",
+        "montant_ht_apres_rg": "41182.50",
+        "tva": "7824.68",
+        "total_ttc": "49007.18"
+      },
+      "created_comparison": {
+        "total_ht": {
+          "actual": "42500.00",
+          "expected": "42500.00"
+        },
+        "retenue_garantie": {
+          "actual": "2125.00",
+          "expected": "2125.00"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "40375.00",
+          "expected": "40375.00"
+        },
+        "tva": {
+          "actual": "7671.25",
+          "expected": "7671.25"
+        },
+        "total_ttc": {
+          "actual": "48046.25",
+          "expected": "48046.25"
+        }
+      },
+      "edited_comparison": {
+        "total_ht": {
+          "actual": "43350.00",
+          "expected": "43350.00"
+        },
+        "retenue_garantie": {
+          "actual": "2167.50",
+          "expected": "2167.50"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "41182.50",
+          "expected": "41182.50"
+        },
+        "tva": {
+          "actual": "7824.68",
+          "expected": "7824.68"
+        },
+        "total_ttc": {
+          "actual": "49007.18",
+          "expected": "49007.18"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario": 12,
+      "invoice": "QA_RC1_CRITICAL3_20260825_FAC_12",
+      "line_count": 2,
+      "date": "2026-04-06",
+      "expected_after_edit": {
+        "total_ht": "184750.00",
+        "retenue_garantie": "9237.50",
+        "montant_ht_apres_rg": "175512.50",
+        "tva": "33347.38",
+        "total_ttc": "208859.88"
+      },
+      "created_comparison": {
+        "total_ht": {
+          "actual": "183500.00",
+          "expected": "183500.00"
+        },
+        "retenue_garantie": {
+          "actual": "9175.00",
+          "expected": "9175.00"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "174325.00",
+          "expected": "174325.00"
+        },
+        "tva": {
+          "actual": "33121.75",
+          "expected": "33121.75"
+        },
+        "total_ttc": {
+          "actual": "207446.75",
+          "expected": "207446.75"
+        }
+      },
+      "edited_comparison": {
+        "total_ht": {
+          "actual": "184750.00",
+          "expected": "184750.00"
+        },
+        "retenue_garantie": {
+          "actual": "9237.50",
+          "expected": "9237.50"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "175512.50",
+          "expected": "175512.50"
+        },
+        "tva": {
+          "actual": "33347.38",
+          "expected": "33347.38"
+        },
+        "total_ttc": {
+          "actual": "208859.88",
+          "expected": "208859.88"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario": 13,
+      "invoice": "QA_RC1_CRITICAL3_20260825_FAC_13",
+      "line_count": 3,
+      "date": "2026-04-11",
+      "expected_after_edit": {
+        "total_ht": "636220.00",
+        "retenue_garantie": "31811.00",
+        "montant_ht_apres_rg": "604409.00",
+        "tva": "114837.71",
+        "total_ttc": "719246.71"
+      },
+      "created_comparison": {
+        "total_ht": {
+          "actual": "634570.00",
+          "expected": "634570.00"
+        },
+        "retenue_garantie": {
+          "actual": "31728.50",
+          "expected": "31728.50"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "602841.50",
+          "expected": "602841.50"
+        },
+        "tva": {
+          "actual": "114539.88",
+          "expected": "114539.88"
+        },
+        "total_ttc": {
+          "actual": "717381.38",
+          "expected": "717381.38"
+        }
+      },
+      "edited_comparison": {
+        "total_ht": {
+          "actual": "636220.00",
+          "expected": "636220.00"
+        },
+        "retenue_garantie": {
+          "actual": "31811.00",
+          "expected": "31811.00"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "604409.00",
+          "expected": "604409.00"
+        },
+        "tva": {
+          "actual": "114837.71",
+          "expected": "114837.71"
+        },
+        "total_ttc": {
+          "actual": "719246.71",
+          "expected": "719246.71"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario": 14,
+      "invoice": "QA_RC1_CRITICAL3_20260825_FAC_14",
+      "line_count": 4,
+      "date": "2026-04-16",
+      "expected_after_edit": {
+        "total_ht": "1480355.00",
+        "retenue_garantie": "74017.75",
+        "montant_ht_apres_rg": "1406337.25",
+        "tva": "267204.08",
+        "total_ttc": "1673541.33"
+      },
+      "created_comparison": {
+        "total_ht": {
+          "actual": "1478305.00",
+          "expected": "1478305.00"
+        },
+        "retenue_garantie": {
+          "actual": "73915.25",
+          "expected": "73915.25"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "1404389.75",
+          "expected": "1404389.75"
+        },
+        "tva": {
+          "actual": "266834.05",
+          "expected": "266834.05"
+        },
+        "total_ttc": {
+          "actual": "1671223.80",
+          "expected": "1671223.80"
+        }
+      },
+      "edited_comparison": {
+        "total_ht": {
+          "actual": "1480355.00",
+          "expected": "1480355.00"
+        },
+        "retenue_garantie": {
+          "actual": "74017.75",
+          "expected": "74017.75"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "1406337.25",
+          "expected": "1406337.25"
+        },
+        "tva": {
+          "actual": "267204.08",
+          "expected": "267204.08"
+        },
+        "total_ttc": {
+          "actual": "1673541.33",
+          "expected": "1673541.33"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario": 15,
+      "invoice": "QA_RC1_CRITICAL3_20260825_FAC_15",
+      "line_count": 5,
+      "date": "2026-04-21",
+      "expected_after_edit": {
+        "total_ht": "12565800.00",
+        "retenue_garantie": "628290.00",
+        "montant_ht_apres_rg": "11937510.00",
+        "tva": "2268126.90",
+        "total_ttc": "14205636.90"
+      },
+      "created_comparison": {
+        "total_ht": {
+          "actual": "12562750.00",
+          "expected": "12562750.00"
+        },
+        "retenue_garantie": {
+          "actual": "628137.50",
+          "expected": "628137.50"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "11934612.50",
+          "expected": "11934612.50"
+        },
+        "tva": {
+          "actual": "2267576.38",
+          "expected": "2267576.38"
+        },
+        "total_ttc": {
+          "actual": "14202188.88",
+          "expected": "14202188.88"
+        }
+      },
+      "edited_comparison": {
+        "total_ht": {
+          "actual": "12565800.00",
+          "expected": "12565800.00"
+        },
+        "retenue_garantie": {
+          "actual": "628290.00",
+          "expected": "628290.00"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "11937510.00",
+          "expected": "11937510.00"
+        },
+        "tva": {
+          "actual": "2268126.90",
+          "expected": "2268126.90"
+        },
+        "total_ttc": {
+          "actual": "14205636.90",
+          "expected": "14205636.90"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario": 16,
+      "invoice": "QA_RC1_CRITICAL3_20260825_FAC_16",
+      "line_count": 1,
+      "date": "2026-04-26",
+      "expected_after_edit": {
+        "total_ht": "850850.00",
+        "retenue_garantie": "42542.50",
+        "montant_ht_apres_rg": "808307.50",
+        "tva": "153578.42",
+        "total_ttc": "961885.92"
+      },
+      "created_comparison": {
+        "total_ht": {
+          "actual": "850000.00",
+          "expected": "850000.00"
+        },
+        "retenue_garantie": {
+          "actual": "42500.00",
+          "expected": "42500.00"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "807500.00",
+          "expected": "807500.00"
+        },
+        "tva": {
+          "actual": "153425.00",
+          "expected": "153425.00"
+        },
+        "total_ttc": {
+          "actual": "960925.00",
+          "expected": "960925.00"
+        }
+      },
+      "edited_comparison": {
+        "total_ht": {
+          "actual": "850850.00",
+          "expected": "850850.00"
+        },
+        "retenue_garantie": {
+          "actual": "42542.50",
+          "expected": "42542.50"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "808307.50",
+          "expected": "808307.50"
+        },
+        "tva": {
+          "actual": "153578.42",
+          "expected": "153578.42"
+        },
+        "total_ttc": {
+          "actual": "961885.92",
+          "expected": "961885.92"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario": 17,
+      "invoice": "QA_RC1_CRITICAL3_20260825_FAC_17",
+      "line_count": 2,
+      "date": "2026-05-01",
+      "expected_after_edit": {
+        "total_ht": "2051875.00",
+        "retenue_garantie": "102593.75",
+        "montant_ht_apres_rg": "1949281.25",
+        "tva": "370363.44",
+        "total_ttc": "2319644.69"
+      },
+      "created_comparison": {
+        "total_ht": {
+          "actual": "2050625.00",
+          "expected": "2050625.00"
+        },
+        "retenue_garantie": {
+          "actual": "102531.25",
+          "expected": "102531.25"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "1948093.75",
+          "expected": "1948093.75"
+        },
+        "tva": {
+          "actual": "370137.81",
+          "expected": "370137.81"
+        },
+        "total_ttc": {
+          "actual": "2318231.56",
+          "expected": "2318231.56"
+        }
+      },
+      "edited_comparison": {
+        "total_ht": {
+          "actual": "2051875.00",
+          "expected": "2051875.00"
+        },
+        "retenue_garantie": {
+          "actual": "102593.75",
+          "expected": "102593.75"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "1949281.25",
+          "expected": "1949281.25"
+        },
+        "tva": {
+          "actual": "370363.44",
+          "expected": "370363.44"
+        },
+        "total_ttc": {
+          "actual": "2319644.69",
+          "expected": "2319644.69"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario": 18,
+      "invoice": "QA_RC1_CRITICAL3_20260825_FAC_18",
+      "line_count": 3,
+      "date": "2026-05-06",
+      "expected_after_edit": {
+        "total_ht": "6173750.00",
+        "retenue_garantie": "308687.50",
+        "montant_ht_apres_rg": "5865062.50",
+        "tva": "1114361.88",
+        "total_ttc": "6979424.38"
+      },
+      "created_comparison": {
+        "total_ht": {
+          "actual": "6172100.00",
+          "expected": "6172100.00"
+        },
+        "retenue_garantie": {
+          "actual": "308605.00",
+          "expected": "308605.00"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "5863495.00",
+          "expected": "5863495.00"
+        },
+        "tva": {
+          "actual": "1114064.05",
+          "expected": "1114064.05"
+        },
+        "total_ttc": {
+          "actual": "6977559.05",
+          "expected": "6977559.05"
+        }
+      },
+      "edited_comparison": {
+        "total_ht": {
+          "actual": "6173750.00",
+          "expected": "6173750.00"
+        },
+        "retenue_garantie": {
+          "actual": "308687.50",
+          "expected": "308687.50"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "5865062.50",
+          "expected": "5865062.50"
+        },
+        "tva": {
+          "actual": "1114361.88",
+          "expected": "1114361.88"
+        },
+        "total_ttc": {
+          "actual": "6979424.38",
+          "expected": "6979424.38"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario": 19,
+      "invoice": "QA_RC1_CRITICAL3_20260825_FAC_19",
+      "line_count": 4,
+      "date": "2026-05-11",
+      "expected_after_edit": {
+        "total_ht": "9037200.00",
+        "retenue_garantie": "451860.00",
+        "montant_ht_apres_rg": "8585340.00",
+        "tva": "1631214.60",
+        "total_ttc": "10216554.60"
+      },
+      "created_comparison": {
+        "total_ht": {
+          "actual": "9035150.00",
+          "expected": "9035150.00"
+        },
+        "retenue_garantie": {
+          "actual": "451757.50",
+          "expected": "451757.50"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "8583392.50",
+          "expected": "8583392.50"
+        },
+        "tva": {
+          "actual": "1630844.57",
+          "expected": "1630844.58"
+        },
+        "total_ttc": {
+          "actual": "10214237.07",
+          "expected": "10214237.08"
+        }
+      },
+      "edited_comparison": {
+        "total_ht": {
+          "actual": "9037200.00",
+          "expected": "9037200.00"
+        },
+        "retenue_garantie": {
+          "actual": "451860.00",
+          "expected": "451860.00"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "8585340.00",
+          "expected": "8585340.00"
+        },
+        "tva": {
+          "actual": "1631214.60",
+          "expected": "1631214.60"
+        },
+        "total_ttc": {
+          "actual": "10216554.60",
+          "expected": "10216554.60"
+        }
+      },
+      "status": "FAIL"
+    },
+    {
+      "scenario": 20,
+      "invoice": "QA_RC1_CRITICAL3_20260825_FAC_20",
+      "line_count": 5,
+      "date": "2026-05-16",
+      "expected_after_edit": {
+        "total_ht": "4307175.00",
+        "retenue_garantie": "215358.75",
+        "montant_ht_apres_rg": "4091816.25",
+        "tva": "777445.09",
+        "total_ttc": "4869261.34"
+      },
+      "created_comparison": {
+        "total_ht": {
+          "actual": "4304125.00",
+          "expected": "4304125.00"
+        },
+        "retenue_garantie": {
+          "actual": "215206.25",
+          "expected": "215206.25"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "4088918.75",
+          "expected": "4088918.75"
+        },
+        "tva": {
+          "actual": "776894.56",
+          "expected": "776894.56"
+        },
+        "total_ttc": {
+          "actual": "4865813.31",
+          "expected": "4865813.31"
+        }
+      },
+      "edited_comparison": {
+        "total_ht": {
+          "actual": "4307175.00",
+          "expected": "4307175.00"
+        },
+        "retenue_garantie": {
+          "actual": "215358.75",
+          "expected": "215358.75"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "4091816.25",
+          "expected": "4091816.25"
+        },
+        "tva": {
+          "actual": "777445.09",
+          "expected": "777445.09"
+        },
+        "total_ttc": {
+          "actual": "4869261.34",
+          "expected": "4869261.34"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario": 21,
+      "invoice": "QA_RC1_CRITICAL3_20260825_FAC_21",
+      "line_count": 1,
+      "date": "2026-05-21",
+      "expected_after_edit": {
+        "total_ht": "374850.00",
+        "retenue_garantie": "18742.50",
+        "montant_ht_apres_rg": "356107.50",
+        "tva": "67660.42",
+        "total_ttc": "423767.92"
+      },
+      "created_comparison": {
+        "total_ht": {
+          "actual": "374000.00",
+          "expected": "374000.00"
+        },
+        "retenue_garantie": {
+          "actual": "18700.00",
+          "expected": "18700.00"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "355300.00",
+          "expected": "355300.00"
+        },
+        "tva": {
+          "actual": "67507.00",
+          "expected": "67507.00"
+        },
+        "total_ttc": {
+          "actual": "422807.00",
+          "expected": "422807.00"
+        }
+      },
+      "edited_comparison": {
+        "total_ht": {
+          "actual": "374850.00",
+          "expected": "374850.00"
+        },
+        "retenue_garantie": {
+          "actual": "18742.50",
+          "expected": "18742.50"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "356107.50",
+          "expected": "356107.50"
+        },
+        "tva": {
+          "actual": "67660.43",
+          "expected": "67660.42"
+        },
+        "total_ttc": {
+          "actual": "423767.93",
+          "expected": "423767.92"
+        }
+      },
+      "status": "FAIL"
+    },
+    {
+      "scenario": 22,
+      "invoice": "QA_RC1_CRITICAL3_20260825_FAC_22",
+      "line_count": 2,
+      "date": "2026-05-26",
+      "expected_after_edit": {
+        "total_ht": "1355625.00",
+        "retenue_garantie": "67781.25",
+        "montant_ht_apres_rg": "1287843.75",
+        "tva": "244690.31",
+        "total_ttc": "1532534.06"
+      },
+      "created_comparison": {
+        "total_ht": {
+          "actual": "1354375.00",
+          "expected": "1354375.00"
+        },
+        "retenue_garantie": {
+          "actual": "67718.75",
+          "expected": "67718.75"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "1286656.25",
+          "expected": "1286656.25"
+        },
+        "tva": {
+          "actual": "244464.69",
+          "expected": "244464.69"
+        },
+        "total_ttc": {
+          "actual": "1531120.94",
+          "expected": "1531120.94"
+        }
+      },
+      "edited_comparison": {
+        "total_ht": {
+          "actual": "1355625.00",
+          "expected": "1355625.00"
+        },
+        "retenue_garantie": {
+          "actual": "67781.25",
+          "expected": "67781.25"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "1287843.75",
+          "expected": "1287843.75"
+        },
+        "tva": {
+          "actual": "244690.31",
+          "expected": "244690.31"
+        },
+        "total_ttc": {
+          "actual": "1532534.06",
+          "expected": "1532534.06"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario": 23,
+      "invoice": "QA_RC1_CRITICAL3_20260825_FAC_23",
+      "line_count": 3,
+      "date": "2026-05-31",
+      "expected_after_edit": {
+        "total_ht": "6542050.00",
+        "retenue_garantie": "327102.50",
+        "montant_ht_apres_rg": "6214947.50",
+        "tva": "1180840.02",
+        "total_ttc": "7395787.52"
+      },
+      "created_comparison": {
+        "total_ht": {
+          "actual": "6540400.00",
+          "expected": "6540400.00"
+        },
+        "retenue_garantie": {
+          "actual": "327020.00",
+          "expected": "327020.00"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "6213380.00",
+          "expected": "6213380.00"
+        },
+        "tva": {
+          "actual": "1180542.20",
+          "expected": "1180542.20"
+        },
+        "total_ttc": {
+          "actual": "7393922.20",
+          "expected": "7393922.20"
+        }
+      },
+      "edited_comparison": {
+        "total_ht": {
+          "actual": "6542050.00",
+          "expected": "6542050.00"
+        },
+        "retenue_garantie": {
+          "actual": "327102.50",
+          "expected": "327102.50"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "6214947.50",
+          "expected": "6214947.50"
+        },
+        "tva": {
+          "actual": "1180840.02",
+          "expected": "1180840.02"
+        },
+        "total_ttc": {
+          "actual": "7395787.52",
+          "expected": "7395787.52"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario": 24,
+      "invoice": "QA_RC1_CRITICAL3_20260825_FAC_24",
+      "line_count": 4,
+      "date": "2026-06-05",
+      "expected_after_edit": {
+        "total_ht": "6754575.00",
+        "retenue_garantie": "337728.75",
+        "montant_ht_apres_rg": "6416846.25",
+        "tva": "1219200.79",
+        "total_ttc": "7636047.04"
+      },
+      "created_comparison": {
+        "total_ht": {
+          "actual": "6752525.00",
+          "expected": "6752525.00"
+        },
+        "retenue_garantie": {
+          "actual": "337626.25",
+          "expected": "337626.25"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "6414898.75",
+          "expected": "6414898.75"
+        },
+        "tva": {
+          "actual": "1218830.76",
+          "expected": "1218830.76"
+        },
+        "total_ttc": {
+          "actual": "7633729.51",
+          "expected": "7633729.51"
+        }
+      },
+      "edited_comparison": {
+        "total_ht": {
+          "actual": "6754575.00",
+          "expected": "6754575.00"
+        },
+        "retenue_garantie": {
+          "actual": "337728.75",
+          "expected": "337728.75"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "6416846.25",
+          "expected": "6416846.25"
+        },
+        "tva": {
+          "actual": "1219200.79",
+          "expected": "1219200.79"
+        },
+        "total_ttc": {
+          "actual": "7636047.04",
+          "expected": "7636047.04"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "scenario": 25,
+      "invoice": "QA_RC1_CRITICAL3_20260825_FAC_25",
+      "line_count": 5,
+      "date": "2026-06-10",
+      "expected_after_edit": {
+        "total_ht": "8991200.00",
+        "retenue_garantie": "449560.00",
+        "montant_ht_apres_rg": "8541640.00",
+        "tva": "1622911.60",
+        "total_ttc": "10164551.60"
+      },
+      "created_comparison": {
+        "total_ht": {
+          "actual": "8988150.00",
+          "expected": "8988150.00"
+        },
+        "retenue_garantie": {
+          "actual": "449407.50",
+          "expected": "449407.50"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "8538742.50",
+          "expected": "8538742.50"
+        },
+        "tva": {
+          "actual": "1622361.07",
+          "expected": "1622361.08"
+        },
+        "total_ttc": {
+          "actual": "10161103.57",
+          "expected": "10161103.58"
+        }
+      },
+      "edited_comparison": {
+        "total_ht": {
+          "actual": "8991200.00",
+          "expected": "8991200.00"
+        },
+        "retenue_garantie": {
+          "actual": "449560.00",
+          "expected": "449560.00"
+        },
+        "montant_ht_apres_rg": {
+          "actual": "8541640.00",
+          "expected": "8541640.00"
+        },
+        "tva": {
+          "actual": "1622911.60",
+          "expected": "1622911.60"
+        },
+        "total_ttc": {
+          "actual": "10164551.60",
+          "expected": "10164551.60"
+        }
+      },
+      "status": "FAIL"
+    }
+  ],
+  "count": 15,
+  "total_critical_invoice_scenarios_including_prior": 25,
+  "passed": 12,
+  "failed": 3,
+  "integrity_check": "ok",
+  "foreign_key_violations": 0
+}

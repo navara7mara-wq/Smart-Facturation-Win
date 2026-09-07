@@ -1,10 +1,23 @@
 param(
-    [string]$Version = "1.4.0"
+    [string]$Version = "2.5.2",
+    [switch]$SkipDesktopBuild,
+    [switch]$TestBuild
 )
 
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 $IssPath = Join-Path $Root "installer\PhoEniX_BPU.iss"
+$DesktopExe = Join-Path $Root "dist\desktop\PhoEniX BPU\PhoEniX BPU.exe"
+
+if (-not $SkipDesktopBuild -and -not (Test-Path -LiteralPath $DesktopExe)) {
+    & (Join-Path $Root "scripts\build_desktop.ps1") -Version $Version
+    if ($LASTEXITCODE -ne 0) {
+        throw "Desktop package build failed."
+    }
+}
+if (-not (Test-Path -LiteralPath $DesktopExe)) {
+    throw "Desktop executable is missing: $DesktopExe"
+}
 
 $candidates = @(@(
     (Get-Command ISCC.exe -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source -ErrorAction SilentlyContinue),
@@ -36,6 +49,13 @@ if (-not $candidates) {
 }
 
 $env:PHOENIX_VERSION = $Version
+if ($TestBuild) {
+    $env:PHOENIX_APP_ID = "{{3A267D89-9114-46D2-B775-B2B5370DD7C6}"
+    $env:PHOENIX_OUTPUT_SUFFIX = "_Test"
+} else {
+    $env:PHOENIX_APP_ID = ""
+    $env:PHOENIX_OUTPUT_SUFFIX = ""
+}
 & $candidates[0] $IssPath
 if ($LASTEXITCODE -ne 0) {
     throw "Inno Setup failed with exit code $LASTEXITCODE."

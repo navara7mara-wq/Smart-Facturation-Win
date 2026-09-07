@@ -1,0 +1,409 @@
+{
+  "purpose": "Authoritative post-fix DEF-RC1-003 evidence reconciliation",
+  "authoritative_evidence_root": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\quality\\remediation\\evidence\\financial_rc2\\e2e_10",
+  "database_source": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\tmp\\pytest-rc2-complete-final-rerun\\test_ten_invoice_snapshot_rest0\\financial-e2e\\pos_ai.sqlite3",
+  "database_source_opened_read_only": true,
+  "integrity_check": "ok",
+  "foreign_key_violations": 0,
+  "cases_passed": 10,
+  "cases_total": 10,
+  "layers": [
+    "UI",
+    "DB",
+    "PDF",
+    "XLSX"
+  ],
+  "cases": [
+    {
+      "invoice": "QA-RC2-FAC-01",
+      "rates": {
+        "rg": "5",
+        "tva": "19"
+      },
+      "expected": [
+        "16.65",
+        "0.83",
+        "15.82",
+        "3.00",
+        "18.82"
+      ],
+      "ui_checks": {
+        "edit_rg": true,
+        "edit_tva": true,
+        "preview_rg": true,
+        "preview_tva": true,
+        "preview_values": true
+      },
+      "pdf_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true
+      },
+      "xlsx_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true,
+        "no_float_noise": true
+      },
+      "checks": {
+        "db": true,
+        "ui": true,
+        "pdf": true,
+        "xlsx": true
+      },
+      "result": "PASS"
+    },
+    {
+      "invoice": "QA-RC2-FAC-02",
+      "rates": {
+        "rg": "5",
+        "tva": "19"
+      },
+      "expected": [
+        "29.00",
+        "1.45",
+        "27.55",
+        "5.23",
+        "32.78"
+      ],
+      "ui_checks": {
+        "edit_rg": true,
+        "edit_tva": true,
+        "preview_rg": true,
+        "preview_tva": true,
+        "preview_values": true
+      },
+      "pdf_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true
+      },
+      "xlsx_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true,
+        "no_float_noise": true
+      },
+      "checks": {
+        "db": true,
+        "ui": true,
+        "pdf": true,
+        "xlsx": true
+      },
+      "result": "PASS"
+    },
+    {
+      "invoice": "QA-RC2-FAC-03",
+      "rates": {
+        "rg": "5",
+        "tva": "19"
+      },
+      "expected": [
+        "41.35",
+        "2.06",
+        "39.29",
+        "7.46",
+        "46.75"
+      ],
+      "ui_checks": {
+        "edit_rg": true,
+        "edit_tva": true,
+        "preview_rg": true,
+        "preview_tva": true,
+        "preview_values": true
+      },
+      "pdf_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true
+      },
+      "xlsx_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true,
+        "no_float_noise": true
+      },
+      "checks": {
+        "db": true,
+        "ui": true,
+        "pdf": true,
+        "xlsx": true
+      },
+      "result": "PASS"
+    },
+    {
+      "invoice": "QA-RC2-FAC-04",
+      "rates": {
+        "rg": "5",
+        "tva": "19"
+      },
+      "expected": [
+        "53.70",
+        "2.68",
+        "51.02",
+        "9.69",
+        "60.71"
+      ],
+      "ui_checks": {
+        "edit_rg": true,
+        "edit_tva": true,
+        "preview_rg": true,
+        "preview_tva": true,
+        "preview_values": true
+      },
+      "pdf_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true
+      },
+      "xlsx_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true,
+        "no_float_noise": true
+      },
+      "checks": {
+        "db": true,
+        "ui": true,
+        "pdf": true,
+        "xlsx": true
+      },
+      "result": "PASS"
+    },
+    {
+      "invoice": "QA-RC2-FAC-05",
+      "rates": {
+        "rg": "5",
+        "tva": "19"
+      },
+      "expected": [
+        "66.05",
+        "3.30",
+        "62.75",
+        "11.92",
+        "74.67"
+      ],
+      "ui_checks": {
+        "edit_rg": true,
+        "edit_tva": true,
+        "preview_rg": true,
+        "preview_tva": true,
+        "preview_values": true
+      },
+      "pdf_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true
+      },
+      "xlsx_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true,
+        "no_float_noise": true
+      },
+      "checks": {
+        "db": true,
+        "ui": true,
+        "pdf": true,
+        "xlsx": true
+      },
+      "result": "PASS"
+    },
+    {
+      "invoice": "QA-RC2-FAC-06",
+      "rates": {
+        "rg": "10",
+        "tva": "20"
+      },
+      "expected": [
+        "78.40",
+        "7.84",
+        "70.56",
+        "14.11",
+        "84.67"
+      ],
+      "ui_checks": {
+        "edit_rg": true,
+        "edit_tva": true,
+        "preview_rg": true,
+        "preview_tva": true,
+        "preview_values": true
+      },
+      "pdf_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true
+      },
+      "xlsx_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true,
+        "no_float_noise": true
+      },
+      "checks": {
+        "db": true,
+        "ui": true,
+        "pdf": true,
+        "xlsx": true
+      },
+      "result": "PASS"
+    },
+    {
+      "invoice": "QA-RC2-FAC-07",
+      "rates": {
+        "rg": "10",
+        "tva": "20"
+      },
+      "expected": [
+        "90.75",
+        "9.07",
+        "81.68",
+        "16.33",
+        "98.01"
+      ],
+      "ui_checks": {
+        "edit_rg": true,
+        "edit_tva": true,
+        "preview_rg": true,
+        "preview_tva": true,
+        "preview_values": true
+      },
+      "pdf_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true
+      },
+      "xlsx_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true,
+        "no_float_noise": true
+      },
+      "checks": {
+        "db": true,
+        "ui": true,
+        "pdf": true,
+        "xlsx": true
+      },
+      "result": "PASS"
+    },
+    {
+      "invoice": "QA-RC2-FAC-08",
+      "rates": {
+        "rg": "10",
+        "tva": "20"
+      },
+      "expected": [
+        "103.10",
+        "10.31",
+        "92.79",
+        "18.55",
+        "111.34"
+      ],
+      "ui_checks": {
+        "edit_rg": true,
+        "edit_tva": true,
+        "preview_rg": true,
+        "preview_tva": true,
+        "preview_values": true
+      },
+      "pdf_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true
+      },
+      "xlsx_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true,
+        "no_float_noise": true
+      },
+      "checks": {
+        "db": true,
+        "ui": true,
+        "pdf": true,
+        "xlsx": true
+      },
+      "result": "PASS"
+    },
+    {
+      "invoice": "QA-RC2-FAC-09",
+      "rates": {
+        "rg": "10",
+        "tva": "20"
+      },
+      "expected": [
+        "115.45",
+        "11.54",
+        "103.91",
+        "20.78",
+        "124.69"
+      ],
+      "ui_checks": {
+        "edit_rg": true,
+        "edit_tva": true,
+        "preview_rg": true,
+        "preview_tva": true,
+        "preview_values": true
+      },
+      "pdf_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true
+      },
+      "xlsx_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true,
+        "no_float_noise": true
+      },
+      "checks": {
+        "db": true,
+        "ui": true,
+        "pdf": true,
+        "xlsx": true
+      },
+      "result": "PASS"
+    },
+    {
+      "invoice": "QA-RC2-FAC-10",
+      "rates": {
+        "rg": "10",
+        "tva": "20"
+      },
+      "expected": [
+        "127.79",
+        "12.77",
+        "115.02",
+        "23.00",
+        "138.02"
+      ],
+      "ui_checks": {
+        "edit_rg": true,
+        "edit_tva": true,
+        "preview_rg": true,
+        "preview_tva": true,
+        "preview_values": true
+      },
+      "pdf_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true
+      },
+      "xlsx_checks": {
+        "rg_label": true,
+        "tva_label": true,
+        "values": true,
+        "no_float_noise": true
+      },
+      "checks": {
+        "db": true,
+        "ui": true,
+        "pdf": true,
+        "xlsx": true
+      },
+      "result": "PASS"
+    }
+  ],
+  "result": "PASS"
+}

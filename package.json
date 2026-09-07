@@ -1,16 +1,23 @@
 {
   "name": "phoenix-bpu",
-  "version": "1.0.0",
+  "version": "2.5.2",
   "private": true,
   "description": "Application locale de facturation BPU pour Mobilis.",
   "scripts": {
-    "start": "python app.py",
+    "start": "python desktop.py",
+    "start:web": "python app.py",
     "init-db": "python scripts/init_db.py",
     "test": "python -m pytest",
+    "test:unit": "python -m pytest -m unit",
+    "test:integration": "python -m pytest -m integration",
+    "test:e2e": "python -m pytest -m e2e",
+    "test:migration": "python -m pytest -m migration",
+    "test:strict": "python -m pytest -W error",
     "visual:test": "powershell -ExecutionPolicy Bypass -File scripts/run_visual_tests.ps1",
     "visual:test:strict": "powershell -ExecutionPolicy Bypass -File scripts/run_visual_tests.ps1 -Strict"
   },
   "dependencies": {
+    "lucide": "0.468.0",
     "playwright": "^1.54.0"
   }
 }

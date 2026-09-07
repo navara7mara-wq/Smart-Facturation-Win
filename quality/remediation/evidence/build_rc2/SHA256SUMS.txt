@@ -1,0 +1,3 @@
+c6dface3a85228477300c9819f5f96640148268a0b806d3b314ab816f96be910  PhoEniX_BPU_Portable_2.5.2.zip
+b3a3e013dfbda483f31b073dbdda6b95c2b98e2adbaedf2b0b72153a3668a1cf  PhoEniX License Studio.exe
+b6404b3f12264ec290e620140eb953376db9503466bb0afd0e3b0ec080efe564  PhoEniX_BPU_Setup_2.5.2.exe

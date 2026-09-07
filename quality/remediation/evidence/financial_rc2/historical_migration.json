@@ -1,0 +1,129 @@
+{
+  "source": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\data\\pos_ai.sqlite3",
+  "source_sha256_before": "7733604AA540A6FFEE052CD9CD3E6CBACF7B1805BBC237B87900699805C4F601",
+  "source_sha256_after": "7733604AA540A6FFEE052CD9CD3E6CBACF7B1805BBC237B87900699805C4F601",
+  "source_unchanged": true,
+  "source_schema_version": 17,
+  "qa_target": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\tmp\\rc2-financial\\historical-v17-to-v19-run2.sqlite3",
+  "qa_target_sha256": "DDE18E574889E9F40E6DD699FEF0152461D991ADDE4A974C0E3802F540A4623E",
+  "applied_migrations": [
+    18,
+    19
+  ],
+  "target_schema_version": 19,
+  "invoice_count_before": 5,
+  "invoice_count_after": 5,
+  "invoice_financial_values_unchanged": true,
+  "invoice_lines_unchanged": true,
+  "invoice_site_relations_unchanged": true,
+  "backfill_rates": [
+    [
+      2,
+      5,
+      19
+    ],
+    [
+      7,
+      5,
+      19
+    ],
+    [
+      8,
+      5,
+      19
+    ],
+    [
+      9,
+      5,
+      19
+    ],
+    [
+      10,
+      5,
+      19
+    ]
+  ],
+  "global_defaults_changed_after_migration": {
+    "rg_rate": "10",
+    "tva_rate": "20"
+  },
+  "historical_snapshots_after_global_change": [
+    [
+      2,
+      5,
+      19
+    ],
+    [
+      7,
+      5,
+      19
+    ],
+    [
+      8,
+      5,
+      19
+    ],
+    [
+      9,
+      5,
+      19
+    ],
+    [
+      10,
+      5,
+      19
+    ]
+  ],
+  "xlsx_exports": [
+    {
+      "invoice_id": 2,
+      "path": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\quality\\remediation\\evidence\\financial_rc2\\historical_migration_documents\\xlsx\\historical-invoice-2.xlsx",
+      "bytes": 251564,
+      "sha256": "5DEB64673B3EDD80207B9D231F96CBB1899D917FFC3F653B2B616D31B0BA4E1A"
+    },
+    {
+      "invoice_id": 7,
+      "path": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\quality\\remediation\\evidence\\financial_rc2\\historical_migration_documents\\xlsx\\historical-invoice-7.xlsx",
+      "bytes": 249678,
+      "sha256": "50C0168CA1FD0A853729769C7C932982CD8FE70DE1C606E32EE6FC36233A2CEE"
+    },
+    {
+      "invoice_id": 8,
+      "path": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\quality\\remediation\\evidence\\financial_rc2\\historical_migration_documents\\xlsx\\historical-invoice-8.xlsx",
+      "bytes": 248906,
+      "sha256": "2CCD039DD553CE09261F26D782245D8E9B5C784F186AEB2CF825A19E7A1819F9"
+    },
+    {
+      "invoice_id": 9,
+      "path": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\quality\\remediation\\evidence\\financial_rc2\\historical_migration_documents\\xlsx\\historical-invoice-9.xlsx",
+      "bytes": 249514,
+      "sha256": "EAA63B814D3A39ADE3A90A730272E6D22A30EA565846593FC11464C078962D53"
+    },
+    {
+      "invoice_id": 10,
+      "path": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\quality\\remediation\\evidence\\financial_rc2\\historical_migration_documents\\xlsx\\historical-invoice-10.xlsx",
+      "bytes": 256958,
+      "sha256": "D32C784AF080E283B1A7E800A5A3AE02D454CBDCC5DB929FE8A4EACCA9252B43"
+    }
+  ],
+  "pdf_exports": [
+    {
+      "invoice_id": 2,
+      "path": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\quality\\remediation\\evidence\\financial_rc2\\historical_migration_documents\\pdf\\historical-invoice-2.pdf",
+      "bytes": 135794,
+      "sha256": "F793BE8790EDAE213A28FF342CB56CA20DBAC8ACB2A38C33C9C544C6500B964D"
+    },
+    {
+      "invoice_id": 10,
+      "path": "C:\\Users\\Administrateur\\Downloads\\PhoEniX_BPU_V46_FULL\\quality\\remediation\\evidence\\financial_rc2\\historical_migration_documents\\pdf\\historical-invoice-10.pdf",
+      "bytes": 149136,
+      "sha256": "499E7F32E87804DB883DDDC11CAC474BD8938762F4871CF0AAEFB652839428C3"
+    }
+  ],
+  "integrity_check": "ok",
+  "foreign_key_violations": 0,
+  "duplicate_invoice_numbers": 0,
+  "orphan_invoice_lines": 0,
+  "restart_reopen": "PASS",
+  "result": "PASS"
+}

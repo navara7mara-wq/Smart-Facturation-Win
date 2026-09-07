@@ -1,6 +1,7 @@
 param(
     [switch]$NoCapture,
     [switch]$Strict,
+    [switch]$UpdateBaselines,
     [string]$Page = ""
 )
 
@@ -15,6 +16,7 @@ if (-not (Test-Path -LiteralPath $python)) {
 $pythonArgs = @((Join-Path $PSScriptRoot "visual_regression.py"))
 if ($NoCapture) { $pythonArgs += "--no-capture" }
 if ($Strict) { $pythonArgs += "--strict" }
+if ($UpdateBaselines) { $pythonArgs += "--update-baselines" }
 if ($Page) { $pythonArgs += @("--page", $Page) }
 
 & $python @pythonArgs

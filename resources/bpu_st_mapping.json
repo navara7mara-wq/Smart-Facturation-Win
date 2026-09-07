@@ -1,0 +1,2318 @@
+{
+  "version": "BPU-ST-2",
+  "mapping_count": 566,
+  "unmapped_count": 44,
+  "mappings": [
+    {
+      "st_article_number": 1,
+      "general_article_number": 1
+    },
+    {
+      "st_article_number": 10,
+      "general_article_number": 10
+    },
+    {
+      "st_article_number": 100,
+      "general_article_number": 100
+    },
+    {
+      "st_article_number": 101,
+      "general_article_number": 101
+    },
+    {
+      "st_article_number": 102,
+      "general_article_number": 102
+    },
+    {
+      "st_article_number": 103,
+      "general_article_number": 103
+    },
+    {
+      "st_article_number": 104,
+      "general_article_number": 104
+    },
+    {
+      "st_article_number": 105,
+      "general_article_number": 105
+    },
+    {
+      "st_article_number": 106,
+      "general_article_number": 106
+    },
+    {
+      "st_article_number": 107,
+      "general_article_number": 107
+    },
+    {
+      "st_article_number": 108,
+      "general_article_number": 108
+    },
+    {
+      "st_article_number": 109,
+      "general_article_number": 109
+    },
+    {
+      "st_article_number": 11,
+      "general_article_number": 11
+    },
+    {
+      "st_article_number": 110,
+      "general_article_number": 110
+    },
+    {
+      "st_article_number": 111,
+      "general_article_number": 111
+    },
+    {
+      "st_article_number": 112,
+      "general_article_number": 112
+    },
+    {
+      "st_article_number": 113,
+      "general_article_number": 113
+    },
+    {
+      "st_article_number": 114,
+      "general_article_number": 114
+    },
+    {
+      "st_article_number": 115,
+      "general_article_number": 115
+    },
+    {
+      "st_article_number": 116,
+      "general_article_number": 116
+    },
+    {
+      "st_article_number": 117,
+      "general_article_number": 117
+    },
+    {
+      "st_article_number": 118,
+      "general_article_number": 118
+    },
+    {
+      "st_article_number": 119,
+      "general_article_number": 119
+    },
+    {
+      "st_article_number": 12,
+      "general_article_number": 12
+    },
+    {
+      "st_article_number": 120,
+      "general_article_number": 120
+    },
+    {
+      "st_article_number": 121,
+      "general_article_number": 121
+    },
+    {
+      "st_article_number": 122,
+      "general_article_number": 122
+    },
+    {
+      "st_article_number": 123,
+      "general_article_number": 123
+    },
+    {
+      "st_article_number": 124,
+      "general_article_number": 124
+    },
+    {
+      "st_article_number": 125,
+      "general_article_number": 125
+    },
+    {
+      "st_article_number": 126,
+      "general_article_number": 126
+    },
+    {
+      "st_article_number": 127,
+      "general_article_number": 127
+    },
+    {
+      "st_article_number": 128,
+      "general_article_number": 128
+    },
+    {
+      "st_article_number": 129,
+      "general_article_number": 129
+    },
+    {
+      "st_article_number": 13,
+      "general_article_number": 13
+    },
+    {
+      "st_article_number": 130,
+      "general_article_number": 130
+    },
+    {
+      "st_article_number": 131,
+      "general_article_number": 131
+    },
+    {
+      "st_article_number": 132,
+      "general_article_number": 132
+    },
+    {
+      "st_article_number": 133,
+      "general_article_number": 133
+    },
+    {
+      "st_article_number": 134,
+      "general_article_number": 134
+    },
+    {
+      "st_article_number": 135,
+      "general_article_number": 135
+    },
+    {
+      "st_article_number": 136,
+      "general_article_number": 136
+    },
+    {
+      "st_article_number": 137,
+      "general_article_number": 137
+    },
+    {
+      "st_article_number": 138,
+      "general_article_number": 138
+    },
+    {
+      "st_article_number": 139,
+      "general_article_number": 139
+    },
+    {
+      "st_article_number": 14,
+      "general_article_number": 14
+    },
+    {
+      "st_article_number": 140,
+      "general_article_number": 140
+    },
+    {
+      "st_article_number": 141,
+      "general_article_number": 141
+    },
+    {
+      "st_article_number": 142,
+      "general_article_number": 142
+    },
+    {
+      "st_article_number": 143,
+      "general_article_number": 143
+    },
+    {
+      "st_article_number": 144,
+      "general_article_number": 144
+    },
+    {
+      "st_article_number": 145,
+      "general_article_number": 145
+    },
+    {
+      "st_article_number": 146,
+      "general_article_number": 146
+    },
+    {
+      "st_article_number": 147,
+      "general_article_number": 147
+    },
+    {
+      "st_article_number": 148,
+      "general_article_number": 148
+    },
+    {
+      "st_article_number": 149,
+      "general_article_number": 149
+    },
+    {
+      "st_article_number": 15,
+      "general_article_number": 15
+    },
+    {
+      "st_article_number": 150,
+      "general_article_number": 150
+    },
+    {
+      "st_article_number": 151,
+      "general_article_number": 151
+    },
+    {
+      "st_article_number": 152,
+      "general_article_number": 152
+    },
+    {
+      "st_article_number": 153,
+      "general_article_number": 153
+    },
+    {
+      "st_article_number": 154,
+      "general_article_number": 154
+    },
+    {
+      "st_article_number": 155,
+      "general_article_number": 155
+    },
+    {
+      "st_article_number": 156,
+      "general_article_number": 156
+    },
+    {
+      "st_article_number": 157,
+      "general_article_number": 157
+    },
+    {
+      "st_article_number": 158,
+      "general_article_number": 158
+    },
+    {
+      "st_article_number": 159,
+      "general_article_number": 159
+    },
+    {
+      "st_article_number": 16,
+      "general_article_number": 16
+    },
+    {
+      "st_article_number": 160,
+      "general_article_number": 160
+    },
+    {
+      "st_article_number": 161,
+      "general_article_number": 161
+    },
+    {
+      "st_article_number": 162,
+      "general_article_number": 162
+    },
+    {
+      "st_article_number": 163,
+      "general_article_number": 163
+    },
+    {
+      "st_article_number": 164,
+      "general_article_number": 164
+    },
+    {
+      "st_article_number": 165,
+      "general_article_number": 165
+    },
+    {
+      "st_article_number": 166,
+      "general_article_number": 166
+    },
+    {
+      "st_article_number": 167,
+      "general_article_number": 167
+    },
+    {
+      "st_article_number": 168,
+      "general_article_number": 168
+    },
+    {
+      "st_article_number": 169,
+      "general_article_number": 169
+    },
+    {
+      "st_article_number": 17,
+      "general_article_number": 17
+    },
+    {
+      "st_article_number": 170,
+      "general_article_number": 170
+    },
+    {
+      "st_article_number": 171,
+      "general_article_number": 171
+    },
+    {
+      "st_article_number": 172,
+      "general_article_number": 172
+    },
+    {
+      "st_article_number": 173,
+      "general_article_number": 173
+    },
+    {
+      "st_article_number": 174,
+      "general_article_number": 174
+    },
+    {
+      "st_article_number": 175,
+      "general_article_number": 175
+    },
+    {
+      "st_article_number": 176,
+      "general_article_number": 176
+    },
+    {
+      "st_article_number": 177,
+      "general_article_number": 177
+    },
+    {
+      "st_article_number": 178,
+      "general_article_number": 178
+    },
+    {
+      "st_article_number": 179,
+      "general_article_number": 179
+    },
+    {
+      "st_article_number": 18,
+      "general_article_number": 18
+    },
+    {
+      "st_article_number": 180,
+      "general_article_number": 180
+    },
+    {
+      "st_article_number": 181,
+      "general_article_number": 181
+    },
+    {
+      "st_article_number": 182,
+      "general_article_number": 182
+    },
+    {
+      "st_article_number": 183,
+      "general_article_number": 183
+    },
+    {
+      "st_article_number": 184,
+      "general_article_number": 184
+    },
+    {
+      "st_article_number": 185,
+      "general_article_number": 185
+    },
+    {
+      "st_article_number": 186,
+      "general_article_number": 186
+    },
+    {
+      "st_article_number": 187,
+      "general_article_number": 187
+    },
+    {
+      "st_article_number": 188,
+      "general_article_number": 188
+    },
+    {
+      "st_article_number": 189,
+      "general_article_number": 189
+    },
+    {
+      "st_article_number": 19,
+      "general_article_number": 19
+    },
+    {
+      "st_article_number": 190,
+      "general_article_number": 190
+    },
+    {
+      "st_article_number": 191,
+      "general_article_number": 191
+    },
+    {
+      "st_article_number": 192,
+      "general_article_number": 192
+    },
+    {
+      "st_article_number": 193,
+      "general_article_number": 193
+    },
+    {
+      "st_article_number": 194,
+      "general_article_number": 194
+    },
+    {
+      "st_article_number": 195,
+      "general_article_number": 195
+    },
+    {
+      "st_article_number": 196,
+      "general_article_number": 196
+    },
+    {
+      "st_article_number": 197,
+      "general_article_number": 197
+    },
+    {
+      "st_article_number": 198,
+      "general_article_number": 198
+    },
+    {
+      "st_article_number": 199,
+      "general_article_number": 199
+    },
+    {
+      "st_article_number": 2,
+      "general_article_number": 2
+    },
+    {
+      "st_article_number": 20,
+      "general_article_number": 20
+    },
+    {
+      "st_article_number": 200,
+      "general_article_number": 200
+    },
+    {
+      "st_article_number": 201,
+      "general_article_number": 201
+    },
+    {
+      "st_article_number": 202,
+      "general_article_number": 202
+    },
+    {
+      "st_article_number": 203,
+      "general_article_number": 203
+    },
+    {
+      "st_article_number": 204,
+      "general_article_number": 204
+    },
+    {
+      "st_article_number": 205,
+      "general_article_number": 205
+    },
+    {
+      "st_article_number": 206,
+      "general_article_number": 206
+    },
+    {
+      "st_article_number": 207,
+      "general_article_number": 207
+    },
+    {
+      "st_article_number": 208,
+      "general_article_number": 208
+    },
+    {
+      "st_article_number": 209,
+      "general_article_number": 209
+    },
+    {
+      "st_article_number": 21,
+      "general_article_number": 21
+    },
+    {
+      "st_article_number": 210,
+      "general_article_number": 210
+    },
+    {
+      "st_article_number": 211,
+      "general_article_number": 211
+    },
+    {
+      "st_article_number": 212,
+      "general_article_number": 212
+    },
+    {
+      "st_article_number": 213,
+      "general_article_number": 213
+    },
+    {
+      "st_article_number": 214,
+      "general_article_number": 214
+    },
+    {
+      "st_article_number": 215,
+      "general_article_number": 215
+    },
+    {
+      "st_article_number": 216,
+      "general_article_number": 216
+    },
+    {
+      "st_article_number": 217,
+      "general_article_number": 217
+    },
+    {
+      "st_article_number": 218,
+      "general_article_number": 218
+    },
+    {
+      "st_article_number": 219,
+      "general_article_number": 219
+    },
+    {
+      "st_article_number": 22,
+      "general_article_number": 22
+    },
+    {
+      "st_article_number": 220,
+      "general_article_number": 220
+    },
+    {
+      "st_article_number": 221,
+      "general_article_number": 221
+    },
+    {
+      "st_article_number": 222,
+      "general_article_number": 222
+    },
+    {
+      "st_article_number": 223,
+      "general_article_number": 223
+    },
+    {
+      "st_article_number": 224,
+      "general_article_number": 224
+    },
+    {
+      "st_article_number": 225,
+      "general_article_number": 225
+    },
+    {
+      "st_article_number": 226,
+      "general_article_number": 226
+    },
+    {
+      "st_article_number": 227,
+      "general_article_number": 227
+    },
+    {
+      "st_article_number": 228,
+      "general_article_number": 228
+    },
+    {
+      "st_article_number": 229,
+      "general_article_number": 229
+    },
+    {
+      "st_article_number": 23,
+      "general_article_number": 23
+    },
+    {
+      "st_article_number": 230,
+      "general_article_number": 230
+    },
+    {
+      "st_article_number": 231,
+      "general_article_number": 231
+    },
+    {
+      "st_article_number": 232,
+      "general_article_number": 232
+    },
+    {
+      "st_article_number": 233,
+      "general_article_number": 233
+    },
+    {
+      "st_article_number": 234,
+      "general_article_number": 234
+    },
+    {
+      "st_article_number": 235,
+      "general_article_number": 235
+    },
+    {
+      "st_article_number": 236,
+      "general_article_number": 236
+    },
+    {
+      "st_article_number": 237,
+      "general_article_number": 237
+    },
+    {
+      "st_article_number": 238,
+      "general_article_number": 238
+    },
+    {
+      "st_article_number": 239,
+      "general_article_number": 239
+    },
+    {
+      "st_article_number": 24,
+      "general_article_number": 24
+    },
+    {
+      "st_article_number": 240,
+      "general_article_number": 240
+    },
+    {
+      "st_article_number": 241,
+      "general_article_number": 241
+    },
+    {
+      "st_article_number": 242,
+      "general_article_number": 242
+    },
+    {
+      "st_article_number": 243,
+      "general_article_number": 243
+    },
+    {
+      "st_article_number": 244,
+      "general_article_number": 244
+    },
+    {
+      "st_article_number": 245,
+      "general_article_number": 245
+    },
+    {
+      "st_article_number": 246,
+      "general_article_number": 246
+    },
+    {
+      "st_article_number": 247,
+      "general_article_number": 247
+    },
+    {
+      "st_article_number": 248,
+      "general_article_number": 248
+    },
+    {
+      "st_article_number": 249,
+      "general_article_number": 249
+    },
+    {
+      "st_article_number": 25,
+      "general_article_number": 25
+    },
+    {
+      "st_article_number": 250,
+      "general_article_number": 250
+    },
+    {
+      "st_article_number": 251,
+      "general_article_number": 251
+    },
+    {
+      "st_article_number": 252,
+      "general_article_number": 252
+    },
+    {
+      "st_article_number": 253,
+      "general_article_number": 253
+    },
+    {
+      "st_article_number": 254,
+      "general_article_number": 254
+    },
+    {
+      "st_article_number": 255,
+      "general_article_number": 255
+    },
+    {
+      "st_article_number": 256,
+      "general_article_number": 256
+    },
+    {
+      "st_article_number": 257,
+      "general_article_number": 257
+    },
+    {
+      "st_article_number": 258,
+      "general_article_number": 258
+    },
+    {
+      "st_article_number": 259,
+      "general_article_number": 259
+    },
+    {
+      "st_article_number": 26,
+      "general_article_number": 26
+    },
+    {
+      "st_article_number": 260,
+      "general_article_number": 260
+    },
+    {
+      "st_article_number": 261,
+      "general_article_number": 261
+    },
+    {
+      "st_article_number": 262,
+      "general_article_number": 262
+    },
+    {
+      "st_article_number": 263,
+      "general_article_number": 263
+    },
+    {
+      "st_article_number": 264,
+      "general_article_number": 264
+    },
+    {
+      "st_article_number": 265,
+      "general_article_number": 265
+    },
+    {
+      "st_article_number": 266,
+      "general_article_number": 266
+    },
+    {
+      "st_article_number": 267,
+      "general_article_number": 267
+    },
+    {
+      "st_article_number": 268,
+      "general_article_number": 268
+    },
+    {
+      "st_article_number": 269,
+      "general_article_number": 269
+    },
+    {
+      "st_article_number": 27,
+      "general_article_number": 27
+    },
+    {
+      "st_article_number": 270,
+      "general_article_number": 270
+    },
+    {
+      "st_article_number": 271,
+      "general_article_number": 271
+    },
+    {
+      "st_article_number": 272,
+      "general_article_number": 272
+    },
+    {
+      "st_article_number": 273,
+      "general_article_number": 273
+    },
+    {
+      "st_article_number": 274,
+      "general_article_number": 274
+    },
+    {
+      "st_article_number": 275,
+      "general_article_number": 275
+    },
+    {
+      "st_article_number": 276,
+      "general_article_number": 276
+    },
+    {
+      "st_article_number": 277,
+      "general_article_number": 277
+    },
+    {
+      "st_article_number": 278,
+      "general_article_number": 278
+    },
+    {
+      "st_article_number": 279,
+      "general_article_number": 279
+    },
+    {
+      "st_article_number": 28,
+      "general_article_number": 28
+    },
+    {
+      "st_article_number": 280,
+      "general_article_number": 280
+    },
+    {
+      "st_article_number": 281,
+      "general_article_number": 281
+    },
+    {
+      "st_article_number": 282,
+      "general_article_number": 282
+    },
+    {
+      "st_article_number": 283,
+      "general_article_number": 283
+    },
+    {
+      "st_article_number": 284,
+      "general_article_number": 284
+    },
+    {
+      "st_article_number": 285,
+      "general_article_number": 285
+    },
+    {
+      "st_article_number": 286,
+      "general_article_number": 286
+    },
+    {
+      "st_article_number": 287,
+      "general_article_number": 287
+    },
+    {
+      "st_article_number": 288,
+      "general_article_number": 288
+    },
+    {
+      "st_article_number": 289,
+      "general_article_number": 289
+    },
+    {
+      "st_article_number": 29,
+      "general_article_number": 29
+    },
+    {
+      "st_article_number": 290,
+      "general_article_number": 290
+    },
+    {
+      "st_article_number": 291,
+      "general_article_number": 291
+    },
+    {
+      "st_article_number": 292,
+      "general_article_number": 292
+    },
+    {
+      "st_article_number": 293,
+      "general_article_number": 293
+    },
+    {
+      "st_article_number": 294,
+      "general_article_number": 294
+    },
+    {
+      "st_article_number": 295,
+      "general_article_number": 295
+    },
+    {
+      "st_article_number": 296,
+      "general_article_number": 296
+    },
+    {
+      "st_article_number": 297,
+      "general_article_number": 297
+    },
+    {
+      "st_article_number": 298,
+      "general_article_number": 298
+    },
+    {
+      "st_article_number": 299,
+      "general_article_number": 299
+    },
+    {
+      "st_article_number": 3,
+      "general_article_number": 3
+    },
+    {
+      "st_article_number": 30,
+      "general_article_number": 30
+    },
+    {
+      "st_article_number": 300,
+      "general_article_number": 300
+    },
+    {
+      "st_article_number": 301,
+      "general_article_number": 301
+    },
+    {
+      "st_article_number": 302,
+      "general_article_number": 302
+    },
+    {
+      "st_article_number": 303,
+      "general_article_number": 303
+    },
+    {
+      "st_article_number": 304,
+      "general_article_number": 304
+    },
+    {
+      "st_article_number": 305,
+      "general_article_number": 305
+    },
+    {
+      "st_article_number": 306,
+      "general_article_number": 306
+    },
+    {
+      "st_article_number": 307,
+      "general_article_number": 307
+    },
+    {
+      "st_article_number": 308,
+      "general_article_number": 308
+    },
+    {
+      "st_article_number": 309,
+      "general_article_number": 309
+    },
+    {
+      "st_article_number": 31,
+      "general_article_number": 31
+    },
+    {
+      "st_article_number": 310,
+      "general_article_number": 310
+    },
+    {
+      "st_article_number": 311,
+      "general_article_number": 311
+    },
+    {
+      "st_article_number": 312,
+      "general_article_number": 312
+    },
+    {
+      "st_article_number": 313,
+      "general_article_number": 313
+    },
+    {
+      "st_article_number": 314,
+      "general_article_number": 314
+    },
+    {
+      "st_article_number": 315,
+      "general_article_number": 315
+    },
+    {
+      "st_article_number": 316,
+      "general_article_number": 316
+    },
+    {
+      "st_article_number": 317,
+      "general_article_number": 317
+    },
+    {
+      "st_article_number": 318,
+      "general_article_number": 318
+    },
+    {
+      "st_article_number": 319,
+      "general_article_number": 319
+    },
+    {
+      "st_article_number": 32,
+      "general_article_number": 32
+    },
+    {
+      "st_article_number": 320,
+      "general_article_number": 320
+    },
+    {
+      "st_article_number": 321,
+      "general_article_number": 321
+    },
+    {
+      "st_article_number": 322,
+      "general_article_number": 322
+    },
+    {
+      "st_article_number": 323,
+      "general_article_number": 323
+    },
+    {
+      "st_article_number": 324,
+      "general_article_number": 324
+    },
+    {
+      "st_article_number": 325,
+      "general_article_number": 325
+    },
+    {
+      "st_article_number": 326,
+      "general_article_number": 326
+    },
+    {
+      "st_article_number": 327,
+      "general_article_number": 327
+    },
+    {
+      "st_article_number": 328,
+      "general_article_number": 328
+    },
+    {
+      "st_article_number": 329,
+      "general_article_number": 329
+    },
+    {
+      "st_article_number": 33,
+      "general_article_number": 33
+    },
+    {
+      "st_article_number": 330,
+      "general_article_number": 330
+    },
+    {
+      "st_article_number": 331,
+      "general_article_number": 331
+    },
+    {
+      "st_article_number": 332,
+      "general_article_number": 332
+    },
+    {
+      "st_article_number": 333,
+      "general_article_number": 333
+    },
+    {
+      "st_article_number": 334,
+      "general_article_number": 334
+    },
+    {
+      "st_article_number": 335,
+      "general_article_number": 335
+    },
+    {
+      "st_article_number": 336,
+      "general_article_number": 336
+    },
+    {
+      "st_article_number": 337,
+      "general_article_number": 337
+    },
+    {
+      "st_article_number": 338,
+      "general_article_number": 338
+    },
+    {
+      "st_article_number": 339,
+      "general_article_number": 339
+    },
+    {
+      "st_article_number": 34,
+      "general_article_number": 34
+    },
+    {
+      "st_article_number": 340,
+      "general_article_number": 340
+    },
+    {
+      "st_article_number": 341,
+      "general_article_number": 341
+    },
+    {
+      "st_article_number": 342,
+      "general_article_number": 342
+    },
+    {
+      "st_article_number": 343,
+      "general_article_number": 343
+    },
+    {
+      "st_article_number": 344,
+      "general_article_number": 344
+    },
+    {
+      "st_article_number": 345,
+      "general_article_number": 345
+    },
+    {
+      "st_article_number": 346,
+      "general_article_number": 346
+    },
+    {
+      "st_article_number": 347,
+      "general_article_number": 347
+    },
+    {
+      "st_article_number": 348,
+      "general_article_number": 348
+    },
+    {
+      "st_article_number": 349,
+      "general_article_number": 349
+    },
+    {
+      "st_article_number": 35,
+      "general_article_number": 35
+    },
+    {
+      "st_article_number": 350,
+      "general_article_number": 350
+    },
+    {
+      "st_article_number": 351,
+      "general_article_number": 351
+    },
+    {
+      "st_article_number": 352,
+      "general_article_number": 352
+    },
+    {
+      "st_article_number": 353,
+      "general_article_number": 353
+    },
+    {
+      "st_article_number": 354,
+      "general_article_number": 354
+    },
+    {
+      "st_article_number": 355,
+      "general_article_number": 355
+    },
+    {
+      "st_article_number": 356,
+      "general_article_number": 356
+    },
+    {
+      "st_article_number": 357,
+      "general_article_number": 357
+    },
+    {
+      "st_article_number": 358,
+      "general_article_number": 358
+    },
+    {
+      "st_article_number": 359,
+      "general_article_number": 359
+    },
+    {
+      "st_article_number": 36,
+      "general_article_number": 36
+    },
+    {
+      "st_article_number": 360,
+      "general_article_number": 360
+    },
+    {
+      "st_article_number": 361,
+      "general_article_number": 361
+    },
+    {
+      "st_article_number": 362,
+      "general_article_number": 362
+    },
+    {
+      "st_article_number": 363,
+      "general_article_number": 363
+    },
+    {
+      "st_article_number": 364,
+      "general_article_number": 364
+    },
+    {
+      "st_article_number": 365,
+      "general_article_number": 365
+    },
+    {
+      "st_article_number": 366,
+      "general_article_number": 366
+    },
+    {
+      "st_article_number": 367,
+      "general_article_number": 367
+    },
+    {
+      "st_article_number": 368,
+      "general_article_number": 368
+    },
+    {
+      "st_article_number": 369,
+      "general_article_number": 369
+    },
+    {
+      "st_article_number": 37,
+      "general_article_number": 37
+    },
+    {
+      "st_article_number": 370,
+      "general_article_number": 370
+    },
+    {
+      "st_article_number": 371,
+      "general_article_number": 371
+    },
+    {
+      "st_article_number": 372,
+      "general_article_number": 372
+    },
+    {
+      "st_article_number": 373,
+      "general_article_number": 373
+    },
+    {
+      "st_article_number": 374,
+      "general_article_number": 374
+    },
+    {
+      "st_article_number": 375,
+      "general_article_number": 375
+    },
+    {
+      "st_article_number": 376,
+      "general_article_number": 376
+    },
+    {
+      "st_article_number": 377,
+      "general_article_number": 377
+    },
+    {
+      "st_article_number": 378,
+      "general_article_number": 378
+    },
+    {
+      "st_article_number": 379,
+      "general_article_number": 379
+    },
+    {
+      "st_article_number": 38,
+      "general_article_number": 38
+    },
+    {
+      "st_article_number": 380,
+      "general_article_number": 380
+    },
+    {
+      "st_article_number": 381,
+      "general_article_number": 381
+    },
+    {
+      "st_article_number": 382,
+      "general_article_number": 382
+    },
+    {
+      "st_article_number": 383,
+      "general_article_number": 383
+    },
+    {
+      "st_article_number": 384,
+      "general_article_number": 384
+    },
+    {
+      "st_article_number": 385,
+      "general_article_number": 385
+    },
+    {
+      "st_article_number": 386,
+      "general_article_number": 386
+    },
+    {
+      "st_article_number": 387,
+      "general_article_number": 387
+    },
+    {
+      "st_article_number": 388,
+      "general_article_number": 388
+    },
+    {
+      "st_article_number": 389,
+      "general_article_number": 389
+    },
+    {
+      "st_article_number": 39,
+      "general_article_number": 39
+    },
+    {
+      "st_article_number": 390,
+      "general_article_number": 390
+    },
+    {
+      "st_article_number": 391,
+      "general_article_number": 391
+    },
+    {
+      "st_article_number": 392,
+      "general_article_number": 392
+    },
+    {
+      "st_article_number": 393,
+      "general_article_number": 393
+    },
+    {
+      "st_article_number": 394,
+      "general_article_number": 394
+    },
+    {
+      "st_article_number": 395,
+      "general_article_number": 395
+    },
+    {
+      "st_article_number": 396,
+      "general_article_number": 396
+    },
+    {
+      "st_article_number": 397,
+      "general_article_number": 397
+    },
+    {
+      "st_article_number": 398,
+      "general_article_number": 398
+    },
+    {
+      "st_article_number": 399,
+      "general_article_number": 399
+    },
+    {
+      "st_article_number": 4,
+      "general_article_number": 4
+    },
+    {
+      "st_article_number": 40,
+      "general_article_number": 40
+    },
+    {
+      "st_article_number": 400,
+      "general_article_number": 400
+    },
+    {
+      "st_article_number": 401,
+      "general_article_number": 401
+    },
+    {
+      "st_article_number": 402,
+      "general_article_number": 402
+    },
+    {
+      "st_article_number": 403,
+      "general_article_number": 403
+    },
+    {
+      "st_article_number": 404,
+      "general_article_number": 404
+    },
+    {
+      "st_article_number": 405,
+      "general_article_number": 405
+    },
+    {
+      "st_article_number": 406,
+      "general_article_number": 406
+    },
+    {
+      "st_article_number": 407,
+      "general_article_number": 407
+    },
+    {
+      "st_article_number": 408,
+      "general_article_number": 408
+    },
+    {
+      "st_article_number": 409,
+      "general_article_number": 409
+    },
+    {
+      "st_article_number": 41,
+      "general_article_number": 41
+    },
+    {
+      "st_article_number": 410,
+      "general_article_number": 410
+    },
+    {
+      "st_article_number": 411,
+      "general_article_number": 411
+    },
+    {
+      "st_article_number": 412,
+      "general_article_number": 412
+    },
+    {
+      "st_article_number": 413,
+      "general_article_number": 413
+    },
+    {
+      "st_article_number": 414,
+      "general_article_number": 414
+    },
+    {
+      "st_article_number": 415,
+      "general_article_number": 415
+    },
+    {
+      "st_article_number": 416,
+      "general_article_number": 416
+    },
+    {
+      "st_article_number": 417,
+      "general_article_number": 417
+    },
+    {
+      "st_article_number": 418,
+      "general_article_number": 418
+    },
+    {
+      "st_article_number": 419,
+      "general_article_number": 419
+    },
+    {
+      "st_article_number": 42,
+      "general_article_number": 42
+    },
+    {
+      "st_article_number": 420,
+      "general_article_number": 420
+    },
+    {
+      "st_article_number": 421,
+      "general_article_number": 421
+    },
+    {
+      "st_article_number": 422,
+      "general_article_number": 422
+    },
+    {
+      "st_article_number": 423,
+      "general_article_number": 423
+    },
+    {
+      "st_article_number": 424,
+      "general_article_number": 424
+    },
+    {
+      "st_article_number": 425,
+      "general_article_number": 425
+    },
+    {
+      "st_article_number": 426,
+      "general_article_number": 426
+    },
+    {
+      "st_article_number": 427,
+      "general_article_number": 427
+    },
+    {
+      "st_article_number": 428,
+      "general_article_number": 428
+    },
+    {
+      "st_article_number": 429,
+      "general_article_number": 429
+    },
+    {
+      "st_article_number": 43,
+      "general_article_number": 43
+    },
+    {
+      "st_article_number": 430,
+      "general_article_number": 430
+    },
+    {
+      "st_article_number": 431,
+      "general_article_number": 431
+    },
+    {
+      "st_article_number": 432,
+      "general_article_number": 432
+    },
+    {
+      "st_article_number": 433,
+      "general_article_number": 433
+    },
+    {
+      "st_article_number": 434,
+      "general_article_number": 434
+    },
+    {
+      "st_article_number": 435,
+      "general_article_number": 435
+    },
+    {
+      "st_article_number": 436,
+      "general_article_number": 436
+    },
+    {
+      "st_article_number": 437,
+      "general_article_number": 437
+    },
+    {
+      "st_article_number": 438,
+      "general_article_number": 438
+    },
+    {
+      "st_article_number": 439,
+      "general_article_number": 439
+    },
+    {
+      "st_article_number": 44,
+      "general_article_number": 44
+    },
+    {
+      "st_article_number": 440,
+      "general_article_number": 440
+    },
+    {
+      "st_article_number": 441,
+      "general_article_number": 441
+    },
+    {
+      "st_article_number": 442,
+      "general_article_number": 442
+    },
+    {
+      "st_article_number": 443,
+      "general_article_number": 443
+    },
+    {
+      "st_article_number": 444,
+      "general_article_number": 444
+    },
+    {
+      "st_article_number": 445,
+      "general_article_number": 445
+    },
+    {
+      "st_article_number": 446,
+      "general_article_number": 446
+    },
+    {
+      "st_article_number": 447,
+      "general_article_number": 447
+    },
+    {
+      "st_article_number": 448,
+      "general_article_number": 448
+    },
+    {
+      "st_article_number": 449,
+      "general_article_number": 449
+    },
+    {
+      "st_article_number": 45,
+      "general_article_number": 45
+    },
+    {
+      "st_article_number": 450,
+      "general_article_number": 450
+    },
+    {
+      "st_article_number": 451,
+      "general_article_number": 451
+    },
+    {
+      "st_article_number": 452,
+      "general_article_number": 452
+    },
+    {
+      "st_article_number": 453,
+      "general_article_number": 453
+    },
+    {
+      "st_article_number": 454,
+      "general_article_number": 454
+    },
+    {
+      "st_article_number": 455,
+      "general_article_number": 455
+    },
+    {
+      "st_article_number": 456,
+      "general_article_number": 456
+    },
+    {
+      "st_article_number": 457,
+      "general_article_number": 457
+    },
+    {
+      "st_article_number": 458,
+      "general_article_number": 458
+    },
+    {
+      "st_article_number": 459,
+      "general_article_number": 459
+    },
+    {
+      "st_article_number": 46,
+      "general_article_number": 46
+    },
+    {
+      "st_article_number": 460,
+      "general_article_number": 460
+    },
+    {
+      "st_article_number": 461,
+      "general_article_number": 461
+    },
+    {
+      "st_article_number": 462,
+      "general_article_number": 462
+    },
+    {
+      "st_article_number": 463,
+      "general_article_number": 463
+    },
+    {
+      "st_article_number": 464,
+      "general_article_number": 464
+    },
+    {
+      "st_article_number": 465,
+      "general_article_number": 465
+    },
+    {
+      "st_article_number": 466,
+      "general_article_number": 466
+    },
+    {
+      "st_article_number": 467,
+      "general_article_number": 467
+    },
+    {
+      "st_article_number": 468,
+      "general_article_number": 468
+    },
+    {
+      "st_article_number": 469,
+      "general_article_number": 469
+    },
+    {
+      "st_article_number": 47,
+      "general_article_number": 47
+    },
+    {
+      "st_article_number": 470,
+      "general_article_number": 470
+    },
+    {
+      "st_article_number": 471,
+      "general_article_number": 471
+    },
+    {
+      "st_article_number": 472,
+      "general_article_number": 472
+    },
+    {
+      "st_article_number": 473,
+      "general_article_number": 473
+    },
+    {
+      "st_article_number": 474,
+      "general_article_number": 474
+    },
+    {
+      "st_article_number": 475,
+      "general_article_number": 475
+    },
+    {
+      "st_article_number": 476,
+      "general_article_number": 476
+    },
+    {
+      "st_article_number": 477,
+      "general_article_number": 477
+    },
+    {
+      "st_article_number": 478,
+      "general_article_number": 478
+    },
+    {
+      "st_article_number": 479,
+      "general_article_number": 479
+    },
+    {
+      "st_article_number": 48,
+      "general_article_number": 48
+    },
+    {
+      "st_article_number": 480,
+      "general_article_number": 480
+    },
+    {
+      "st_article_number": 481,
+      "general_article_number": 481
+    },
+    {
+      "st_article_number": 49,
+      "general_article_number": 49
+    },
+    {
+      "st_article_number": 482,
+      "general_article_number": 497
+    },
+    {
+      "st_article_number": 483,
+      "general_article_number": 498
+    },
+    {
+      "st_article_number": 484,
+      "general_article_number": 499
+    },
+    {
+      "st_article_number": 5,
+      "general_article_number": 5
+    },
+    {
+      "st_article_number": 50,
+      "general_article_number": 50
+    },
+    {
+      "st_article_number": 485,
+      "general_article_number": 500
+    },
+    {
+      "st_article_number": 486,
+      "general_article_number": 501
+    },
+    {
+      "st_article_number": 487,
+      "general_article_number": 502
+    },
+    {
+      "st_article_number": 488,
+      "general_article_number": 503
+    },
+    {
+      "st_article_number": 489,
+      "general_article_number": 504
+    },
+    {
+      "st_article_number": 490,
+      "general_article_number": 505
+    },
+    {
+      "st_article_number": 491,
+      "general_article_number": 506
+    },
+    {
+      "st_article_number": 492,
+      "general_article_number": 507
+    },
+    {
+      "st_article_number": 493,
+      "general_article_number": 508
+    },
+    {
+      "st_article_number": 494,
+      "general_article_number": 509
+    },
+    {
+      "st_article_number": 51,
+      "general_article_number": 51
+    },
+    {
+      "st_article_number": 495,
+      "general_article_number": 510
+    },
+    {
+      "st_article_number": 496,
+      "general_article_number": 511
+    },
+    {
+      "st_article_number": 497,
+      "general_article_number": 512
+    },
+    {
+      "st_article_number": 498,
+      "general_article_number": 513
+    },
+    {
+      "st_article_number": 499,
+      "general_article_number": 514
+    },
+    {
+      "st_article_number": 500,
+      "general_article_number": 515
+    },
+    {
+      "st_article_number": 501,
+      "general_article_number": 516
+    },
+    {
+      "st_article_number": 502,
+      "general_article_number": 517
+    },
+    {
+      "st_article_number": 503,
+      "general_article_number": 518
+    },
+    {
+      "st_article_number": 504,
+      "general_article_number": 519
+    },
+    {
+      "st_article_number": 52,
+      "general_article_number": 52
+    },
+    {
+      "st_article_number": 505,
+      "general_article_number": 520
+    },
+    {
+      "st_article_number": 506,
+      "general_article_number": 521
+    },
+    {
+      "st_article_number": 507,
+      "general_article_number": 522
+    },
+    {
+      "st_article_number": 508,
+      "general_article_number": 523
+    },
+    {
+      "st_article_number": 509,
+      "general_article_number": 524
+    },
+    {
+      "st_article_number": 510,
+      "general_article_number": 525
+    },
+    {
+      "st_article_number": 511,
+      "general_article_number": 526
+    },
+    {
+      "st_article_number": 512,
+      "general_article_number": 527
+    },
+    {
+      "st_article_number": 513,
+      "general_article_number": 528
+    },
+    {
+      "st_article_number": 514,
+      "general_article_number": 529
+    },
+    {
+      "st_article_number": 53,
+      "general_article_number": 53
+    },
+    {
+      "st_article_number": 515,
+      "general_article_number": 530
+    },
+    {
+      "st_article_number": 516,
+      "general_article_number": 531
+    },
+    {
+      "st_article_number": 517,
+      "general_article_number": 532
+    },
+    {
+      "st_article_number": 518,
+      "general_article_number": 533
+    },
+    {
+      "st_article_number": 519,
+      "general_article_number": 534
+    },
+    {
+      "st_article_number": 520,
+      "general_article_number": 535
+    },
+    {
+      "st_article_number": 521,
+      "general_article_number": 536
+    },
+    {
+      "st_article_number": 522,
+      "general_article_number": 537
+    },
+    {
+      "st_article_number": 523,
+      "general_article_number": 538
+    },
+    {
+      "st_article_number": 524,
+      "general_article_number": 539
+    },
+    {
+      "st_article_number": 54,
+      "general_article_number": 54
+    },
+    {
+      "st_article_number": 525,
+      "general_article_number": 540
+    },
+    {
+      "st_article_number": 526,
+      "general_article_number": 541
+    },
+    {
+      "st_article_number": 527,
+      "general_article_number": 542
+    },
+    {
+      "st_article_number": 528,
+      "general_article_number": 543
+    },
+    {
+      "st_article_number": 529,
+      "general_article_number": 544
+    },
+    {
+      "st_article_number": 530,
+      "general_article_number": 545
+    },
+    {
+      "st_article_number": 531,
+      "general_article_number": 546
+    },
+    {
+      "st_article_number": 532,
+      "general_article_number": 547
+    },
+    {
+      "st_article_number": 533,
+      "general_article_number": 548
+    },
+    {
+      "st_article_number": 534,
+      "general_article_number": 549
+    },
+    {
+      "st_article_number": 55,
+      "general_article_number": 55
+    },
+    {
+      "st_article_number": 535,
+      "general_article_number": 550
+    },
+    {
+      "st_article_number": 536,
+      "general_article_number": 551
+    },
+    {
+      "st_article_number": 537,
+      "general_article_number": 552
+    },
+    {
+      "st_article_number": 538,
+      "general_article_number": 553
+    },
+    {
+      "st_article_number": 539,
+      "general_article_number": 554
+    },
+    {
+      "st_article_number": 540,
+      "general_article_number": 555
+    },
+    {
+      "st_article_number": 541,
+      "general_article_number": 556
+    },
+    {
+      "st_article_number": 542,
+      "general_article_number": 557
+    },
+    {
+      "st_article_number": 543,
+      "general_article_number": 558
+    },
+    {
+      "st_article_number": 56,
+      "general_article_number": 56
+    },
+    {
+      "st_article_number": 57,
+      "general_article_number": 57
+    },
+    {
+      "st_article_number": 58,
+      "general_article_number": 58
+    },
+    {
+      "st_article_number": 544,
+      "general_article_number": 586
+    },
+    {
+      "st_article_number": 545,
+      "general_article_number": 587
+    },
+    {
+      "st_article_number": 546,
+      "general_article_number": 588
+    },
+    {
+      "st_article_number": 547,
+      "general_article_number": 589
+    },
+    {
+      "st_article_number": 59,
+      "general_article_number": 59
+    },
+    {
+      "st_article_number": 548,
+      "general_article_number": 590
+    },
+    {
+      "st_article_number": 549,
+      "general_article_number": 591
+    },
+    {
+      "st_article_number": 550,
+      "general_article_number": 592
+    },
+    {
+      "st_article_number": 551,
+      "general_article_number": 593
+    },
+    {
+      "st_article_number": 552,
+      "general_article_number": 594
+    },
+    {
+      "st_article_number": 553,
+      "general_article_number": 595
+    },
+    {
+      "st_article_number": 554,
+      "general_article_number": 596
+    },
+    {
+      "st_article_number": 555,
+      "general_article_number": 597
+    },
+    {
+      "st_article_number": 556,
+      "general_article_number": 598
+    },
+    {
+      "st_article_number": 557,
+      "general_article_number": 599
+    },
+    {
+      "st_article_number": 6,
+      "general_article_number": 6
+    },
+    {
+      "st_article_number": 60,
+      "general_article_number": 60
+    },
+    {
+      "st_article_number": 558,
+      "general_article_number": 600
+    },
+    {
+      "st_article_number": 559,
+      "general_article_number": 601
+    },
+    {
+      "st_article_number": 560,
+      "general_article_number": 602
+    },
+    {
+      "st_article_number": 561,
+      "general_article_number": 603
+    },
+    {
+      "st_article_number": 562,
+      "general_article_number": 604
+    },
+    {
+      "st_article_number": 563,
+      "general_article_number": 605
+    },
+    {
+      "st_article_number": 564,
+      "general_article_number": 606
+    },
+    {
+      "st_article_number": 565,
+      "general_article_number": 607
+    },
+    {
+      "st_article_number": 566,
+      "general_article_number": 608
+    },
+    {
+      "st_article_number": 61,
+      "general_article_number": 61
+    },
+    {
+      "st_article_number": 62,
+      "general_article_number": 62
+    },
+    {
+      "st_article_number": 63,
+      "general_article_number": 63
+    },
+    {
+      "st_article_number": 64,
+      "general_article_number": 64
+    },
+    {
+      "st_article_number": 65,
+      "general_article_number": 65
+    },
+    {
+      "st_article_number": 66,
+      "general_article_number": 66
+    },
+    {
+      "st_article_number": 67,
+      "general_article_number": 67
+    },
+    {
+      "st_article_number": 68,
+      "general_article_number": 68
+    },
+    {
+      "st_article_number": 69,
+      "general_article_number": 69
+    },
+    {
+      "st_article_number": 7,
+      "general_article_number": 7
+    },
+    {
+      "st_article_number": 70,
+      "general_article_number": 70
+    },
+    {
+      "st_article_number": 71,
+      "general_article_number": 71
+    },
+    {
+      "st_article_number": 72,
+      "general_article_number": 72
+    },
+    {
+      "st_article_number": 73,
+      "general_article_number": 73
+    },
+    {
+      "st_article_number": 74,
+      "general_article_number": 74
+    },
+    {
+      "st_article_number": 75,
+      "general_article_number": 75
+    },
+    {
+      "st_article_number": 76,
+      "general_article_number": 76
+    },
+    {
+      "st_article_number": 77,
+      "general_article_number": 77
+    },
+    {
+      "st_article_number": 78,
+      "general_article_number": 78
+    },
+    {
+      "st_article_number": 79,
+      "general_article_number": 79
+    },
+    {
+      "st_article_number": 8,
+      "general_article_number": 8
+    },
+    {
+      "st_article_number": 80,
+      "general_article_number": 80
+    },
+    {
+      "st_article_number": 81,
+      "general_article_number": 81
+    },
+    {
+      "st_article_number": 82,
+      "general_article_number": 82
+    },
+    {
+      "st_article_number": 83,
+      "general_article_number": 83
+    },
+    {
+      "st_article_number": 84,
+      "general_article_number": 84
+    },
+    {
+      "st_article_number": 85,
+      "general_article_number": 85
+    },
+    {
+      "st_article_number": 86,
+      "general_article_number": 86
+    },
+    {
+      "st_article_number": 87,
+      "general_article_number": 87
+    },
+    {
+      "st_article_number": 88,
+      "general_article_number": 88
+    },
+    {
+      "st_article_number": 89,
+      "general_article_number": 89
+    },
+    {
+      "st_article_number": 9,
+      "general_article_number": 9
+    },
+    {
+      "st_article_number": 90,
+      "general_article_number": 90
+    },
+    {
+      "st_article_number": 91,
+      "general_article_number": 91
+    },
+    {
+      "st_article_number": 92,
+      "general_article_number": 92
+    },
+    {
+      "st_article_number": 93,
+      "general_article_number": 93
+    },
+    {
+      "st_article_number": 94,
+      "general_article_number": 94
+    },
+    {
+      "st_article_number": 95,
+      "general_article_number": 95
+    },
+    {
+      "st_article_number": 96,
+      "general_article_number": 96
+    },
+    {
+      "st_article_number": 97,
+      "general_article_number": 97
+    },
+    {
+      "st_article_number": 98,
+      "general_article_number": 98
+    },
+    {
+      "st_article_number": 99,
+      "general_article_number": 99
+    }
+  ],
+  "unmapped_general_article_numbers": [
+    322,
+    482,
+    483,
+    484,
+    485,
+    486,
+    487,
+    488,
+    489,
+    490,
+    491,
+    492,
+    493,
+    494,
+    495,
+    496,
+    559,
+    560,
+    561,
+    562,
+    563,
+    564,
+    565,
+    566,
+    567,
+    568,
+    569,
+    570,
+    571,
+    572,
+    573,
+    574,
+    575,
+    576,
+    577,
+    578,
+    579,
+    580,
+    581,
+    582,
+    583,
+    584,
+    585,
+    609,
+    610
+  ]
+}

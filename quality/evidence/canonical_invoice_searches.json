@@ -1,0 +1,45 @@
+{
+  "surface": "/table-facturation-new",
+  "results": [
+    {
+      "query": "QA_RC1_AUDIT_20260825_FAC_01",
+      "found": true
+    },
+    {
+      "query": "QA_RC1_AUDIT_20260825_FAC_02",
+      "found": true
+    },
+    {
+      "query": "QA_RC1_AUDIT_20260825_FAC_03",
+      "found": true
+    },
+    {
+      "query": "QA_RC1_AUDIT_20260825_FAC_04",
+      "found": true
+    },
+    {
+      "query": "QA_RC1_AUDIT_20260825_FAC_05",
+      "found": true
+    },
+    {
+      "query": "QA_RC1_AUDIT_20260825_FAC_06",
+      "found": true
+    },
+    {
+      "query": "QA_RC1_AUDIT_20260825_FAC_07",
+      "found": true
+    },
+    {
+      "query": "QA_RC1_AUDIT_20260825_FAC_08",
+      "found": true
+    },
+    {
+      "query": "QA_RC1_AUDIT_20260825_FAC_09",
+      "found": true
+    },
+    {
+      "query": "QA_RC1_AUDIT_20260825_FAC_10",
+      "found": true
+    }
+  ]
+}

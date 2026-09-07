@@ -1,0 +1,11 @@
+{
+  "status": 200,
+  "backup_name": "phoenix_backup_20260825_144550_531887.sqlite3",
+  "backup_bytes": 671744,
+  "restore_message_present": false,
+  "original_address": "QA adresse Alger",
+  "restored_address": "QA adresse Alger",
+  "restored_value_matches": true,
+  "integrity_check": "ok",
+  "foreign_key_violations": 0
+}

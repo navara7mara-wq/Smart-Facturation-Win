@@ -1,4 +1,5 @@
 from services.invoice_exports import section_rows
+from services.xlsx import ExactNumber, exact_number
 
 
 def test_section_rows_includes_category_and_prices():
@@ -15,8 +16,11 @@ def test_section_rows_includes_category_and_prices():
 
     assert rows == [
         [("FOURNITURES", 4), ("", 4), ("", 4), ("", 4), ("", 4), ("", 4)],
-        [(1, 5), ("Cable", 5), ("m", 5), (12, 5), (100, 5), (1200, 5)],
+        [(1, 5), ("Cable", 5), ("m", 5), (12, 5),
+         (exact_number("100.00"), 5), (exact_number("1200.00"), 5)],
     ]
+    assert isinstance(rows[1][4][0], ExactNumber)
+    assert isinstance(rows[1][5][0], ExactNumber)
 
 
 def test_section_rows_skips_empty_categories_without_prices():

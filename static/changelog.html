@@ -8,6 +8,93 @@
 </head>
 <body class="content" style="max-width:900px;margin:40px auto">
   <h1>Changelog</h1>
+  <h2>Version 2.5.2 RC-2</h2>
+  <ul>
+    <li>Le premier démarrage crée une base de données entièrement vide.</li>
+    <li>La premiere initialisation exige la creation securisee du mot de passe administrateur; aucun mot de passe universel n'est livre.</li>
+    <li>Les operations destructives utilisent POST avec validation CSRF.</li>
+    <li>Durcissement des televersements et ajout d'en-tetes HTTP de securite compatibles avec l'application locale.</li>
+    <li>Les mises à jour conservent la base et les identifiants existants.</li>
+    <li>Le test Installer contrôle automatiquement l'absence de données métier au premier démarrage.</li>
+  </ul>
+  <h2>Version 2.5.0</h2>
+  <ul>
+    <li>Remplacement du sigle des sous-traitants et BET par le contact et l’adresse e-mail.</li>
+    <li>Affichage uniforme de la raison sociale dans les sites et le suivi de facturation.</li>
+    <li>Import Excel séparé des sous-traitants et des bureaux d’études avec aperçu et rapport d’erreurs.</li>
+    <li>Import et export Excel contrôlés des bons de commande et de leurs sites.</li>
+    <li>Sauvegarde automatique, validation atomique et audit des imports confirmés.</li>
+  </ul>
+  <h2>Version 2.4.0</h2>
+  <ul>
+    <li>Gestion des sous-traitants et bureaux d’études avec référentiels, statuts et audit.</li>
+    <li>Affectation contrôlée de ST et BET aux sites selon la nature du bon de commande.</li>
+    <li>Saisie du sigle et du libellé complet de typologie directement dans le site.</li>
+    <li>Suppression de Region dans les interfaces et documents financiers.</li>
+    <li>Conservation des libellés historiques dans les factures existantes.</li>
+  </ul>
+  <h2>Version 2.3.1</h2>
+  <ul>
+    <li>Ajout des licences perpétuelles sans date d’expiration.</li>
+    <li>Ajout des licences avec un nombre de factures illimité.</li>
+    <li>Affichage explicite « À vie » et « Illimitées » dans l’application.</li>
+  </ul>
+  <h2>Version 2.3.0</h2>
+  <ul>
+    <li>Ajout d’une demande d’activation liée à l’appareil.</li>
+    <li>Licences Ed25519 liées à l’empreinte du poste client.</li>
+    <li>Nouvel outil privé PhoEniX License Studio avec coffre de signature chiffré.</li>
+  </ul>
+  <h2>Version 2.2.0</h2>
+  <ul>
+    <li>Ajout du sigle client avec migration automatique de Mobilis vers ATM Mobilis.</li>
+    <li>Affichage dynamique des sigles client et entreprise dans le tableau de bord, le suivi et les exports.</li>
+    <li>Sélection automatique du site pour les BC ordinaires et contrôle renforcé des factures NDC.</li>
+    <li>Modification exceptionnelle des BC verrouillés réservée au Super Admin avec motif, sauvegarde et audit.</li>
+    <li>Nouvelle entrée Entreprise dans Paramètres et simplification de l’administration des clients.</li>
+    <li>Vérification automatisée des migrations, permissions, PDF, Excel et parcours E2E.</li>
+  </ul>
+  <h2>Version 2.1.0</h2>
+  <ul>
+    <li>Ajout des sigles contrôlés aux directions de l’entreprise et des clients.</li>
+    <li>Filtres métier réorganisés sur le tableau de bord et la table de facturation.</li>
+    <li>Recherche BPU ENT/ST enrichie et entièrement utilisable au clavier.</li>
+    <li>Interfaces Clients, Paramètres, BPU et Utilisateurs restructurées.</li>
+    <li>Migration contrôlée avec sauvegarde, audit et compatibilité des données existantes.</li>
+    <li>60 tests automatisés et régression visuelle stricte sur 16 interfaces.</li>
+  </ul>
+  <h2>Version 2.0.0</h2>
+  <ul>
+    <li>Séparation de la nature de facture et de la typologie de site.</li>
+    <li>Cycle NDC contrôlé: article ENT 6, quantité par sites et facture unique par BC.</li>
+    <li>Gestion générique des clients, directions clients et directions opérationnelles de l’entreprise.</li>
+    <li>Rôle Super Admin, isolation des données par direction et audit des opérations sensibles.</li>
+    <li>Import, contrôle, révision et activation versionnée des mappings BPU ST.</li>
+    <li>Tableau de bord opérationnel, suivi DTC/Mobilis/OV et filtres enrichis.</li>
+    <li>59 tests automatisés et régression visuelle stricte sur 18 interfaces.</li>
+  </ul>
+  <h2>Version 1.6.1</h2>
+  <ul>
+    <li>Ajout des colonnes BPU ENT et BPU ST dans la saisie des factures.</li>
+    <li>Conversion automatique des références ST vers les articles et tarifs BPU ENT.</li>
+    <li>Mapping BPU ST complet et contrôlé sur 566 articles.</li>
+  </ul>
+  <h2>Version 1.6.0</h2>
+  <ul>
+    <li>Cycle complet des factures: brouillon, prete DTC, deposee DTC, attente paiement et payee.</li>
+    <li>Suivi DTC, Mobilis et OV avec controles de dates, verrouillage et audit.</li>
+    <li>Types MGC, NDC et nouveaux libelles de facturation.</li>
+    <li>Nouveau tableau de bord operationnel avec montants, retards et filtres.</li>
+    <li>Application Windows autonome avec donnees utilisateur separees et runtime PDF/Excel integre.</li>
+    <li>Installer hors ligne teste pour installation, mise a jour et desinstallation.</li>
+    <li>Regression visuelle stricte sur 17 vues desktop et compactes.</li>
+  </ul>
+  <h2>Version 1.5.1</h2>
+  <ul>
+    <li>Acceleration des acces SQLite: migrations executees une fois au demarrage.</li>
+    <li>Chargement local des icones Lucide pour supprimer la dependance reseau.</li>
+    <li>Amelioration du lancement et de la reactivation de la fenetre desktop.</li>
+  </ul>
   <h2>Version 1.5.0</h2>
   <ul>
     <li>Version demo et activation par fichier licence signe.</li>

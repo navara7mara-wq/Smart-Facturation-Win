@@ -16,6 +16,7 @@ def normalize_header(value):
 def import_bpu(path):
     worksheet = read_xlsx_sheet(path, "BPU")
     current_category = None
+    leading_rows = []
     rows = []
     columns = {"number": 0, "designation": 1, "unite": 2, "price": 3}
     for row in worksheet:
@@ -40,17 +41,90 @@ def import_bpu(path):
         label = str(designation or "").strip().lower()
         if label in {"acquisition", "fourniture", "fournitures", "prestation", "prestations"}:
             current_category = "fourniture" if label.startswith("fourniture") else "prestation" if label.startswith("prestation") else "acquisition"
+            if leading_rows:
+                rows.extend((*pending, current_category) for pending in leading_rows)
+                leading_rows.clear()
             continue
         try:
             article_number = int(float(number))
             price = float(pu_ht)
         except (TypeError, ValueError):
             continue
-        if designation and unite and current_category:
-            rows.append((article_number, str(designation).strip(), str(unite).strip(), price, current_category))
+        if designation and unite:
+            parsed = (article_number, str(designation).strip(), str(unite).strip(), price)
+            if current_category:
+                rows.append((*parsed, current_category))
+            else:
+                leading_rows.append(parsed)
+    if leading_rows:
+        raise ValueError(
+            "Catégorie BPU introuvable pour les premiers articles. "
+            "Ajoutez une ligne Acquisition, Prestation ou Fourniture."
+        )
     if not rows:
         raise ValueError("Aucun article BPU trouve dans le fichier Excel.")
     return rows
+
+
+def replace_bpu_catalog(connection, rows):
+    """Replace the active general catalogue without deleting referenced history.
+
+    BPU ST versions keep foreign keys to general articles.  Articles omitted from
+    a new general catalogue therefore become inactive instead of being deleted.
+    Any active ST version that references one of those articles is archived so a
+    partially invalid mapping cannot be used for a new invoice.
+    """
+    rows = list(rows)
+    if not rows:
+        raise ValueError("Aucun article BPU à importer.")
+    article_numbers = [int(row[0]) for row in rows]
+    if len(article_numbers) != len(set(article_numbers)):
+        raise ValueError("Le fichier BPU contient des numéros d'article dupliqués.")
+
+    connection.executemany("""
+        INSERT INTO bpu_items(article_number,designation,unite,pu_ht,categorie,is_active)
+        VALUES(?,?,?,?,?,1)
+        ON CONFLICT(article_number) DO UPDATE SET
+            designation=excluded.designation,
+            unite=excluded.unite,
+            pu_ht=excluded.pu_ht,
+            categorie=excluded.categorie,
+            is_active=1,
+            updated_at=CURRENT_TIMESTAMP
+    """, rows)
+    placeholders = ",".join("?" for _ in article_numbers)
+    deactivated = connection.execute(
+        f"UPDATE bpu_items SET is_active=0 WHERE is_active=1 AND article_number NOT IN ({placeholders})",
+        article_numbers,
+    ).rowcount
+
+    archived_versions = []
+    has_versioned_mapping = connection.execute(
+        "SELECT 1 FROM sqlite_master WHERE type='table' AND name='bpu_st_versions'"
+    ).fetchone()
+    if has_versioned_mapping:
+        archived_versions = [
+            int(row[0]) for row in connection.execute("""
+                SELECT DISTINCT version.id
+                FROM bpu_st_versions version
+                JOIN bpu_st_items item ON item.version_id=version.id
+                JOIN bpu_items general ON general.article_number=item.general_article_number
+                WHERE version.status='ACTIVE'
+                  AND item.review_status='CONFIRMED'
+                  AND general.is_active=0
+            """).fetchall()
+        ]
+        if archived_versions:
+            version_placeholders = ",".join("?" for _ in archived_versions)
+            connection.execute(
+                f"UPDATE bpu_st_versions SET status='ARCHIVED' WHERE id IN ({version_placeholders})",
+                archived_versions,
+            )
+    return {
+        "active": len(article_numbers),
+        "deactivated": int(deactivated or 0),
+        "archived_st_versions": archived_versions,
+    }
 
 
 def read_xlsx_sheet(path, sheet_name):

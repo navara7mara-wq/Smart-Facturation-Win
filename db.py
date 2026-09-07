@@ -1,12 +1,17 @@
 import os
 import sqlite3
-import os
+import threading
 from pathlib import Path
+
+from database.migrations import run_migrations
+from services.bpu_mapping import seed_bpu_st_mapping
 
 
 ROOT_DIR = Path(__file__).resolve().parent
 DB_PATH = Path(os.environ.get("PHOENIX_DB_PATH", ROOT_DIR / "data" / "pos_ai.sqlite3"))
 SCHEMA_PATH = ROOT_DIR / "database" / "schema.sql"
+_SCHEMA_LOCK = threading.Lock()
+_SCHEMA_READY_PATHS = set()
 
 DEFAULT_TEMPLATE_SETTINGS = {
     "logo_width_px": "340",
@@ -39,6 +44,24 @@ DEFAULT_APP_SETTINGS = {
     "retention_rate": "0.05",
 }
 
+EMPTY_INSTALL_PRESERVED_TABLES = {
+    "app_settings",
+    "company_settings",
+    "contract_settings",
+    "permissions",
+    "role_permissions",
+    "schema_migrations",
+    "template_settings",
+}
+
+
+class ManagedConnection(sqlite3.Connection):
+    def __exit__(self, exc_type, exc_value, traceback):
+        try:
+            return super().__exit__(exc_type, exc_value, traceback)
+        finally:
+            self.close()
+
 
 def current_actor():
     return os.environ.get("PHOENIX_CURRENT_USER") or os.environ.get("USERNAME") or os.environ.get("USER") or "User"
@@ -46,13 +69,34 @@ def current_actor():
 
 def db() -> sqlite3.Connection:
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-    connection = sqlite3.connect(DB_PATH)
+    connection = sqlite3.connect(DB_PATH, timeout=10, factory=ManagedConnection)
     connection.row_factory = sqlite3.Row
     connection.execute("PRAGMA foreign_keys = ON;")
-    if not connection.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='company_settings'").fetchone():
-        connection.executescript(SCHEMA_PATH.read_text(encoding="utf-8"))
-    ensure_schema(connection)
+    connection.execute("PRAGMA busy_timeout = 10000;")
+    schema_key = str(DB_PATH.resolve())
+    if schema_key not in _SCHEMA_READY_PATHS:
+        try:
+            with _SCHEMA_LOCK:
+                if schema_key not in _SCHEMA_READY_PATHS:
+                    fresh_database = not connection.execute(
+                        "SELECT name FROM sqlite_master WHERE type='table' AND name='company_settings'"
+                    ).fetchone()
+                    if fresh_database:
+                        connection.executescript(SCHEMA_PATH.read_text(encoding="utf-8"))
+                    ensure_schema(connection)
+                    if fresh_database and os.environ.get("PHOENIX_FRESH_INSTALL_EMPTY") == "1":
+                        initialize_empty_install(connection)
+                    _SCHEMA_READY_PATHS.add(schema_key)
+        except Exception:
+            connection.close()
+            raise
     return connection
+
+
+def invalidate_schema_cache(database_path=None):
+    schema_key = str(Path(database_path or DB_PATH).resolve())
+    with _SCHEMA_LOCK:
+        _SCHEMA_READY_PATHS.discard(schema_key)
 
 
 def ensure_schema(connection: sqlite3.Connection) -> None:
@@ -155,6 +199,13 @@ def ensure_schema(connection: sqlite3.Connection) -> None:
     for column, statement in invoice_additions.items():
         if column not in invoice_columns:
             connection.execute(statement)
+    connection.commit()
+    run_migrations(connection, DB_PATH)
+    skip_builtin_seed = connection.execute(
+        "SELECT value FROM app_settings WHERE key='skip_builtin_bpu_seed'"
+    ).fetchone()
+    if not skip_builtin_seed or skip_builtin_seed[0] != "1":
+        seed_bpu_st_mapping(connection)
     connection.execute("DROP INDEX IF EXISTS idx_invoices_site_type_regular")
     connection.execute("""
         CREATE UNIQUE INDEX IF NOT EXISTS idx_invoices_site_type_regular
@@ -165,6 +216,48 @@ def ensure_schema(connection: sqlite3.Connection) -> None:
     ensure_template_defaults(connection)
     ensure_app_settings_defaults(connection)
     connection.commit()
+
+
+def initialize_empty_install(connection: sqlite3.Connection) -> None:
+    """Remove seeded business data from a brand-new packaged installation."""
+    tables = [
+        row[0]
+        for row in connection.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
+        )
+        if row[0] not in EMPTY_INSTALL_PRESERVED_TABLES
+    ]
+    connection.commit()
+    connection.execute("PRAGMA foreign_keys = OFF")
+    try:
+        for table in tables:
+            connection.execute(f'DELETE FROM "{table}"')
+        connection.execute(
+            "DELETE FROM sqlite_sequence WHERE name NOT IN ('schema_migrations')"
+        )
+        connection.execute(
+            """
+            UPDATE company_settings
+            SET nom='', logo_path=NULL, rgc='', nif='', art='', adresse='', numero_compte=''
+            WHERE id=1
+            """
+        )
+        connection.execute(
+            "UPDATE contract_settings SET reference_contrat='' WHERE id=1"
+        )
+        connection.execute(
+            """
+            INSERT INTO app_settings(key, value, updated_by)
+            VALUES('skip_builtin_bpu_seed', '1', 'fresh-install')
+            ON CONFLICT(key) DO UPDATE SET
+                value=excluded.value,
+                updated_by=excluded.updated_by,
+                updated_at=CURRENT_TIMESTAMP
+            """
+        )
+        connection.commit()
+    finally:
+        connection.execute("PRAGMA foreign_keys = ON")
 
 
 def ensure_template_defaults(connection):

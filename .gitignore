@@ -5,6 +5,10 @@ backups/
 exports/
 output/
 dist/
+build/
+tmp/
+database/migration_backups/
+database/*.db
 node_modules/
 server_stdout.log
 server_stderr.log
@@ -20,11 +24,14 @@ __pycache__/
 *.zip
 .env
 config/license_private_key.pem
+publisher-key*.pem
+issued-licenses.jsonl
 data/license.json
 .venv/
 venv/
 env/
 .pytest_cache/
+.playwright-cli/
 .coverage
 htmlcov/
 .DS_Store

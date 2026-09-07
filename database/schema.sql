@@ -1,3 +1,4 @@
+-- Baseline schema V0. db.ensure_schema applies all versioned migrations after this script.
 PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS company_settings (
@@ -60,7 +61,7 @@ CREATE TABLE IF NOT EXISTS purchase_orders (
     numero_bc TEXT NOT NULL UNIQUE,
     date_bc TEXT,
     mobilis_direction_id INTEGER NOT NULL,
-    type_bc TEXT NOT NULL CHECK (type_bc IN ('ACQUISITION', 'CONSTRUCTION', 'CONST_ACQUIS', 'NDC')),
+    type_bc TEXT NOT NULL CHECK (type_bc IN ('ACQUISITION', 'CONSTRUCTION', 'CONST_ACQUIS', 'NDC', 'MGC')),
     objet TEXT NOT NULL DEFAULT '',
     montant_ttc NUMERIC NOT NULL DEFAULT 0 CHECK (montant_ttc >= 0),
     attachment_path TEXT,

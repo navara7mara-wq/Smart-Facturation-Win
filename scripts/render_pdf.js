@@ -19,8 +19,25 @@ async function main() {
     executablePath,
   });
   try {
-    const page = await browser.newPage({ viewport: { width: 1200, height: 1600 } });
+    const context = await browser.newContext({ viewport: { width: 1200, height: 1600 } });
+    const sessionToken = process.env.PHOENIX_RENDER_SESSION;
+    if (sessionToken) {
+      await context.addCookies([{
+        name: process.env.PHOENIX_RENDER_SESSION_COOKIE || "phoenix_session",
+        value: sessionToken,
+        url: new URL(url).origin,
+        httpOnly: true,
+        sameSite: "Lax",
+      }]);
+    }
+    const page = await context.newPage();
     await page.goto(url, { waitUntil: "networkidle" });
+    if (
+      new URL(page.url()).pathname === "/login" &&
+      process.env.PHOENIX_RENDER_ALLOW_LOGIN !== "1"
+    ) {
+      throw new Error("PDF preview authentication failed");
+    }
     await page.pdf({
       path: outputPath,
       format: "A4",
@@ -28,6 +45,7 @@ async function main() {
       displayHeaderFooter: false,
       margin: { top: "12mm", right: "13mm", bottom: "12mm", left: "13mm" },
     });
+    await context.close();
   } finally {
     await browser.close();
   }

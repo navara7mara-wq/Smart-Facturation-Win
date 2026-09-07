@@ -6,7 +6,7 @@
 - `python -m py_compile app.py db.py services/*.py scripts/*.py` passe sans erreur.
 - `powershell -ExecutionPolicy Bypass -File scripts/run_visual_tests.ps1 -Strict` passe avant livraison UI.
 - L'application demarre via `run.cmd`.
-- Le compte initial `admin/admin123` est remplace avant livraison.
+- Le parcours de premiere initialisation exige la definition d'un mot de passe administrateur; aucun identifiant universel reutilisable n'est livre.
 - Le premier lancement passe par `/setup`.
 - Les formulaires POST contiennent un jeton CSRF valide.
 - Un test de connexion/deconnexion est effectue.
@@ -18,12 +18,11 @@
 
 ## Installation client
 
-1. Utiliser `dist\installer\PhoEniX_BPU_Setup_VERSION.exe` si Inno Setup a ete utilise.
-2. Sinon installer Python 3.12+.
-3. Installer Node.js LTS si les PDF ou les tests visuels sont necessaires.
-4. Double-cliquer `setup.cmd`.
-5. Double-cliquer `run.cmd`.
-6. Ouvrir `http://127.0.0.1:8000`.
+1. Verifier le SHA-256 publie dans `dist\SHA256SUMS.txt`.
+2. Lancer `dist\installer\PhoEniX_BPU_Setup_VERSION.exe`.
+3. Aucun Python, Node.js ou acces Internet n'est requis chez le client.
+4. Lancer PhoEniX BPU depuis le Bureau ou le menu Demarrer.
+5. Les donnees sont conservees dans `%LOCALAPPDATA%\SAPTA\PhoEniX BPU` lors des mises a jour et de la desinstallation.
 
 ## Points non negociables avant commercialisation large
 
@@ -35,7 +34,7 @@
 
 ## Hors perimetre de cette version locale
 
-- Installer MSI/EXE signe.
+- Signature Authenticode tant qu'un certificat commercial n'a pas ete fourni.
 - Migration Flask/FastAPI complete.
 - Multi-company complet.
 - Templates HTML exhaustifs pour toutes les vues.
